@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { register, reset } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -26,10 +26,9 @@ const Register = () => {
     }
     //Redirect when logged in
     if (isSuccess || user) {
-      navigate("http://localhost:3000/");
+      navigate("/");
     }
-    dispatch(reset());
-  }, [isError, message, isSuccess, user, navigate, dispatch]);
+  }, [isError, isSuccess, message, user, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -53,9 +52,9 @@ const Register = () => {
   };
 
   return (
-    <>
+    <div className="container-register">
       <section>
-        <h1>Register {user}</h1>
+        <h1>Register </h1>
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label> Introdu numele </label>
@@ -84,7 +83,7 @@ const Register = () => {
             />
           </div>
           <div className="form-group">
-            <label> Introdu password </label>
+            <label> Introdu parola </label>
             <input
               type="password"
               id="password"
@@ -96,7 +95,7 @@ const Register = () => {
             />
           </div>
           <div className="form-group">
-            <label> Introdu password2 </label>
+            <label> Confirma parola </label>
             <input
               type="password"
               id="password2"
@@ -107,11 +106,12 @@ const Register = () => {
               placeholder="Confirm your password"
             />
           </div>
-
-          <button>Register</button>
+          <div className="button-group">
+            <button className="btn btn-block">Register</button>
+          </div>
         </form>
       </section>
-    </>
+    </div>
   );
 };
 

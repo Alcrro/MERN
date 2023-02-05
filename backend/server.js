@@ -18,6 +18,7 @@ server.use(cors());
 //Mount routers
 server.use("/api/auth", require("./routes/auth/auth"));
 server.use("/api/", require("./routes/user/user"));
+server.use("/api/", require("./routes/products/products"));
 
 server.use(errorHandler);
 

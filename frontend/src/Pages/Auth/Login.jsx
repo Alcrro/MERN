@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
+import "./auth.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +13,21 @@ const Login = () => {
 
   const { email, password } = formData;
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isSuccess, isError, message } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    //Redirect when logged in
+    if (isSuccess || user) {
+      navigate("/");
+    }
+  }, [isError, isSuccess, message, user, navigate, dispatch]);
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -16,26 +35,23 @@ const Login = () => {
     }));
   };
 
-  const Login = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    console.log(response);
-    //Check empty fields
+    const userData = {
+      email,
+      password,
+    };
+    dispatch(login(userData));
   };
 
   return (
-    <>
+    <div className="container-login">
       <section>
-        <form onSubmit={Login}>
+        <h1>Login</h1>
+        <form onSubmit={onSubmit}>
           <div className="form-group">
-            <label> Introdu email </label>
+            <label> Introdu email: </label>
             <input
               type="email"
               id="email"
@@ -47,7 +63,7 @@ const Login = () => {
             />
           </div>
           <div className="form-group">
-            <label> Introdu password </label>
+            <label> Introdu password: </label>
             <input
               type="password"
               id="password"
@@ -62,7 +78,7 @@ const Login = () => {
           <button>Login</button>
         </form>
       </section>
-    </>
+    </div>
   );
 };
 
