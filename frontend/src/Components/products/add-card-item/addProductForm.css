@@ -1,0 +1,45 @@
+.container-add-product-outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.container-add-product-outer .container-add-product-inner {
+  display: block;
+  background-color: #fff;
+  margin-top: 10vh;
+  padding: 30px;
+  width: 400px;
+}
+
+.container-add-product-outer .container-add-product-inner form {
+  display: inline-block;
+  padding: 10px;
+  width: 100%;
+}
+
+.container-add-product-inner form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.container-add-product-inner form .form-group input {
+  padding: 10px;
+  border: 1px solid #f5f5f5;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.container-add-product-inner form button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #f5f5f5;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}

@@ -5,7 +5,11 @@ import { toast } from "react-toastify";
 import { getAllProducts, reset } from "../../features/product/productSlice";
 import { useNavigate } from "react-router-dom";
 import "./products.css";
-import ProductItemDescription from "./productItemDescription";
+
+import CardItemBadges from "./card-item/card-item-badges/card-item-badges";
+import CardItemToolbox from "./card-item/card-item-toolbox/card-item-toolbox";
+import CardItemInfo from "./card-item/card-item-info/card-item-info";
+import CardItemContent from "./card-item/card-item-content/card-item-content";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -31,17 +35,10 @@ const Products = () => {
             products.products.map((item) => (
               <div className="card-item" key={item._id}>
                 <div className="card-item-wrapper js-section-wrapper">
-                  <div className="card-item-badges"></div>
-                  <div className="card-item-toolbox"></div>
-                  <div className="card-item-info"></div>
-                  <div className="card-item-content"></div>
-                </div>
-                <ProductItemDescription productDescription={item} />
-                {/* <div className="product-name">{item.name}</div> */}
-                <div className="product-description">{item.description}</div>
-                <div className="product-price">{item.price}</div>
-                <div className=" btn-cart">
-                  <button className="btn btn-primary">Add to cart</button>
+                  <CardItemBadges badges={"test"} />
+                  <CardItemToolbox toolbox={item} />
+                  <CardItemInfo info={item} />
+                  <CardItemContent content={item} />
                 </div>
               </div>
             ))}

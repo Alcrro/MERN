@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../../features/auth/authSlice";
+
+import AddProduct from "../products/AddProduct";
 import "./header.css";
 
 const Header = () => {
@@ -29,6 +31,11 @@ const Header = () => {
           <ul>
             {user ? (
               <>
+                <li>
+                  <div className="link-addProduct">
+                    <Link to="/add/product">Add Product</Link>
+                  </div>
+                </li>
                 <li>
                   <div className="bun-venit">Bun venit, {user.name}</div>
                 </li>

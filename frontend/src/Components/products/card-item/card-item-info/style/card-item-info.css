@@ -1,0 +1,12 @@
+.card-item-info {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.card-item-info a {
+  padding-bottom: 20px;
+  color: #000;
+  text-decoration: none;
+}

@@ -8,6 +8,8 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Header from "./Components/header/Header";
 import Products from "./Components/products/Products";
+import AddProduct from "./Components/products/AddProduct";
+import AddProductForm from "./Components/products/add-card-item/addProductForm";
 
 const App = () => {
   return (
@@ -18,6 +20,7 @@ const App = () => {
         <Route exact path="/user/auth/login" element={<Login />}></Route>
         <Route exact path="/user/auth/register" element={<Register />}></Route>
         <Route exact path="/products" element={<Products />}></Route>
+        <Route exact path="/add/product" element={<AddProductForm />}></Route>
 
         <Route exact path="/about" element={<About />}></Route>
         <Route exact path="/" element={<Home />}></Route>
