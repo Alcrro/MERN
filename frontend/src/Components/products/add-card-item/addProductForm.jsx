@@ -20,14 +20,7 @@ const AddProductForm = () => {
     (state) => state.products
   );
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    if (isSuccess) {
-      toast.success(message);
-    }
-  }, [isError, isSuccess, message]);
+  useEffect(() => {}, [message]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -38,11 +31,13 @@ const AddProductForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     const productData = {
       name,
       price,
       description,
     };
+
     dispatch(addProduct(productData));
   };
   return (
@@ -59,7 +54,6 @@ const AddProductForm = () => {
               id="name"
               value={name}
               onChange={onChange}
-              required
               placeholder="Add product name..."
             />
           </div>
@@ -71,7 +65,6 @@ const AddProductForm = () => {
               id="price"
               value={price}
               onChange={onChange}
-              required
               placeholder="Add product price..."
             />
           </div>
@@ -132,7 +125,6 @@ const AddProductForm = () => {
               rows="10"
               value={description}
               onChange={onChange}
-              required
               placeholder="Add product description..."
             ></textarea>
           </div>

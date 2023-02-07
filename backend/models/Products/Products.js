@@ -6,7 +6,9 @@ const ProductsSchema = new mongoose.Schema({
     required: [true, "Please add a name"],
     trim: true,
     maxlength: [50, "Name can not be more than 50 characters"],
+    unique: false,
   },
+
   price: {
     type: Number,
     required: [true, "Please add a price"],

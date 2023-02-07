@@ -23,10 +23,8 @@ const Register = () => {
   useEffect(() => {
     if (isError) {
       toast.error(message);
-    }
-    //Redirect when logged in
-    if (isSuccess || user) {
-      navigate("/");
+    } else if (isSuccess) {
+      toast.success(message);
     }
   }, [isError, isSuccess, message, user, navigate, dispatch]);
 

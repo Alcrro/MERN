@@ -1,3 +1,4 @@
+const e = require("express");
 const asyncHandler = require("express-async-handler");
 const Products = require("../../models/products/Products");
 
@@ -26,10 +27,19 @@ exports.getProduct = asyncHandler(async (req, res) => {
 });
 
 // @desc 	Create a product
-// @route 	POST /api/products
+// @route 	POST /api/product
 // @access 	Private/Admin
 exports.postProduct = asyncHandler(async (req, res) => {
   const { name, price, description } = req.body;
+
+  const nameProduct = await Products.findOne({ name: name });
+
+  //check duplicate product
+  if (nameProduct === name) {
+    res.status(400);
+    throw new Error("Product already exists");
+  }
+
   const product = await Products.create({
     name: name,
     price: price,
@@ -39,5 +49,6 @@ exports.postProduct = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     product: product,
+    message: "Product created successfully",
   });
 });

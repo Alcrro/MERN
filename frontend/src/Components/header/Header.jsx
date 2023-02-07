@@ -29,6 +29,9 @@ const Header = () => {
       <div className="container-menu">
         <div className="menu-inner">
           <ul>
+            <li>
+              <Link to="/products">Products</Link>
+            </li>
             {user ? (
               <>
                 <li>

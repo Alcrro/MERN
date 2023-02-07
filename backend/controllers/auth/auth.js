@@ -43,6 +43,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       name: register.name,
       email: register.email,
       token: generateToken(register._id),
+      message: "User created successfully",
     });
   } else {
     res.status(400);
@@ -84,6 +85,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
+      message: "User logged in successfully",
     });
   } else {
     res.status(401);
