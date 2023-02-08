@@ -20,9 +20,6 @@ const Products = () => {
   );
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
     dispatch(getAllProducts());
   }, [dispatch]);
 

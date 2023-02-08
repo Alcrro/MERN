@@ -17,7 +17,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
-exports.getProduct = asyncHandler(async (req, res) => {
+exports.getProduct = asyncHandler(async (req, res, next) => {
   const product = await Products.findById(req.params.id);
 
   res.status(200).json({
@@ -29,13 +29,12 @@ exports.getProduct = asyncHandler(async (req, res) => {
 // @desc 	Create a product
 // @route 	POST /api/product
 // @access 	Private/Admin
-exports.postProduct = asyncHandler(async (req, res) => {
+exports.postProduct = asyncHandler(async (req, res, next) => {
   const { name, price, description } = req.body;
 
   const nameProduct = await Products.findOne({ name: name });
 
-  //check duplicate product
-  if (nameProduct === name) {
+  if (nameProduct) {
     res.status(400);
     throw new Error("Product already exists");
   }

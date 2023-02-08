@@ -1,7 +1,9 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const errorHandler = require("./middleware/error/error");
+
 const connectDB = require("./configs/mongoDB");
 
 //Load env vars
@@ -11,6 +13,8 @@ dotenv.config({ path: "./backend/configs/.env" });
 connectDB();
 
 const server = express();
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express.json());
 // server.use(cookieParser());
 server.use(cors());

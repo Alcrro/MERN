@@ -2,12 +2,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/";
 
-// Get all products
-const getAllProducts = async (productsData) => {
-  const response = await axios.get(API_URL + "products", productsData);
-  return response.data;
-};
-
 // Get product by id
 const getProductById = async (id) => {
   const response = await axios.get(API_URL + id);
@@ -22,10 +16,9 @@ const createProduct = async (product) => {
   return response.data;
 };
 
-const productService = {
-  getAllProducts,
+const postProductService = {
   getProductById,
   createProduct,
 };
 
-export default productService;
+export default postProductService;

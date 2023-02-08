@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addProduct } from "../../../features/product/productSlice";
+import { useNavigate } from "react-router-dom";
+import { addProduct, reset } from "../../../features/product/postProductSlice";
 import { toast } from "react-toastify";
 import "./addProductForm.css";
 
@@ -15,12 +16,9 @@ const AddProductForm = () => {
   const { name, price, description } = formData;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { product, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state.products
-  );
-
-  useEffect(() => {}, [message]);
+  const { product, isLoading, isSuccess, isError, message } = useSelector((state) => state.product);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -31,14 +29,18 @@ const AddProductForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (isError) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+      const productData = {
+        name,
+        price,
+        description,
+      };
 
-    const productData = {
-      name,
-      price,
-      description,
-    };
-
-    dispatch(addProduct(productData));
+      dispatch(addProduct(productData));
+    }
   };
   return (
     <div className="container-add-product-outer">
@@ -54,6 +56,7 @@ const AddProductForm = () => {
               id="name"
               value={name}
               onChange={onChange}
+              required
               placeholder="Add product name..."
             />
           </div>
@@ -65,6 +68,7 @@ const AddProductForm = () => {
               id="price"
               value={price}
               onChange={onChange}
+              required
               placeholder="Add product price..."
             />
           </div>
@@ -125,6 +129,7 @@ const AddProductForm = () => {
               rows="10"
               value={description}
               onChange={onChange}
+              required
               placeholder="Add product description..."
             ></textarea>
           </div>
