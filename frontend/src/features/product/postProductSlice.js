@@ -2,17 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import postProductService from "./postProductService";
 
 const initialState = {
-  product: [
-    {
-      name: "",
-      price: "",
-      description: "",
-    },
-  ],
-  isLoading: false,
+  product: [],
   isError: false,
-  message: "",
   isSuccess: false,
+  isLoading: false,
 };
 
 // add Product
@@ -37,7 +30,6 @@ export const productSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
-      state.message = "";
     },
   },
   extraReducers: (builder) => {
@@ -49,11 +41,12 @@ export const productSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = true;
+      state.product = action.payload;
       state.message = action.payload.message;
     });
+
     builder.addCase(addProduct.rejected, (state, action) => {
       state.isLoading = false;
-      state.isSuccess = false;
       state.isError = true;
       state.message = action.payload;
     });

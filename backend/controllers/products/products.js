@@ -1,4 +1,4 @@
-const e = require("express");
+const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const Products = require("../../models/products/Products");
 
@@ -30,9 +30,12 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
 // @route 	POST /api/product
 // @access 	Private/Admin
 exports.postProduct = asyncHandler(async (req, res, next) => {
-  const { name, price, description } = req.body;
+  const { productName, price, description, admin } = req.body;
+  console.log(req.body);
 
-  const nameProduct = await Products.findOne({ name: name });
+  const nameProduct = await Products.findOne({ name: productName });
+
+
 
   if (nameProduct) {
     res.status(400);
@@ -40,7 +43,7 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
   }
 
   const product = await Products.create({
-    name: name,
+    name: productName,
     price: price,
     description: description,
   });

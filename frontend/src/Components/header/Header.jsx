@@ -41,6 +41,15 @@ const Header = () => {
                 </li>
                 <li>
                   <div className="bun-venit">Bun venit, {user.name}</div>
+                  {user.isAdmin ? (
+                    <ul>
+                      <li>
+                        <a href="/">Adauga Categorii</a>
+                      </li>
+                    </ul>
+                  ) : (
+                    ""
+                  )}
                 </li>
                 <li>
                   <button className="btn" onClick={onLogout}>

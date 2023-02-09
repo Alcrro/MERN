@@ -1,46 +1,52 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addProduct, reset } from "../../../features/product/postProductSlice";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "./addProductForm.css";
 
 const AddProductForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    productName: "",
     price: "",
     description: "",
   });
 
-  const { name, price, description } = formData;
+  const { productName, price, description } = formData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { product, isLoading, isSuccess, isError, message } = useSelector((state) => state.product);
 
+  useEffect(() => {
+    dispatch(reset());
+    if (isError) {
+      toast.error(message);
+    } else if (isSuccess) {
+      toast.success(message);
+    }
+  }, [isError, isSuccess, message, product, navigate, dispatch]);
   const onChange = (e) => {
+    e.preventDefault();
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+    console.log(formData);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (isError) {
-      toast.error(message);
-    } else {
-      toast.success(message);
-      const productData = {
-        name,
-        price,
-        description,
-      };
 
-      dispatch(addProduct(productData));
-    }
+    const productData = {
+      productName,
+      price,
+      description,
+    };
+
+    dispatch(addProduct(productData));
   };
   return (
     <div className="container-add-product-outer">
@@ -52,10 +58,11 @@ const AddProductForm = () => {
             <label htmlFor="name">Name</label>
             <input
               type="text"
-              name="name"
-              id="name"
-              value={name}
+              name="productName"
+              id="productName"
+              value={productName}
               onChange={onChange}
+              // ref={productNameRef}
               required
               placeholder="Add product name..."
             />
@@ -68,6 +75,7 @@ const AddProductForm = () => {
               id="price"
               value={price}
               onChange={onChange}
+              // ref={productPriceRef}
               required
               placeholder="Add product price..."
             />
@@ -127,8 +135,9 @@ const AddProductForm = () => {
               id="description"
               cols="30"
               rows="10"
-              value={description}
+              price={description}
               onChange={onChange}
+              // ref={productDescriptionRef}
               required
               placeholder="Add product description..."
             ></textarea>
@@ -136,6 +145,7 @@ const AddProductForm = () => {
           <button>Add Product</button>
         </form>
       </div>
+      <ToastContainer className={"toast-container hidden"} />
     </div>
   );
 };

@@ -11,9 +11,10 @@ const Register = () => {
     email: "",
     password: "",
     password2: "",
+    admin: false,
   });
 
-  const { name, email, password, password2 } = formData;
+  const { name, email, password, password2, admin } = formData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,8 +36,18 @@ const Register = () => {
     }));
   };
 
+  const checkAdmin = (e) => {
+    setFormData((prevState) => ({ ...prevState, admin: e.target.checked }));
+    if (e.target.checked) {
+      console.log("✅ Checkbox is checked");
+    } else {
+      console.log("⛔️ Checkbox is NOT checked");
+    }
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
+
     if (password !== password2) {
       toast.error("Passwords do not match");
     } else {
@@ -44,6 +55,7 @@ const Register = () => {
         name,
         email,
         password,
+        admin: admin,
       };
       dispatch(register(userData));
     }
@@ -103,6 +115,10 @@ const Register = () => {
               required
               placeholder="Confirm your password"
             />
+          </div>
+          <div className="form-group">
+            <label> Vrei admin boss? </label>
+            <input type="checkbox" name="admin" id="admin" onChange={checkAdmin} value={admin} />
           </div>
           <div className="button-group">
             <button className="btn btn-block">Register</button>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const API_URL = "http://localhost:5000/api/";
 
@@ -11,8 +12,7 @@ const getProductById = async (id) => {
 // Create a product
 const createProduct = async (product) => {
   const response = await axios.post(API_URL + "product", product);
-  console.log(response.data);
-
+  console.log(response);
   return response.data;
 };
 

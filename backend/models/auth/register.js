@@ -21,7 +21,6 @@ const RegisterSchema = new mongoose.Schema({
   },
   isAdmin: {
     type: Boolean,
-    required: [true, "Please add an admin"],
     default: false,
   },
   password: {

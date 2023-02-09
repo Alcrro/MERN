@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
@@ -27,7 +27,6 @@ const App = () => {
         <Route exact path="/" element={<Home />}></Route>
       </Routes>
       {/* </UserAuthProvider> */}
-      <ToastContainer />
     </Router>
   );
 };

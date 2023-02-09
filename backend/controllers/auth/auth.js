@@ -9,7 +9,7 @@ const Login = require("../../models/auth/login");
 //	@route								POST /api/auth/register
 // 	@access								Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, admin } = req.body;
   console.log(req.body);
 
   // Validate  email and password
@@ -33,6 +33,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const register = await Register.create({
     name,
     email,
+    isAdmin: admin,
     password: hashedPassword,
   });
 
@@ -42,6 +43,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       _id: register._id,
       name: register.name,
       email: register.email,
+      isAdmin: register.isAdmin,
       token: generateToken(register._id),
       message: "User created successfully",
     });
@@ -84,6 +86,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
       message: "User logged in successfully",
     });
