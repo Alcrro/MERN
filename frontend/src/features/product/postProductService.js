@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import authHeader from "../auth/authHeader";
 
 const API_URL = "http://localhost:5000/api/admin/";
 
@@ -11,7 +12,7 @@ const getProductById = async (id) => {
 
 // Create a product
 const createProduct = async (product) => {
-  const response = await axios.post(API_URL + "product", product);
+  const response = await axios.post(API_URL + "product", product, { headers: authHeader() });
   console.log(response);
   return response.data;
 };

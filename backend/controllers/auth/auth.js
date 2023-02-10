@@ -80,14 +80,23 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 
   //Check user and password  matches
 
+  const token = user.getSignedJwtToken();
+
+  //token options
+  const options = {
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+    token: token,
+  };
+
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).json({
+    res.status(200).cookie("token", options).json({
       success: true,
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id),
+      token: token,
       message: "User logged in successfully",
     });
   } else {

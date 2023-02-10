@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import productCategoryService from "./productCategoryService";
+import postAddProductService from "./postAddProductCategoryService";
 
 const initialState = {
   productCategories: [],
@@ -13,7 +13,7 @@ export const postAddProductCategory = createAsyncThunk(
   "productCategory/postAddProductCategory",
   async (productCategory, thunkAPI) => {
     try {
-      return await productCategoryService.postAddProductCategory(productCategory);
+      return await postAddProductService.postAddProductCategoryService(productCategory);
     } catch (error) {
       const message =
         (error.response && error.response.data.message && error.response.data.message) ||
@@ -26,7 +26,7 @@ export const postAddProductCategory = createAsyncThunk(
 );
 
 export const postAddProductCategorySlice = createSlice({
-  name: "productCategory/postAddProductCategory",
+  name: "postAddProductCategory",
   initialState,
   reducers: {
     reset: (state) => {
@@ -54,6 +54,6 @@ export const postAddProductCategorySlice = createSlice({
   },
 });
 
-export const { reset } = postAddProductCategory.actions;
+export const { reset } = postAddProductCategorySlice.actions;
 
-export default postAddProductCategory.reducer;
+export default postAddProductCategorySlice.reducer;

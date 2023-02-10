@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-
+import { postAddProductCategory } from "../../../../features/productCategory/postAddProductCategorySlice";
 
 const AddCategoryForm = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryDescription, setCategoryDescription] = useState("");
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
     const category = { categoryName, categoryDescription };
     console.log(category);
+    dispatch(postAddProductCategory(category));
   };
   return (
     <div className="add-category-container-outer">
