@@ -10,6 +10,7 @@ import Header from "./Components/header/Header";
 import Products from "./Components/products/Products";
 import AddProduct from "./Components/products/AddProduct";
 import AddProductForm from "./Components/products/add-card-item/addProductForm";
+import AddCategory from "./Components/administrator/category/AddCategory";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route exact path="/user/auth/login" element={<Login />}></Route>
         <Route exact path="/user/auth/register" element={<Register />}></Route>
         <Route exact path="/products" element={<Products />}></Route>
+        <Route exact path="admin/adauga-categorii" element={<AddCategory />}></Route>
 
         <Route exact path="/add/product" element={<AddProductForm />}></Route>
 

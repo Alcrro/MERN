@@ -29,27 +29,34 @@ const Header = () => {
       <div className="container-menu">
         <div className="menu-inner">
           <ul>
-            <li>
+            <li className="products-cards">
               <Link to="/products">Products</Link>
             </li>
             {user ? (
               <>
-                <li>
+                <li className="add-products">
                   <div className="link-addProduct">
                     <Link to="/add/product">Add Product</Link>
                   </div>
                 </li>
-                <li>
-                  <div className="bun-venit">Bun venit, {user.name}</div>
-                  {user.isAdmin ? (
-                    <ul>
-                      <li>
-                        <a href="/">Adauga Categorii</a>
-                      </li>
-                    </ul>
-                  ) : (
-                    ""
-                  )}
+                <li className="user-profile">
+                  <div className="bun-venit">
+                    Bun venit, {user.name}
+                    {user.isAdmin ? (
+                      <div className="category-inner">
+                        <ul>
+                          <li>
+                            <a href="/admin/adauga-categorii">Adauga Categorii</a>
+                          </li>
+                          <li>
+                            <a href="/">Adauga Categorii</a>
+                          </li>
+                        </ul>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </li>
                 <li>
                   <button className="btn" onClick={onLogout}>

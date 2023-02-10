@@ -36,3 +36,42 @@ body {
   font-size: 1rem;
   font-weight: 500;
 }
+
+/* isAdmin */
+.user-profile {
+  position: relative;
+}
+.bun-venit:hover {
+  cursor: pointer;
+}
+
+.category-inner {
+  display: block;
+  position: absolute;
+  width: 200px;
+  left: -50px;
+  padding-top: 1rem;
+  text-align: center;
+  background-color: transparent;
+}
+.bun-venit ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.bun-venit ul li {
+  padding: 0.5rem;
+}
+
+/* .bun-venit ul {
+  display: none;
+} */
+.bun-venit:hover ul {
+  display: block;
+}
