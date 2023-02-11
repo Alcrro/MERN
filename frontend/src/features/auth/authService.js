@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const API_URL = "/api/auth/";
 
@@ -27,13 +28,20 @@ const login = async (userData) => {
 
     localStorage.setItem("user", JSON.stringify(response.data));
   }
+
   return response.data;
 };
 
 // Logout user
 const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
+  if (localStorage.getItem("user")) {
+    toast.success("You have been logged out");
+    localStorage.removeItem("user");
+
+    localStorage.removeItem("token");
+  } else {
+    toast.error("You are not logged in");
+  }
 };
 
 const getCurrentUser = () => {

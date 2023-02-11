@@ -86,8 +86,7 @@ const userSlice = createSlice({
 // export the reducer
 // export the actions
 export const { login, logout } = userSlice.actions;
-
-//export default userSlice.reducer to the store file
+// export default userSlice.reducer
 
 //create login.jsx file in src folder
 //import the useDispatch hook from react-redux

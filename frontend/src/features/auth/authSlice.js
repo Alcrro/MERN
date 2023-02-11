@@ -89,6 +89,7 @@ export const authSlice = createSlice({
       state.user = null;
     });
     builder.addCase(logout.fulfilled, (state, action) => {
+      state.message = action.payload;
       state.user = null;
     });
   },

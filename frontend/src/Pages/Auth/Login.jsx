@@ -24,8 +24,8 @@ const Login = () => {
     }
     //Redirect when logged in
     if (isSuccess || user) {
-      toast.success(message);
       navigate("/");
+      toast.success(message);
     }
   }, [isError, isSuccess, message, user, navigate, dispatch]);
 

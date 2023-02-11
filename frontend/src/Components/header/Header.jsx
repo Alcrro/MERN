@@ -5,6 +5,7 @@ import { logout, reset } from "../../features/auth/authSlice";
 
 import AddProduct from "../products/AddProduct";
 import "./header.css";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Header = () => {
 
   const onLogout = () => {
     dispatch(logout());
+    toast.success("You have been logged out");
     dispatch(reset());
     navigate("/");
   };
