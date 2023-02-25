@@ -15,7 +15,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
 });
 
 // @desc    Fetch single product
-// @route   GET /api/products/:id
+// @route   GET /api/product/:id
 // @access  Public
 exports.getProduct = asyncHandler(async (req, res, next) => {
   const product = await Products.findById(req.params.id);
@@ -34,8 +34,6 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
   console.log(req.body);
 
   const nameProduct = await Products.findOne({ name: productName });
-
-
 
   if (nameProduct) {
     res.status(400);

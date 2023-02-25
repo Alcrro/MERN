@@ -5,10 +5,9 @@ import CardItemTitle from "./pad-hrz-xs/card-v2-title-wrapper/card-item-title";
 import "./style/card-item-info.css";
 
 const CardItemInfo = (props) => {
-  const { description } = props.info;
   return (
     <div className="card-item-info">
-      <a href="/">
+      <a href={`/product/${props.info}`}>
         <CardItemThumbInner />
         <CardItemBadgeCmpHolder />
       </a>

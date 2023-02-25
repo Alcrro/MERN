@@ -6,10 +6,12 @@ import About from "./Pages/About/About";
 import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Header from "./Components/header/Header";
-import Products from "./Components/products/Products";
+import ProductsList from "./Components/products/Products";
+
 import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
 import PrivateRoutes from "./Utils/PrivateRoutes";
+import SingleProduct from "./Pages/Product/SingleProduct";
 
 const App = () => {
   return (
@@ -19,7 +21,8 @@ const App = () => {
       <Routes>
         <Route exact path="/user/auth/login" element={<Login />}></Route>
         <Route exact path="/user/auth/register" element={<Register />}></Route>
-        <Route exact path="/products" element={<Products />}></Route>
+        <Route exact path="/products" element={<ProductsList />}></Route>
+        <Route exact path="/product/:slug" element={<SingleProduct />}></Route>
 
         <Route exact path="admin/adauga-categorii" element={<AddCategory />}></Route>
         <Route element={<PrivateRoutes />}>

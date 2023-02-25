@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { getAllProducts, reset } from "../../features/product/productSlice";
 import { useNavigate } from "react-router-dom";
 import "./products.css";
+import SingleProduct from "./singleProduct/SingleProductUI";
+import ProductsList from "../../Components/products/Products";
 
 import CardItemBadges from "./card-item/card-item-badges/card-item-badges";
 import CardItemToolbox from "./card-item/card-item-toolbox/card-item-toolbox";
@@ -15,9 +17,7 @@ const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { products, count, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state.products
-  );
+  const { products } = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -36,6 +36,9 @@ const Products = () => {
                   <CardItemToolbox toolbox={item} />
                   <CardItemInfo info={item} />
                   <CardItemContent content={item} />
+                  {/* Merge? */}
+
+                  <SingleProduct singleProduct={item} />
                 </div>
               </div>
             ))}
