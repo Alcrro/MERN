@@ -4,7 +4,7 @@ const API_URL = "http://localhost:5000/api/";
 
 // Get all products
 const getAllProducts = async (productsData) => {
-  const response = await axios.get(API_URL + "products", productsData);
+  const response = await axios.get(API_URL + `products`, productsData);
   return response.data;
 };
 
@@ -17,7 +17,6 @@ const getProductById = async (id) => {
 // Create a product
 const createProduct = async (product) => {
   const response = await axios.post(API_URL + "admin/product", product);
-  console.log(response.data);
 
   return response.data;
 };

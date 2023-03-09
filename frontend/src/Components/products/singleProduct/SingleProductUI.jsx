@@ -1,10 +1,7 @@
 import React from "react";
 
 const SingleProduct = (props) => {
-  const { singleProduct } = props;
-  console.log(singleProduct);
-
-  return <div>SingleProduct</div>;
+  return <div>SingleProduct1</div>;
 };
 
 export default SingleProduct;

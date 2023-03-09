@@ -1,7 +1,7 @@
 import React from "react";
 import SingleProductUI from "../../Components/products/singleProduct/SingleProductUI";
 
-const SingleProduct = () => {
+const SingleProduct = (props) => {
   return (
     <div>
       SingleProduct1

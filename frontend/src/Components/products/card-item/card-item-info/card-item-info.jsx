@@ -7,7 +7,7 @@ import "./style/card-item-info.css";
 const CardItemInfo = (props) => {
   return (
     <div className="card-item-info">
-      <a href={`/product/${props.info}`}>
+      <a href={`/product/${props.info.slug}`}>
         <CardItemThumbInner />
         <CardItemBadgeCmpHolder />
       </a>

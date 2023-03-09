@@ -7,11 +7,10 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Header from "./Components/header/Header";
 import ProductsList from "./Components/products/Products";
-
 import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
 import PrivateRoutes from "./Utils/PrivateRoutes";
-import SingleProduct from "./Pages/Product/SingleProduct";
+import SingleProduct from "./Components/products/singleProduct/SingleProductUI";
 
 const App = () => {
   return (
