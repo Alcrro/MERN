@@ -1,12 +1,31 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 const ProductsSchema = new mongoose.Schema({
-  name: {
+  id: {
+    type: Object(),
+    default: mongoose.Types.ObjectId(),
+  },
+  brand: {
     type: String,
     required: [true, "Please add a name"],
     trim: true,
     maxlength: [50, "Name can not be more than 50 characters"],
     unique: false,
+  },
+  model: {
+    type: String,
+    required: [true, "Please add a brand name"],
+  },
+
+  memorieInterna: {
+    type: String,
+    required: [true, "Please add a memorie interna"],
+  },
+
+  rating: {
+    type: String,
+    maxlength: [5, "Rating can not be more than 5 characters"],
+    required: [true, "Please add a rating"],
   },
 
   price: {
@@ -16,18 +35,30 @@ const ProductsSchema = new mongoose.Schema({
 
   description: {
     type: String,
-    required: [true, "Please add a description"],
   },
+
   slug: String,
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  // availability: {
+  //   type: String,
+  //   enum: ["In Stoc", "Promotii", "Nou", "Resigilate", "Precomanda"],
+  // },
 });
-// pre run before operation
+
+// Create  slug from the brand + model
 ProductsSchema.pre("save", function (next) {
-  console.log("Slugify ran", this.name);
-  this.slug = slugify(this.description, { lower: true });
+  console.log("Slugify ran", this.brand + " " + this.model);
+  this.slug = slugify(this.brand + " " + this.model, { lower: true });
+  next();
+});
+
+// Create description from the brand + model
+ProductsSchema.pre("save", function (next) {
+  console.log("Description ran", this.brand + " " + this.model);
+  this.description = this.brand + " " + this.model;
   next();
 });
 

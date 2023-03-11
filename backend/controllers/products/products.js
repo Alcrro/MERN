@@ -6,7 +6,7 @@ const Products = require("../../models/products/Products");
 // @route   GET /api/products
 // @access  Public
 exports.getProducts = asyncHandler(async (req, res) => {
-  const { search, sort, name } = req.query;
+  const { search, sort, brand, rating, model } = req.query;
   const products = await Products.find({});
 
   // const limit = 10;
@@ -19,7 +19,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
   // }
 
   //no await
-  let result = Products.find();
+  let result = Products.find(queryObject);
 
   // chian sort conditions
   if (sort === "asc") {
@@ -35,13 +35,19 @@ exports.getProducts = asyncHandler(async (req, res) => {
     result = result.sort("createdAt");
   }
 
-  if (name) {
-    result = result.find({ name: { $regex: name, $options: "i" } });
+  if (brand) {
+    result = result.find({ brand: brand });
+  }
+  if (rating) {
+    result = result.find({ rating: rating });
+  }
+  if (model) {
+    result = result.find({ model: model });
   }
 
   //chain skip and limit
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const limit = Number(req.query.limit) || 30;
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
@@ -49,15 +55,15 @@ exports.getProducts = asyncHandler(async (req, res) => {
   const test = await result;
 
   const totalProducts = await Products.countDocuments();
-  console.log(totalProducts);
   const numberOfPages = Math.ceil(totalProducts / limit);
-  console.log(numberOfPages);
 
   res.status(200).json({
     success: true,
     totalProducts,
     numberOfPages,
+    limit,
     products: test,
+    // test: products,
   });
 });
 
@@ -77,10 +83,18 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
 // @route 	POST /api/product
 // @access 	Private/Admin
 exports.postProduct = asyncHandler(async (req, res, next) => {
-  const { productName, price, description, admin } = req.body;
+  const {
+    productBrand,
+    productRating,
+    productModel,
+    productMemorieInterna,
+    price,
+    description,
+    admin,
+  } = req.body;
   console.log(req.body);
 
-  const nameProduct = await Products.findOne({ name: productName });
+  const nameProduct = await Products.findOne({ name: productBrand });
 
   if (nameProduct) {
     res.status(400);
@@ -88,7 +102,11 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
   }
 
   const product = await Products.create({
-    name: productName,
+    brand: productBrand,
+    rating: productRating,
+    model: productModel,
+    memorieInterna: productMemorieInterna,
+    description: productBrand,
     price: price,
     description: description,
   });

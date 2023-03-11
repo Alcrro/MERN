@@ -13,3 +13,52 @@
   height: 500px;
   margin: 2px;
 }
+
+.sort-options {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 350px;
+  padding: 0 10px;
+}
+
+.container-products-outer {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 1000px;
+  padding: 0 10px;
+}
+
+.pagination {
+  display: block;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 350px;
+  padding: 0 10px;
+}
+
+.pagination-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: fit-content;
+  padding: 0 10px;
+}
+
+.pagination-buttons button {
+  display: inline-block;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
+  margin: 0 5px;
+  outline: none;
+  padding: 0 10px;
+  width: fit-content;
+}

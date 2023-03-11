@@ -14,6 +14,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  products: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Products",
+    },
+  ],
 });
 
 //Create bootcamp slug from the name

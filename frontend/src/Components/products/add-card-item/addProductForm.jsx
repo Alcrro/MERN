@@ -1,59 +1,31 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { addProduct, reset } from "../../../features/product/postProductSlice";
+import { useState } from "react";
+
 import { ToastContainer, toast } from "react-toastify";
 import "./addProductForm.css";
+import { useAddProductMutation } from "../../../features/product/rtkProducts";
 
 const AddProductForm = () => {
-  const [formData, setFormData] = useState({
-    productName: "",
-    price: "",
-    description: "",
-  });
+  const [productName, setProductName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
 
-  const { productName, price, description } = formData;
+  const [addProduct] = useAddProductMutation();
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { product, isLoading, isSuccess, isError, message } = useSelector((state) => state.product);
-
-  useEffect(() => {
-    dispatch(reset());
-    if (isError) {
-      toast.error(message);
-    } else if (isSuccess) {
-      toast.success(message);
-    }
-  }, [isError, isSuccess, message, product, navigate, dispatch]);
-  const onChange = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-    console.log(formData);
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    const productData = {
+    addProduct({
       productName,
       price,
       description,
-    };
-
-    dispatch(addProduct(productData));
+    });
   };
   return (
     <div className="container-add-product-outer">
       <div className="container-add-product-inner">
         <h1>Add Product Form</h1>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
@@ -61,7 +33,7 @@ const AddProductForm = () => {
               name="productName"
               id="productName"
               value={productName}
-              onChange={onChange}
+              onChange={(e) => setProductName(e.target.value)}
               // ref={productNameRef}
               required
               placeholder="Add product name..."
@@ -74,7 +46,7 @@ const AddProductForm = () => {
               name="price"
               id="price"
               value={price}
-              onChange={onChange}
+              onChange={(e) => setPrice(e.target.value)}
               // ref={productPriceRef}
               required
               placeholder="Add product price..."
@@ -135,8 +107,8 @@ const AddProductForm = () => {
               id="description"
               cols="30"
               rows="10"
-              price={description}
-              onChange={onChange}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               // ref={productDescriptionRef}
               required
               placeholder="Add product description..."

@@ -13,6 +13,7 @@ const AddCategoryForm = () => {
     console.log(category);
     dispatch(postAddProductCategory(category));
   };
+
   return (
     <div className="add-category-container-outer">
       <h1>Adauga Categorii</h1>
