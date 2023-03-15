@@ -11,17 +11,19 @@ import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
 import PrivateRoutes from "./Utils/PrivateRoutes";
 import SingleProduct from "./Components/products/singleProduct/SingleProductUI";
+import FisaCalitate from "./Components/UI/FisaCalitate/FisaCalitate";
 
 const App = () => {
   return (
     <Router>
-      <Header />
+      {/* <Header /> */}
       {/* <UserAuthProvider> */}
       <Routes>
         <Route exact path="/user/auth/login" element={<Login />}></Route>
         <Route exact path="/user/auth/register" element={<Register />}></Route>
         <Route exact path="/products" element={<ProductsList />}></Route>
         <Route exact path="/product/:slug" element={<SingleProduct />}></Route>
+        <Route exact path="/fisa-calitate" element={<FisaCalitate />}></Route>
 
         <Route exact path="admin/adauga-categorii" element={<AddCategory />}></Route>
         <Route element={<PrivateRoutes />}>

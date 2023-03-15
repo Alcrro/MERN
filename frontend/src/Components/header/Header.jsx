@@ -61,7 +61,7 @@ const Header = () => {
                   </div>
                 </li>
                 <li>
-                  <button className="btn" onClick={onLogout}>
+                  <button className="btn btn-logout" onClick={onLogout}>
                     Logout
                   </button>
                 </li>

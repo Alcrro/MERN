@@ -15,7 +15,21 @@ export const productsApi = createApi({
     getProducts: builder.query({
       query: (args) => {
         const { limit, page, sort, brand, rating, model } = args;
-        return `products?sort=${sort}&limit=${limit}&page=${page}&brand=${brand}&rating=${rating}&model=${model}`;
+
+        const productBrand = brand.map((item) => {
+          return `&brand=${item}`;
+        });
+        const stringBrand = productBrand.join("");
+
+        const productModel = model.map((item) => {
+          return `&model=${item}`;
+        });
+        const stringModel = productModel.join("");
+        console.log(stringModel);
+
+        return `products?sort=${sort}&limit=${limit}${stringBrand}&page=${page}${
+          rating === "" ? "" : `rating=${rating}&`
+        }${stringModel}`;
       },
     }),
     addProduct: builder.mutation({
