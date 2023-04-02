@@ -1,0 +1,42 @@
+.sidebar-filter-brand-title {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.sidebar-filter-brand-title::after {
+  border-style: solid;
+  border-width: 0.2em 0.2em 0 0;
+  content: "";
+  display: inline-block;
+  height: 0.45em;
+  left: 2.5em;
+  position: absolute;
+  text-align: end;
+  top: 0;
+  transform: rotate(135deg);
+  vertical-align: top;
+  width: 0.45em;
+  margin-left: 12rem;
+}
+
+.filter-head {
+  display: block;
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sidebar-filter-brand-body:not(.active) {
+  display: none;
+  padding-left: 0.5rem;
+}
+
+.star-brand-text {
+  display: inline-block;
+  padding: 5px;
+}
+
+.star-brand-text span {
+  font-size: 14px;
+  color: #6b6969;
+}

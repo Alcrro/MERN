@@ -1,10 +1,10 @@
-.card-collection {
+/* .card-collection {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
   max-width: 1000px;
   padding: 0 10px;
-}
+} */
 
 .card-item {
   display: block;
@@ -19,14 +19,6 @@
   flex-wrap: wrap;
   margin: 0 auto;
   max-width: 350px;
-  padding: 0 10px;
-}
-
-.container-products-outer {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  width: 1000px;
   padding: 0 10px;
 }
 
@@ -61,4 +53,62 @@
   outline: none;
   padding: 0 10px;
   width: fit-content;
+}
+
+.container-filtere {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 1000px;
+}
+
+.limit,
+.sort {
+  padding-right: 10px;
+
+  text-align: center;
+}
+
+.limit select {
+  background-color: transparent;
+  border: 1px solid white;
+  background-color: #fff;
+  padding: 0.2rem;
+  width: 100px;
+  text-align: center;
+}
+
+.sort select {
+  background-color: transparent;
+  border: 1px solid white;
+  background-color: #fff;
+  padding: 0.2rem;
+  width: 100px;
+  text-align: center;
+}
+
+.limit-container button {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 0.2rem;
+  width: 150px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.listing-sorting-dropdown ul {
+  text-align: center;
+  list-style: none;
+  cursor: pointer;
+}
+
+.listing-sorting-dropdown ul li a {
+  text-decoration: none;
+  color: #000;
 }

@@ -8,7 +8,7 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getAllProducts: builder.query({
       query: () => {
-        return `products`;
+        return "products";
       },
       providesTags: [{ type: "Products" }],
     }),
@@ -19,18 +19,25 @@ export const productsApi = createApi({
         const productBrand = brand.map((item) => {
           return `&brand=${item}`;
         });
+
         const stringBrand = productBrand.join("");
 
         const productModel = model.map((item) => {
           return `&model=${item}`;
         });
         const stringModel = productModel.join("");
-        console.log(stringModel);
+        // console.log(stringModel);
 
-        return `products?sort=${sort}&limit=${limit}${stringBrand}&page=${page}${
-          rating === "" ? "" : `rating=${rating}&`
-        }${stringModel}`;
+        const productRating = rating.map((item) => {
+          return `&rating=${item}`;
+        });
+        // console.log(productRating);
+        const stringRating = productRating.join("");
+
+        return `products?sort=${sort}&limit=${limit}&page=${page}${stringModel}${stringBrand}${stringRating}
+        `;
       },
+      providesTags: [{ type: "Products" }],
     }),
     addProduct: builder.mutation({
       query: (body) => {

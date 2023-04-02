@@ -9,6 +9,8 @@ exports.getProducts = asyncHandler(async (req, res) => {
   const { search, sort, brand, rating, model } = req.query;
   const products = await Products.find({});
 
+  //Check is there any query
+
   // const limit = 10;
   // const skip = 1;
   const queryObject = {};
@@ -59,10 +61,12 @@ exports.getProducts = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    totalProducts,
+    totalProductsNumberQuery: totalProducts,
     numberOfPages,
+    currentPage: page,
     limit,
-    products: test,
+    queryProducts: test,
+    totalProducts: products,
     // test: products,
   });
 });
@@ -96,7 +100,7 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
 
   const nameProduct = await Products.findOne({ name: productBrand });
 
-  if (nameProduct) {
+  if (nameProduct === productBrand) {
     res.status(400);
     throw new Error("Product already exists");
   }
@@ -106,7 +110,6 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
     rating: productRating,
     model: productModel,
     memorieInterna: productMemorieInterna,
-    description: productBrand,
     price: price,
     description: description,
   });

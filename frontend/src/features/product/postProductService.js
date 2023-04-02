@@ -1,5 +1,5 @@
 import axios from "axios";
-import { toast } from "react-toastify";
+
 import authHeader from "../auth/authHeader";
 
 const API_URL = "http://localhost:5000/api/admin/";

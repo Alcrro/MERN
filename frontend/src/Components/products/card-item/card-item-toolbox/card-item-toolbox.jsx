@@ -2,7 +2,7 @@ import React from "react";
 
 const CardItemToolbox = (props) => {
   const { brand, price } = props.toolbox;
-  // console.log(name);
+  // console.log(brand);
   return (
     <div>
       <div className="card-item-toolbox">{brand}</div>
