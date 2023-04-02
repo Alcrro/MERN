@@ -19,7 +19,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   }
 
   //Check if email exists
-  const userExist = await Register.findOne({ email });
+  const userExist = await Register.findOne({ name });
   if (userExist) {
     res.status(400);
     throw new Error("User already exists");
@@ -63,16 +63,16 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 //	@route								POST /api/auth/login
 // 	@access								Public
 exports.loginUser = asyncHandler(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { name, password } = req.body;
 
   // Validate  email and password
-  if (!email || !password) {
+  if (!name || !password) {
     res.status(400);
     throw new Error("Please provide an email and password");
   }
 
   //Check if email exists in db
-  const user = await Register.findOne({ email }).select("+password");
+  const user = await Register.findOne({ name }).select("+password");
   // const isMatch = await user.matchPassword(password);
   // if (user) {
   //   return next(new ErrorResponse("Invalid credentials", 401));

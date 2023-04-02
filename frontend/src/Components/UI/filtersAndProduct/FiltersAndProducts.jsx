@@ -14,10 +14,12 @@ const ProductsV2 = (props) => {
       </div>
       <div className="card-body">
         <div className="card-title">
-          <h3>{props.products.description}</h3>
+          <h3>
+            {props.products.description} ({props.products.memorieInterna})
+          </h3>
         </div>
         <div className="card-rating">
-          <span>{props.products.rating}</span>
+          <span>Rating:{props.products.rating}</span>
         </div>
         <div className="card-price">
           <span>{props.products.price}</span>

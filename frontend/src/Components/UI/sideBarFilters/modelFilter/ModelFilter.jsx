@@ -34,7 +34,7 @@ const ModelFilter = ({
 
   return (
     <div>
-      <h1>ModelFilter</h1>
+      <h4>ModelFilter</h4>
       <div className="form">
         <form>
           <div>

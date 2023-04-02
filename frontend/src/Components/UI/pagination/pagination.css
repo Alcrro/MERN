@@ -1,0 +1,30 @@
+.pagination-container {
+  display: block;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.pagination-buttons {
+  display: block;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: fit-content;
+  padding: 0 10px;
+}
+
+.pagination-buttons button {
+  display: inline-block;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
+  margin: 0 5px;
+  outline: none;
+  padding: 0 10px;
+  width: fit-content;
+}

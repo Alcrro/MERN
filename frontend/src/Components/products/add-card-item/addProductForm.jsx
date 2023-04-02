@@ -6,8 +6,12 @@ import "./addProductForm.css";
 import { useAddProductMutation } from "../../../features/product/rtkProducts";
 
 const AddProductForm = () => {
-  const [productName, setProductName] = useState("");
+  const [productBrand, setProductBrand] = useState("");
   const [price, setPrice] = useState("");
+  const [productModel, setProductModel] = useState("");
+  const [productMemorieInterna, setProductMemorieInterna] = useState("");
+  const [productRating, setProductRating] = useState("");
+
   const [description, setDescription] = useState("");
 
   const [addProduct] = useAddProductMutation();
@@ -15,9 +19,12 @@ const AddProductForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addProduct({
-      productName,
+      productBrand,
       price,
       description,
+      productModel,
+      productMemorieInterna,
+      productRating,
     });
   };
   return (
@@ -27,16 +34,16 @@ const AddProductForm = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Brand</label>
             <input
               type="text"
-              name="productName"
-              id="productName"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              name="productBrand"
+              id="productBrand"
+              value={productBrand}
+              onChange={(e) => setProductBrand(e.target.value)}
               // ref={productNameRef}
               required
-              placeholder="Add product name..."
+              placeholder="Add product brand..."
             />
           </div>
           <div className="form-group">
@@ -53,42 +60,42 @@ const AddProductForm = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="image">Image</label>
+            <label htmlFor="model">Model</label>
             <input
               type="text"
-              name="image"
-              id="image"
-              // value={image}
-              // onChange={onChange}
+              name="productModel"
+              id="model"
+              value={productModel}
+              onChange={(e) => setProductModel(e.target.value)}
               // required
-              placeholder="Add product image..."
+              placeholder="Add product model..."
             />
           </div>
           <div className="form-group">
-            <label htmlFor="brand">Brand</label>
+            <label htmlFor="productRating">Product rating</label>
             <input
               type="text"
-              name="brand"
-              id="brand"
-              // value={brand}
-              // onChange={onChange}
+              name="productRating"
+              id="productRating"
+              value={productRating}
+              onChange={(e) => setProductRating(e.target.value)}
               // required
-              placeholder="Add product brand..."
+              placeholder="Add product Rating..."
             />
           </div>
           <div className="form-group">
-            <label htmlFor="category">Category</label>
+            <label htmlFor="productMemorieInterna">Internal Storage</label>
             <input
               type="text"
-              name="category"
-              id="category"
-              // value={category}
-              // onChange={onChange}
+              name="productMemorieInterna"
+              id="productMemorieInterna"
+              value={productMemorieInterna}
+              onChange={(e) => setProductMemorieInterna(e.target.value)}
               // required
-              placeholder="Add product category..."
+              placeholder="Add product Internal Storage..."
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="countInStock">Count In Stock</label>
             <input
               type="text"
@@ -99,7 +106,7 @@ const AddProductForm = () => {
               // required
               placeholder="Add product count in stock..."
             />
-          </div>
+          </div> */}
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <textarea

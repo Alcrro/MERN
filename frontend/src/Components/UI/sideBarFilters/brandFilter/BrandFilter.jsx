@@ -7,13 +7,14 @@ import {
 
 const BrandFilter = ({
   brand,
-  brandFilterArray,
-  queryProduct,
   setBrand,
+  checked,
   setChecked,
   setPage,
   setRating,
   model,
+  limit,
+  setLimit,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState("active");
@@ -24,10 +25,7 @@ const BrandFilter = ({
   let namesArray = [];
   allProductsData?.totalProducts.map((item) => namesArray.push(item.brand));
   let uniqueNamesArray = namesArray.filter((item, index) => namesArray.indexOf(item) === index);
-  // console.log(brandFilterArray);
-  // console.log(uniqueNamesArray);
 
-  console.log(queryProduct);
   const handleOpen = () => {
     setOpen(!open);
     setActive(open ? "active" : "");

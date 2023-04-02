@@ -24,16 +24,16 @@ exports.getProducts = asyncHandler(async (req, res) => {
   let result = Products.find(queryObject);
 
   // chian sort conditions
-  if (sort === "asc") {
+  if (sort === "Price: Low to High") {
     result = result.sort("price");
   }
-  if (sort === "desc") {
+  if (sort === "Price: High to Low") {
     result = result.sort("-price");
   }
-  if (sort === "latest") {
+  if (sort === "Newest") {
     result = result.sort("-createdAt");
   }
-  if (sort === "oldest") {
+  if (sort === "Oldest") {
     result = result.sort("createdAt");
   }
 
