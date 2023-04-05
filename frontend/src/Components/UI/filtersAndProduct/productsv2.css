@@ -12,6 +12,10 @@
   padding-right: 15px;
 }
 
+.sidebar-filter-brand {
+  background-color: #fff;
+  padding: 1rem;
+}
 .sidebar-container {
   display: inline-block;
   width: 302px;
@@ -20,17 +24,15 @@
 .filters {
   padding: 0.5rem 1rem;
 }
-.brand-title {
-  background-color: #fff;
-}
-.brand-filter-body .brand-title {
+
+.brand-filter-body .brand-title-container {
   padding-top: 1rem;
 }
 
-.brand-filter-body .brand-title h4 {
+.brand-filter-body .brand-title-container h4 {
   padding: 1rem;
 }
-.brand-filter-body .brand-title form {
+.brand-filter-body .brand-title-container form {
   padding: 1rem;
   padding-top: 0;
 }

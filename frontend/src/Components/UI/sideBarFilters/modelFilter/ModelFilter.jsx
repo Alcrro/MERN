@@ -3,6 +3,7 @@ import {
   useGetAllProductsQuery,
   useGetProductsQuery,
 } from "../../../../features/product/rtkProducts";
+import "./modelfilter.css";
 
 const ModelFilter = ({
   uniqueModelsArray,
@@ -12,6 +13,14 @@ const ModelFilter = ({
   setPage,
   setChecked,
 }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [active, setActive] = React.useState("active");
+
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+    setActive(isOpen ? "active" : "");
+  };
+
   const { data: allProductsData } = useGetAllProductsQuery();
   const onOptionChangeModelNameHandler = (e) => {
     if (e.target.checked === true) {
@@ -33,9 +42,11 @@ const ModelFilter = ({
   };
 
   return (
-    <div>
-      <h4>ModelFilter</h4>
-      <div className="form">
+    <div className="model-title">
+      <a href="#" className="filter-head" onClick={handleOpen}>
+        <span>Model</span>
+      </a>
+      <div className={`model ${active}`}>
         <form>
           <div>
             {model === ""

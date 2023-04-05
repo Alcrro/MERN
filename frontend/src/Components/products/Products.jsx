@@ -87,7 +87,7 @@ const Products = () => {
         <div className="filter">
           <div className="container-brand-filter">
             <div className="brand-filter-body">
-              <div className="brand-title">
+              <div className="brand-title-container">
                 <BrandFilter
                   brand={brand}
                   setBrand={setBrand}
@@ -111,7 +111,7 @@ const Products = () => {
                   queryProduct={singleProductData?.queryProducts}
                 />
               </div>
-              <div className="brand-title">
+              <div className="model-title-container">
                 <ModelFilter
                   model={model}
                   setModel={setModel}
