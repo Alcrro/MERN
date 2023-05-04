@@ -7,7 +7,7 @@ This projects is created with(MERN):
   
  In this picture we can see 
  
-![image](https://user-images.githubusercontent.com/96865252/229974945-18f9f39c-1bf4-4e6f-a60a-a080f8f7a6d7.png)
+![image](https://user-images.githubusercontent.com/96865252/236106201-715c6541-a1eb-44e0-b939-f6b8efce5c5b.png)
 
 ![image](https://user-images.githubusercontent.com/96865252/229975014-aa09f16b-3944-425e-a48c-bb4cf890a662.png)
 
