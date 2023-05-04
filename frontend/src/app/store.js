@@ -1,15 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
-import productReducer from "../features/product/productSlice";
+import productReducer from "../features/product/fetchProducts/productSlice";
 import postProductReducer from "../features/product/postProductSlice";
 import postAddProductCategoryReducer from "../features/productCategory/postAddProductCategorySlice";
 import { productsApi } from "../features/product/rtkProducts";
+import addToCardSliceReducer from "../features/product/addToCardSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     products: productReducer,
     product: postProductReducer,
+    addToCard: addToCardSliceReducer,
     productCategory: postAddProductCategoryReducer,
     [productsApi.reducerPath]: productsApi.reducer,
   },

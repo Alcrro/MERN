@@ -20,6 +20,8 @@ export const productsApi = createApi({
           return `&brand=${item}`;
         });
 
+        console.log(productBrand);
+
         const stringBrand = productBrand.join("");
 
         const productModel = model.map((item) => {
@@ -50,9 +52,42 @@ export const productsApi = createApi({
           },
         };
       },
-      invalidatesTags: [{ type: "Products" }],
+      providesTags: [{ type: "Products" }],
+    }),
+    getSingleProduct: builder.query({
+      query: (id) => {
+        return `product/${id}`;
+      },
+      providesTags: [{ type: "Products" }],
+    }),
+    updateProduct: builder.mutation({
+      query: (body) => {
+        return {
+          url: `api/product`,
+          method: "PUT",
+          body,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+      },
+      providesTags: [{ type: "Products" }],
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => {
+        return {
+          url: `api/product/${id}`,
+          method: "DELETE",
+        };
+      },
+      providesTags: [{ type: "Products" }],
     }),
   }),
 });
 
-export const { useGetAllProductsQuery, useGetProductsQuery, useAddProductMutation } = productsApi;
+export const {
+  useGetAllProductsQuery,
+  useGetProductsQuery,
+  useAddProductMutation,
+  useGetSingleProductQuery,
+} = productsApi;

@@ -68,7 +68,7 @@ const ListingPanel = ({
       <div className="listing-panel-container">
         <div className="listing-panel-heading">
           <div className="listing-page-title">
-            <h4 className="title-phrasing"> </h4>
+            <h4 className="title-phrasing"> de facut trecerea datelor de la un url la altu </h4>
             Phone{combineFilter.length > 0 ? " - " : null}
             {brand.length > 0 ? (
               <div className="phrasing">

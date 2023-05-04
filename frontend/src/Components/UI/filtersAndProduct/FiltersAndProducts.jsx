@@ -1,7 +1,14 @@
+import { Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import SingleProducts from "../../../Components/products/singleProducts/SingleProducts";
+import AddToCartButton from "../add-to-cart-button/Add-to-cart-button";
+
 import "./productsv2.css";
 
 const ProductsV2 = (props) => {
   // console.log(props.products);
+  const data = props.products;
+
   return (
     <div className="card">
       <div className="card-image">
@@ -14,22 +21,16 @@ const ProductsV2 = (props) => {
       </div>
       <div className="card-body">
         <div className="card-title">
-          <h3>
-            {props.products.description} ({props.products.memorieInterna})
-          </h3>
+          <Link to={`/product/${data.slug}`}>{data.description}</Link>
         </div>
         <div className="card-rating">
-          <span>Rating:{props.products.rating}</span>
+          <span>Rating:{data.rating}</span>
         </div>
         <div className="card-price">
-          <span>{props.products.price}</span>
+          <span>{data.price}</span>
         </div>
       </div>
-      <div className="cart-button">
-        <button type="button" className="btn btn-sm sort-control-btn">
-          Add to Cart
-        </button>
-      </div>
+      <AddToCartButton />
     </div>
   );
 };

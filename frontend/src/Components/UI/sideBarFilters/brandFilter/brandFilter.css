@@ -2,7 +2,7 @@
   position: relative;
   padding-bottom: 0.5rem;
 }
-.sidebar-filter-brand-title::after {
+/* .sidebar-filter-brand-title::after {
   border-style: solid;
   border-width: 0.2em 0.2em 0 0;
   content: "";
@@ -16,7 +16,7 @@
   vertical-align: top;
   width: 0.45em;
   margin-left: 12rem;
-}
+} */
 
 .filter-head {
   display: block;

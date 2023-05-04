@@ -1,16 +1,15 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+
 const Register = require("../../models/auth/Register");
-const Login = require("../../models/auth/login");
 
 //	@description					register user
 //	@route								POST /api/auth/register
 // 	@access								Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password, admin } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
 
   // Validate  email and password
   if (!name || !email || !password) {
@@ -30,27 +29,14 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   //Create user
-  const register = await Register.create({
+  const user = await Register.create({
     name,
     email,
     isAdmin: admin,
     password: hashedPassword,
   });
 
-  if (register) {
-    res.status(201).json({
-      success: true,
-      _id: register._id,
-      name: register.name,
-      email: register.email,
-      isAdmin: register.isAdmin,
-      token: generateToken(register._id),
-      message: "User created successfully",
-    });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
-  }
+  sendTokenResponse(user, 200, res);
 
   // const token = register.getSignedJwtToken();
 
@@ -73,86 +59,67 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 
   //Check if email exists in db
   const user = await Register.findOne({ name }).select("+password");
-  // const isMatch = await user.matchPassword(password);
-  // if (user) {
-  //   return next(new ErrorResponse("Invalid credentials", 401));
-  // }
 
-  //Check user and password  matches
-
-  const token = user.getSignedJwtToken();
-
-  //token options
-  const options = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
-    httpOnly: true,
-    token: token,
-  };
-
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).cookie("token", options).json({
-      success: true,
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: token,
-      message: "User logged in successfully",
-    });
-  } else {
-    res.status(401);
-    throw new Error("Invalid credentials");
+  const isMatch = await user.matchPassword(password);
+  if (!user) {
+    return next(new ErrorResponse("Invalid credentials", 401));
   }
 
-  // sendTokenResponse(user, 200, res);
+  //Check user and password  matches
+  const token = user.getSignedJwtToken();
+
+  sendTokenResponse(user, 200, res);
 });
 
 //	@description					Get current logged in user
 //	@route								POST /api/auth/me
 // 	@access								Private
-exports.getMe = asyncHandler(async (req, res, next) => {
-  const user = {
-    id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-  };
-  res.status(200).json(user);
-});
-
-//Generate token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
-};
-
-const logoutUser = asyncHandler(async (req, res, next) => {
-  req.session.destroy((err) => {
+exports.logoutUser = asyncHandler(async (req, res, next) => {
+  await req.session.destroy((err) => {
     if (err) {
-      return next(new ErrorResponse("Error logging out", 500));
+      return next(err);
     }
-    res.status(200).clearCookie("token").json({
+    res.clearCookie("token");
+    res.status(200).json({
       success: true,
       data: {},
     });
   });
 });
 
-// // Get token from model, create cookie and send response
-// const sendTokenResponse = (user, statusCode, res) => {
-//   // Create token
+// Get token from model, create cookie and send response
+const sendTokenResponse = (user, statusCode, res) => {
+  // Create token
 
-//   const token = user.getSignedJwtToken();
+  const token = user.getSignedJwtToken();
 
-//   const expireSession = new Date(Date.now() + 86400000);
+  const expireSession = new Date(Date.now() + 86400000);
 
-//   const options = {
-//     expires: expireSession,
-//     httpOnly: true,
-//   };
+  const options = {
+    expires: expireSession,
+    httpOnly: true,
+  };
 
-//   res.status(statusCode).cookie("token", token, options).json({
-//     success: true,
-//     token,
-//   });
-// };
+  res.status(statusCode).cookie("token", token, options).json({
+    success: true,
+    token,
+  });
+};
+
+//	@description					Delete user
+//	@route								DELETE /api/auth/delete/:id
+// 	@access								Public
+
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+  const user = await Register.findById(req.params.id);
+  if (user) {
+    await user.remove();
+    res.status(200).json({
+      success: true,
+      message: `User removed ${user.name} successfully`,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});

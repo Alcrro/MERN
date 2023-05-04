@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Route } from "react-router-dom";
 import "./products.css";
 import { useGetAllProductsQuery, useGetProductsQuery } from "../../features/product/rtkProducts";
 import ProductsV2 from "../UI/filtersAndProduct/FiltersAndProducts";
@@ -8,6 +9,8 @@ import SideBarFilters from "../UI/sideBarFilters/ratingFilter/RatingSideBarFilte
 import BrandFilter from "../UI/sideBarFilters/brandFilter/BrandFilter";
 import ModelFilter from "../UI/sideBarFilters/modelFilter/ModelFilter";
 import Pagination from "../UI/pagination/Pagination";
+import SingleProducts from "./singleProducts/SingleProducts";
+import TestSmecher from "../UI/sideBarFilters/testFilter/TestFilter";
 
 const Products = () => {
   const [limit, setLimit] = useState(30);
@@ -120,6 +123,9 @@ const Products = () => {
                   setChecked={setChecked}
                   setPage={setPage}
                 />
+              </div>
+              <div className="test-title-container">
+                <TestSmecher />
               </div>
             </div>
           </div>

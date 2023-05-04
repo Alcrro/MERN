@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const notFoundMiddleware = require("../backend/middleware/middlewareRoutes/not-found");
 const cors = require("cors");
 const errorHandler = require("./middleware/error/error");
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./configs/mongoDB");
 
@@ -17,7 +18,7 @@ const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express.json());
-// server.use(cookieParser());
+server.use(cookieParser());
 server.use(cors());
 
 //middleware

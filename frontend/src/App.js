@@ -5,13 +5,15 @@ import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
 import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
-import Header from "./Components/header/Header";
+import Header from "./Layouts/header/Header";
 import ProductsList from "./Components/products/Products";
 import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
 import PrivateRoutes from "./Utils/PrivateRoutes";
-import SingleProduct from "./Components/products/singleProduct/SingleProductUI";
-import FiltersAndProducts from "./Components/UI/filtersAndProduct/FiltersAndProducts";
+import SingleProducts from "./Components/products/singleProducts/SingleProducts";
+import ProductsV2 from "./Components/UI/filtersAndProduct/FiltersAndProducts";
+import NoMatch from "./Pages/NoMatch/NoMatch";
+import AddToCart from "./Components/products/add-to-Cart/Add-to-Cart";
 
 const App = () => {
   return (
@@ -19,18 +21,25 @@ const App = () => {
       <Header />
       {/* <UserAuthProvider> */}
       <Routes>
-        <Route exact path="/user/auth/login" element={<Login />}></Route>
-        <Route exact path="/user/auth/register" element={<Register />}></Route>
-        <Route exact path="/products" element={<ProductsList />}></Route>
-        <Route exact path="/product/:slug" element={<SingleProduct />}></Route>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/user/auth" element={<Login />}>
+          <Route exact path="login" element={<Login />} />
+          <Route exact path="register" element={<Register />} />
+        </Route>
+        <Route exact path="products" element={<ProductsList />} />
+        <Route exact path="product">
+          <Route path=":id" element={<SingleProducts />} />
+        </Route>
+        <Route path="/cart/products" element={<AddToCart />} />
 
-        <Route exact path="admin/adauga-categorii" element={<AddCategory />}></Route>
         <Route element={<PrivateRoutes />}>
-          <Route exact path="/add/product" element={<AddProductForm />}></Route>
+          <Route exact path="/add/product" element={<AddProductForm />} />
+          <Route exact path="admin/adauga-categorii" element={<AddCategory />} />
         </Route>
 
-        <Route exact path="/about" element={<About />}></Route>
-        <Route exact path="/" element={<Home />}></Route>
+        <Route exact path="/about" element={<About />} />
+        <Route path="*" element={<NoMatch />} />
+        <Route path="/product/*" element={<NoMatch />} />
       </Routes>
       {/* </UserAuthProvider> */}
     </Router>

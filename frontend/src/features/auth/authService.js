@@ -1,5 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 const API_URL = "/api/auth/";
 
@@ -7,9 +9,6 @@ const API_URL = "/api/auth/";
 const register = async (userData) => {
   const response = await axios.post(API_URL + "register", userData);
 
-  if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
   return response.data;
 };
 
@@ -21,31 +20,25 @@ const login = async (userData) => {
     },
   });
 
-  console.log(response.data);
-
-  if (response.data) {
-    localStorage.setItem("token", JSON.stringify(response.data.token));
-
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
+  let token = response.data.token;
+  let decoded = jwt_decode(token);
+  // console.log(decoded);
 
   return response.data;
 };
 
 // Logout user
-const logout = () => {
-  if (localStorage.getItem("user")) {
-    toast.success("You have been logged out");
-    localStorage.removeItem("user");
-
-    localStorage.removeItem("token");
-  } else {
-    toast.error("You are not logged in");
-  }
+const logout = async (userData) => {
+  const response = axios.post(API_URL + "logout", userData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("token"));
 };
 
 const authService = {

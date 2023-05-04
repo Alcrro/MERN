@@ -4,6 +4,13 @@ const bcrypt = require("bcryptjs");
 2;
 
 const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please add a name"],
+    trim: true,
+    maxlength: [50, "Name can not be more than 50 characters"],
+    unique: false,
+  },
   email: {
     type: String,
     unique: true,
@@ -18,12 +25,6 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  products: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Products",
-    },
-  ],
 });
 
 //Create bootcamp slug from the name

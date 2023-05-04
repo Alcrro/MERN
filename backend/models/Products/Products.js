@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 const ProductsSchema = new mongoose.Schema({
-  id: {
-    type: Object(),
-    default: mongoose.Types.ObjectId(),
-  },
   brand: {
     type: String,
     required: [true, "Please add a name"],
@@ -42,6 +38,12 @@ const ProductsSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Register",
+    required: true,
+  },
+
   // availability: {
   //   type: String,
   //   enum: ["In Stoc", "Promotii", "Nou", "Resigilate", "Precomanda"],

@@ -1,40 +1,60 @@
 import React, { useState } from "react";
+import "./Home.css";
 import { useGetAllProductsQuery, useGetProductsQuery } from "../../features/product/rtkProducts";
-import HomeChild from "./HomeChild";
-import RatingFilter from "./RatingFilter";
 
 const Home = () => {
-  const [limit, setLimit] = useState();
-  const [rating, setRating] = useState([]);
+  // create an object
+  const rateObject = [
+    {
+      id: 1,
+      style: 20,
+    },
+    {
+      id: 2,
+      style: 40,
+    },
+    {
+      id: 3,
+      style: 60,
+    },
+    {
+      id: 4,
+      style: 80,
+    },
+    {
+      id: 5,
+      style: 100,
+    },
+  ];
 
-  const { data: allProductsData } = useGetAllProductsQuery();
-  const { data: getProductQuery } = useGetProductsQuery({
-    limit: limit,
-    page: 1,
-    sort: "latest",
-    brand: [],
-    rating: rating,
-    model: [],
-  });
-  // console.log(getProductQuery);
-
-  const products = allProductsData;
-  const allProducts = allProductsData?.queryProducts?.map((item) => {
-    return item;
-  });
-
-  // console.log(allProductsData?.totalProducts);
+  const { data: products } = useGetAllProductsQuery();
+  console.log(products?.totalProducts);
 
   return (
-    <div>
-      <h1>Home</h1>
-      <div>
-        <HomeChild products={getProductQuery} setRating={setRating} />
-        <div className="filters-container">
-          <RatingFilter rating={rating} setRating={setRating} />
-        </div>
+    <div className="star-rating-containerV2">
+      <h2>First Before</h2>
+      <div className="star-rating-body">
+        {rateObject
+          .sort((a, b) => b.id - a.id)
+          .map((rate) => {
+            return (
+              <a href="#" key={rate.id} className={`star-rating-link rate-${rate.id}`}>
+                <input type="checkbox" className="star-rating-checkbox" />
+                <div className="first-star-rating star-rating-read">
+                  <div className="star-rating-inner" style={{ width: `${rate.style}%` }}></div>
+                </div>
+                <div className="star-rating-text">
+                  {/* length items */}
+                  <span>
+                    ({products?.totalProducts.filter((item) => item.rating >= rate.id).length})
+                  </span>
+                </div>
+              </a>
+            );
+          })}
       </div>
     </div>
   );
 };
+
 export default Home;

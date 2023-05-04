@@ -1,0 +1,71 @@
+.test-title-container {
+  background-color: #fff;
+  margin: 10px 0;
+}
+.test-title-container .filter-head {
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 10px 10px;
+  padding-right: 40px;
+  font-size: 14px;
+}
+
+.filter-head span {
+  position: relative;
+}
+.filter-head span::after {
+  content: "";
+  position: absolute;
+  left: 240px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #000;
+}
+
+.filter-item {
+  display: block;
+}
+
+.filter-body {
+  padding: 0 10px;
+}
+
+.filter-inner {
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.filter-inner label {
+  padding-left: 10px;
+}
+
+.scrollable {
+  max-height: 227px;
+  overflow-y: auto;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 35px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.star-brand-text {
+  padding: 0 5px;
+}

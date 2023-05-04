@@ -16,22 +16,6 @@
   text-decoration: none;
 }
 
-.sidebar-filter-rating-title::after {
-  border-style: solid;
-  border-width: 0.2em 0.2em 0 0;
-  content: "";
-  display: inline-block;
-  height: 0.45em;
-  left: 2.5em;
-  position: absolute;
-  text-align: end;
-  top: 0;
-  transform: rotate(135deg);
-  vertical-align: top;
-  width: 0.45em;
-  margin-left: 12rem;
-}
-
 .sidebar-filter-rating {
   display: block;
   padding: 1rem;
@@ -59,29 +43,6 @@
 .star-rating {
   display: inline-block;
   margin-left: 5px;
-}
-
-.star-rating::before {
-  display: inline-block;
-  font-weight: 900;
-  font-size: large;
-  content: " \2605\2605\2605\2605\2605";
-  width: fit-content;
-  color: #f9bf3b;
-}
-
-.star-rating-inner {
-  width: 80%;
-}
-.star-rating .star-rating-inner {
-  white-space: nowrap;
-  position: absolute;
-  line-height: inherit;
-  height: inherit;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  overflow: hidden;
 }
 
 .star-rating-text {

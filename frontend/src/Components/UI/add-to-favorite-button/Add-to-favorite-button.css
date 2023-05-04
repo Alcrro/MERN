@@ -1,0 +1,35 @@
+.add-to-favorite-container {
+  display: block;
+  width: 15%;
+  padding-right: 0.5rem;
+}
+.add-to-favorite {
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  padding: 0.5rem 0;
+  border-radius: 5px;
+  border: 1px solid #003f7b;
+  background-color: #003f7b;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .add-to-favorite-container {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+  .add-to-favorite {
+    display: block;
+    width: 100%;
+    font-size: 18px;
+    padding: 0.5rem 0;
+    border-radius: 5px;
+    border: 1px solid #003f7b;
+    background-color: #003f7b;
+    color: #fff;
+    cursor: pointer;
+  }
+}

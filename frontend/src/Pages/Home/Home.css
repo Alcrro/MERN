@@ -1,0 +1,51 @@
+.star-rating-body a {
+  display: block;
+  text-decoration: none !important;
+}
+
+.star-rating-checkbox {
+  margin-right: 7px;
+}
+
+.first-star-rating {
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  color: #ccc;
+}
+
+.first-star-rating::before {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  font-size: large;
+  content: "\2605\2605\2605\2605\2605";
+  width: fit-content;
+  color: #ccc;
+}
+
+.star-rating-inner::before {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  font-size: large;
+  content: "\2605\2605\2605\2605\2605";
+  width: fit-content;
+  color: #f9bf3b;
+}
+
+.first-star-rating .star-rating-inner {
+  white-space: nowrap;
+  position: absolute;
+  line-height: inherit;
+  height: inherit;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.star-rating-body span {
+  text-decoration: none;
+  color: #222;
+}

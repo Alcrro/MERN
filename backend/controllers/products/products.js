@@ -1,6 +1,7 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const Products = require("../../models/products/Products");
+const Register = require("../../models/auth/Register");
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -77,6 +78,10 @@ exports.getProducts = asyncHandler(async (req, res) => {
 exports.getProduct = asyncHandler(async (req, res, next) => {
   const product = await Products.findById(req.params.id);
 
+  if (!product) {
+    return next(new ErrorResponse(`Product not found with id of ${req.params.id}`, 404));
+  }
+
   res.status(200).json({
     success: true,
     product: product,
@@ -98,13 +103,6 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
   } = req.body;
   console.log(req.body);
 
-  const nameProduct = await Products.findOne({ name: productBrand });
-
-  if (nameProduct === productBrand) {
-    res.status(400);
-    throw new Error("Product already exists");
-  }
-
   const product = await Products.create({
     brand: productBrand,
     rating: productRating,
@@ -118,5 +116,30 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
     success: true,
     product: product,
     message: "Product created successfully",
+  });
+});
+
+// @desc 	Add a product to cart
+// @route 	POST /api/add-to-cart
+// @access 	Public
+
+exports.addToCart = asyncHandler(async (req, res, next) => {
+  req.body.user = req.user.id;
+
+  const product = await Products.findById(req.user.id);
+  console.log(product);
+
+  // const products = await Products.find();
+  // products.map((product) => {
+  //   if (product._id == req.body.id) {
+  //     product.cart = true;
+  //     product.save();
+  //   }
+  // });
+
+  res.status(201).json({
+    success: true,
+    products,
+    message: "Product added to cart successfully",
   });
 });

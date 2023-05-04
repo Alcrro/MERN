@@ -55,16 +55,15 @@ RegisterSchema.pre("save", function (next) {
 //   this.password = await bcrypt.hash(this.password, salt);
 // });
 
-// //Match  user entered password to hashed password in database
-// RegisterSchema.methods.matchPassword = async function (enteredPassword) {
-//   return await bcrypt.compare(enteredPassword, this.password);
-// };
-
 //Sign JWT and return
 RegisterSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id, name: this.name, email: this.email }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
+};
+//Match  user entered password to hashed password in database
+RegisterSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 const Register = mongoose.model("Register", RegisterSchema);

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { login } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import "./auth.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    name: "",
     password: "",
   });
 
-  const { email, password } = formData;
+  const { name, password } = formData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Login = () => {
     e.preventDefault();
 
     const userData = {
-      email,
+      name,
       password,
     };
     dispatch(login(userData));
@@ -52,15 +52,15 @@ const Login = () => {
         <h1>Login</h1>
         <form onSubmit={onSubmit}>
           <div className="form-group">
-            <label> Introdu email: </label>
+            <label> Introdu name: </label>
             <input
-              type="email"
-              id="email"
-              name="email"
+              type="name"
+              id="name"
+              name="name"
               onChange={onChange}
-              value={email}
+              value={name}
               required
-              placeholder="Enter your email"
+              placeholder="Enter your name"
             />
           </div>
           <div className="form-group">

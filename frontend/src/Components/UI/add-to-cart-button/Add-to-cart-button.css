@@ -1,0 +1,15 @@
+.add-to-cart-container {
+  display: block;
+  width: 100%;
+}
+.add-to-cart {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #003f7b;
+  background-color: #003f7b;
+  color: #fff;
+  cursor: pointer;
+}
