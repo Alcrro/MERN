@@ -4,6 +4,7 @@ import SingleProducts from "../../../Components/products/singleProducts/SinglePr
 import AddToCartButton from "../add-to-cart-button/Add-to-cart-button";
 
 import "./productsv2.css";
+import SingleCardRating from "../singleCardRating/SingleCardRating";
 
 const ProductsV2 = (props) => {
   // console.log(props.products);
@@ -21,13 +22,15 @@ const ProductsV2 = (props) => {
       </div>
       <div className="card-body">
         <div className="card-title">
-          <Link to={`/product/${data.slug}`}>{data.description}</Link>
+          <Link to={`/product/${data._id}`} className="card-link">
+            {data.description}
+          </Link>
         </div>
-        <div className="card-rating">
-          <span>Rating:{data.rating}</span>
+        <div className="single-card-rating-container">
+          <SingleCardRating data={data} />
         </div>
         <div className="card-price">
-          <span>{data.price}</span>
+          <span>Rating:{data.price}</span>
         </div>
       </div>
       <AddToCartButton />

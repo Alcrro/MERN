@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("active");
+  console.log(queryProduct);
 
   const { data: allProductsData } = useGetAllProductsQuery();
 
@@ -58,7 +59,6 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
       setRating(array);
     }
   };
-  // console.log(brand);
 
   return (
     <div className="sidebar-filter-rating">
@@ -73,11 +73,7 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
             {rateObject
               .sort((a, b) => b.id - a.id)
               .map((rate, key) => (
-                <a
-                  href={`/products/rating=${rate.id}`}
-                  key={rate.id}
-                  className={`star-rating-link rate-${rate.id}`}
-                >
+                <a href="#" key={rate.id} className={`star-rating-link rate-${rate.id}`}>
                   <input
                     type="checkbox"
                     className="star-rating-checkbox"
@@ -90,30 +86,14 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
                   </div>
                   <span>
                     (
-                    {allProductsData?.totalProducts.filter((item) => item.rating >= rate.id).length}
+                    {
+                      allProductsData?.totalProducts.filter(
+                        (item) => Number(item.rating) === rate.id
+                      ).length
+                    }
                     )
                   </span>
                 </a>
-                // <div className={`rated-${item}`} key={key}>
-                //   <input
-                //     type="checkbox"
-                //     className="stars"
-                //     name="stars"
-                //     id={item}
-                //     value={item}
-                //     onChange={checkInput}
-                //   />
-                //   <label htmlFor={item}>
-                //     <div className="star-rating-container">
-                //       <div className={`star-rating star-rating-read rated-${item}`}>
-                //         <div className="star-rating-inner" style={{ width: item + "%" }}></div>
-                //       </div>
-                //     </div>
-                //   </label>
-                //   <div className="star-rating-text">
-                //
-                //   </div>
-                // </div>
               ))}
           </form>
         </div>

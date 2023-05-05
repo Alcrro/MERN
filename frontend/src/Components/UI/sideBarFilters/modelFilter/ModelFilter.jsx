@@ -69,11 +69,9 @@ const ModelFilter = ({
                         <span>
                           (
                           {
-                            allProductsData?.totalProducts
-                              ?.map((item) => {
-                                return item;
-                              })
-                              .filter((filter) => filter.model === item).length
+                            allProductsData?.totalProducts?.filter(
+                              (filter) => filter.model === item
+                            ).length
                           }
                           )
                         </span>

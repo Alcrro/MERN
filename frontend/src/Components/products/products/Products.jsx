@@ -1,16 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { Route } from "react-router-dom";
-import "./products.css";
-import { useGetAllProductsQuery, useGetProductsQuery } from "../../features/product/rtkProducts";
-import ProductsV2 from "../UI/filtersAndProduct/FiltersAndProducts";
-import ListingPanel from "../UI/filtersAndProduct/ListingPanel";
-import SideBarFilters from "../UI/sideBarFilters/ratingFilter/RatingSideBarFilter";
-import BrandFilter from "../UI/sideBarFilters/brandFilter/BrandFilter";
-import ModelFilter from "../UI/sideBarFilters/modelFilter/ModelFilter";
-import Pagination from "../UI/pagination/Pagination";
-import SingleProducts from "./singleProducts/SingleProducts";
-import TestSmecher from "../UI/sideBarFilters/testFilter/TestFilter";
+import "../../products/products.css";
+import { useGetAllProductsQuery, useGetProductsQuery } from "../../../features/product/rtkProducts";
+import ProductsV2 from "../../UI/filtersAndProduct/FiltersAndProducts";
+import ListingPanel from "../../UI/filtersAndProduct/ListingPanel";
+import SideBarFilters from "../../UI/sideBarFilters/ratingFilter/RatingSideBarFilter";
+import BrandFilter from "../../UI/sideBarFilters/brandFilter/BrandFilter";
+import ModelFilter from "../../UI/sideBarFilters/modelFilter/ModelFilter";
+import Pagination from "../../UI/pagination/Pagination";
+import TestSmecher from "../../UI/sideBarFilters/testFilter/TestFilter";
+import Cards from "../cards/Cards";
 
 const Products = () => {
   const [limit, setLimit] = useState(30);
@@ -39,7 +38,7 @@ const Products = () => {
   const displayAllProducts = allProductsData?.totalProducts.map((item) => item);
 
   // display all products with models filter
-  const namesFilterArray = [];
+
   const displayAllProductsBrandFilter = displayAllProducts?.filter((item) => {
     return brand.length === 0 ? item : brand.includes(item.brand);
   });
@@ -52,7 +51,7 @@ const Products = () => {
   });
 
   let brandFilterArray = [];
-  const displayAllProductsBrandFilter2 = displayAllProductsModelFilter?.filter((item) => {
+  displayAllProductsModelFilter?.filter((item) => {
     brandFilterArray.indexOf(item.brand) === -1 && brandFilterArray.push(item.brand);
   });
 
@@ -147,11 +146,17 @@ const Products = () => {
             />
             <div className="page-container">
               <h1>Products Nr: {singleProductData?.queryProducts.length}</h1>
-              <div className="products-container">
-                <div className="cards-container">
-                  {singleProductData?.queryProducts.map((item, index) => (
-                    <ProductsV2 products={item} key={index} />
-                  ))}
+              <div className="products-container-v2">
+                {/* <div className="cards-container"> */}
+                <div className="cards-container-outer">
+                  <div className="card-collection">
+                    {singleProductData?.queryProducts.map((item, index) => (
+                      <>
+                        {/* <ProductsV2 products={item} key={index} /> */}
+                        <Cards products={item} />
+                      </>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

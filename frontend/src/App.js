@@ -6,14 +6,14 @@ import About from "./Pages/About/About";
 import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Header from "./Layouts/header/Header";
-import ProductsList from "./Components/products/Products";
+import ProductsList from "./Components/products/products/Products";
 import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
 import PrivateRoutes from "./Utils/PrivateRoutes";
 import SingleProducts from "./Components/products/singleProducts/SingleProducts";
-import ProductsV2 from "./Components/UI/filtersAndProduct/FiltersAndProducts";
 import NoMatch from "./Pages/NoMatch/NoMatch";
 import AddToCart from "./Components/products/add-to-Cart/Add-to-Cart";
+import Cards from "./Components/products/cards/Cards";
 
 const App = () => {
   return (
@@ -27,6 +27,7 @@ const App = () => {
           <Route exact path="register" element={<Register />} />
         </Route>
         <Route exact path="products" element={<ProductsList />} />
+        <Route exact path="cards" element={<Cards />} />
         <Route exact path="product">
           <Route path=":id" element={<SingleProducts />} />
         </Route>

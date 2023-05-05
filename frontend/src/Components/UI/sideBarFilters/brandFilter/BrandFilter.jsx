@@ -15,11 +15,14 @@ const BrandFilter = ({
   model,
   limit,
   setLimit,
+  queryProducts,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState("active");
 
   const { data: allProductsData } = useGetAllProductsQuery();
+
+  console.log(queryProducts);
 
   // create an array of brands names
   let namesArray = [];
@@ -60,59 +63,29 @@ const BrandFilter = ({
       <div className={`sidebar-filter-rating-body ${active}`}>
         <div className="sidebar-filter-rating-stars">
           <form>
-            {model === ""
-              ? uniqueNamesArray?.map((item, key) => (
-                  <div key={key}>
-                    <input
-                      type="checkbox"
-                      className={brand === item ? "checked" : "unchecked"}
-                      name="brands"
-                      id={item}
-                      value={item}
-                      onChange={checkHandler}
-                    />
-                    <label htmlFor={item}> {item}</label>
-                    <div className="star-brand-text">
-                      <span>
-                        (
-                        {
-                          allProductsData?.totalProducts
-                            ?.map((item) => {
-                              return item;
-                            })
-                            .filter((filter) => filter.brand === item).length
-                        }
-                        )
-                      </span>
-                    </div>
-                  </div>
-                ))
-              : uniqueNamesArray?.map((item, key) => (
-                  <div key={key}>
-                    <input
-                      type="checkbox"
-                      className={brand === item ? "checked" : "unchecked"}
-                      name="brands"
-                      id={item}
-                      value={item}
-                      onChange={checkHandler}
-                    />
-                    <label htmlFor={item}> {item}</label>
-                    <div className="star-brand-text">
-                      <span>
-                        (
-                        {
-                          allProductsData?.totalProducts
-                            ?.map((item) => {
-                              return item;
-                            })
-                            .filter((filter) => filter.brand === item).length
-                        }
-                        )
-                      </span>
-                    </div>
-                  </div>
-                ))}
+            {uniqueNamesArray?.map((item, key) => (
+              <div key={key}>
+                <input
+                  type="checkbox"
+                  className={brand === item ? "checked" : "unchecked"}
+                  name="brands"
+                  id={item}
+                  value={item}
+                  onChange={checkHandler}
+                />
+                <label htmlFor={item}> {item}</label>
+                <div className="star-brand-text">
+                  <span>
+                    (
+                    {
+                      allProductsData?.totalProducts?.filter((filter) => filter.brand === item)
+                        .length
+                    }
+                    )
+                  </span>
+                </div>
+              </div>
+            ))}
           </form>
         </div>
       </div>
