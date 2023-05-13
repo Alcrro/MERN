@@ -10,9 +10,12 @@ This projects is created with(MERN):
  - Responsive Web Design : 
  
 https://www.youtube.com/watch?v=Wynv0A_9cmM
- 
+
+
+- products page
 ![image](https://github.com/Alcrro/MERN/assets/96865252/67c30366-cee3-42e2-b7fd-ea8baf447773)
 
+- single product
 ![image](https://github.com/Alcrro/MERN/assets/96865252/1db81f69-54ff-456c-b1e7-1de215e07802)
 
 
