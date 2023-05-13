@@ -7,6 +7,11 @@ This projects is created with(MERN):
   
  In this picture we can see 
  
+ - Responsive Web Design : 
+ 
+ https://youtu.be/Wynv0A_9cmM
+ 
+ 
 ![image](https://github.com/Alcrro/MERN/assets/96865252/67c30366-cee3-42e2-b7fd-ea8baf447773)
 
 ![image](https://github.com/Alcrro/MERN/assets/96865252/1db81f69-54ff-456c-b1e7-1de215e07802)
