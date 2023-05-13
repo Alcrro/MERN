@@ -28,5 +28,5 @@ https://www.youtube.com/watch?v=Wynv0A_9cmM
 -multiple brands filter and single model filter
 ![image](https://user-images.githubusercontent.com/96865252/229975123-1f9affd9-5ac9-4d1b-92dd-d62231923787.png)
 
-- sort by
+- sort by Price: Low to High and limit 60
 ![image](https://user-images.githubusercontent.com/96865252/229975263-ac2c5ba7-627c-400a-8bcc-a8185de4fb22.png)
