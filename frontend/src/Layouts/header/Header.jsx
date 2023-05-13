@@ -12,6 +12,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.addToCart.cart);
 
   const onLogout = () => {
     dispatch(logout());

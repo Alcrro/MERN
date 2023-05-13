@@ -5,7 +5,7 @@ import {
   useGetProductsQuery,
 } from "../../../../features/product/rtkProducts";
 
-const TestFilter = () => {
+const TestFilterV3 = () => {
   // console.log(props.products);
   const { data: allProductsData } = useGetAllProductsQuery();
   // console.log(allProductsData);
@@ -53,4 +53,4 @@ const TestFilter = () => {
   );
 };
 
-export default TestFilter;
+export default TestFilterV3;

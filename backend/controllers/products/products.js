@@ -37,6 +37,12 @@ exports.getProducts = asyncHandler(async (req, res) => {
   if (sort === "Oldest") {
     result = result.sort("createdAt");
   }
+  if (sort === "Rating: Low to High") {
+    result = result.sort("rating");
+  }
+  if (sort === "Rating: High to Low") {
+    result = result.sort("-rating");
+  }
 
   if (brand) {
     result = result.find({ brand: brand });

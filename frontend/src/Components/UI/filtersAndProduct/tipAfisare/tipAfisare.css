@@ -1,0 +1,42 @@
+.control-group div:last-child {
+  margin-left: auto;
+}
+
+.tip-afisare-container {
+  display: flex;
+  align-items: center;
+}
+
+.tip-afisare-container .tip-afisare-body {
+  display: flex;
+}
+
+.tip-afisare-head {
+  font-weight: 400;
+  font-size: 14px;
+  padding-right: 0.5rem;
+}
+
+.tip-afisare-body i {
+  font-size: 12px;
+}
+.tip-afisare-body i {
+  font-size: 14px;
+}
+
+.tip-afisare-body button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  padding: 10px 12px;
+}
+
+.cards-view-list {
+  border: 1px solid #ccc;
+  border-right: transparent;
+}
+
+.cards-view-grid {
+  border: 1px solid #ccc;
+  background-color: #e0e0e0;
+}

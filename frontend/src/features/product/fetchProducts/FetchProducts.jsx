@@ -7,8 +7,6 @@ const FetchProducts = () => {
   const [brand, setBrand] = useState([]);
   const products = useSelector((state) => state.products.products);
 
-  console.log(brand);
-
   let arrayBrands = products?.totalProducts?.map((item) => item.brand);
 
   const uniqueBrands = Array.from(new Set(arrayBrands));

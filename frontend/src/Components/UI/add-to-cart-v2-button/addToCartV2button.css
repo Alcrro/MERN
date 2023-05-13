@@ -1,0 +1,17 @@
+.add-to-cart-v2-button-inner {
+  width: 100%;
+}
+
+.add-to-cart-v2-button-inner .btn {
+  width: 100%;
+  background: #3985e0;
+  background: -webkit-linear-gradient(left, #4a60c1 10%, #3985e0);
+  background: linear-gradient(to right, #4a60c1 10%, #3985e0);
+  border-width: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 5px;
+  color: #fff;
+  line-height: 20px;
+  cursor: pointer;
+}

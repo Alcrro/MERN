@@ -14,6 +14,7 @@ import SingleProducts from "./Components/products/singleProducts/SingleProducts"
 import NoMatch from "./Pages/NoMatch/NoMatch";
 import AddToCart from "./Components/products/add-to-Cart/Add-to-Cart";
 import Cards from "./Components/products/cards/Cards";
+import "./Components/UI/html-Scrollbar/HtmlScrollbar.css";
 
 const App = () => {
   return (

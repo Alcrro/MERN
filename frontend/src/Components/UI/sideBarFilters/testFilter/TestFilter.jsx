@@ -6,7 +6,7 @@ import {
 } from "../../../../features/product/rtkProducts";
 
 const TestFilter = (props) => {
-  console.log(props.products);
+  // console.log(props.products);
   const { data: allProductsData } = useGetAllProductsQuery();
   // console.log(allProductsData);
 

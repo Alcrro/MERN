@@ -44,9 +44,18 @@
   z-index: 1;
   overflow: hidden;
 }
-
+.first-star-rating span {
+  color: #222;
+  padding: 0 5px;
+  font-size: 14px;
+}
 .star-rating-body span {
   text-decoration: none;
   color: #6b6969;
   font-size: 12px;
+}
+.card-v2-rating span {
+  text-decoration: none;
+  color: #6b6969;
+  font-size: 14px;
 }

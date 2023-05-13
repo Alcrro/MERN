@@ -22,7 +22,7 @@ const BrandFilter = ({
 
   const { data: allProductsData } = useGetAllProductsQuery();
 
-  console.log(queryProducts);
+  // console.log(queryProducts);
 
   // create an array of brands names
   let namesArray = [];

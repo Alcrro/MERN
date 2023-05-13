@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("active");
-  console.log(queryProduct);
+
+  // console.log(queryProduct);
 
   const { data: allProductsData } = useGetAllProductsQuery();
 
@@ -59,10 +60,14 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
       setRating(array);
     }
   };
+  const merge = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+  };
 
   return (
     <div className="sidebar-filter-rating">
-      <div className={`sidebar-filter-rating-title ${active}`}>
+      <div className={`sidebar-filter-rating-title`}>
         <a href="#" className="filter-head" onClick={handleOpen}>
           <span>Rating</span>
         </a>
@@ -73,7 +78,7 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
             {rateObject
               .sort((a, b) => b.id - a.id)
               .map((rate, key) => (
-                <a href="#" key={rate.id} className={`star-rating-link rate-${rate.id}`}>
+                <div key={rate.id} className={`star-rating-link rate-${rate.id}`} onClick={merge}>
                   <input
                     type="checkbox"
                     className="star-rating-checkbox"
@@ -81,7 +86,7 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
                     value={rate.id}
                     onChange={checkInput}
                   />
-                  <div className="first-star-rating star-rating-read" htmlFor={rate.id}>
+                  <div className="first-star-rating star-rating-read">
                     <div className="star-rating-inner" style={{ width: `${rate.style}%` }}></div>
                   </div>
                   <span>
@@ -93,7 +98,7 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
                     }
                     )
                   </span>
-                </a>
+                </div>
               ))}
           </form>
         </div>

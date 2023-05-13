@@ -10,6 +10,11 @@ import ModelFilter from "../../UI/sideBarFilters/modelFilter/ModelFilter";
 import Pagination from "../../UI/pagination/Pagination";
 import TestSmecher from "../../UI/sideBarFilters/testFilter/TestFilter";
 import Cards from "../cards/Cards";
+import TestFilter from "../../UI/sideBarFilters/testFilter/TestFilterV2";
+import TestFilterV3 from "../../UI/sideBarFilters/testFilter/TestFilterV3";
+import Home from "../../../Pages/Home/Home";
+import { NavLink, Navigate, useLocation } from "react-router-dom";
+import AllCategories from "../../UI/category/allCategories/AllCategories";
 
 const Products = () => {
   const [limit, setLimit] = useState(30);
@@ -87,23 +92,24 @@ const Products = () => {
     <>
       <div className="container-products-outer">
         <div className="filter">
+          <div className="filters-v2-container">
+            <AllCategories
+              data={singleProductData}
+              model={model}
+              setModel={setModel}
+              brand={brand}
+              setBrand={setBrand}
+              setPage={setPage}
+              setLimit={setLimit}
+              checked={checked}
+              setChecked={setChecked}
+              setSort={setSort}
+              rating={rating}
+              setRating={setRating}
+            />
+          </div>
           <div className="container-brand-filter">
             <div className="brand-filter-body">
-              <div className="brand-title-container">
-                <BrandFilter
-                  brand={brand}
-                  setBrand={setBrand}
-                  queryProduct={singleProductData?.queryProducts}
-                  brandFilterArray={brandFilterArray}
-                  checked={checked}
-                  setChecked={setChecked}
-                  setPage={setPage}
-                  setRating={setRating}
-                  model={model}
-                  limit={limit}
-                  setLimit={setLimit}
-                />
-              </div>
               <div className="sidebar-filter-rating-container">
                 <SideBarFilters
                   rating={rating}
@@ -112,19 +118,6 @@ const Products = () => {
                   brand={brand}
                   queryProduct={singleProductData?.queryProducts}
                 />
-              </div>
-              <div className="model-title-container">
-                <ModelFilter
-                  model={model}
-                  setModel={setModel}
-                  uniqueModelsArray={uniqueModelsArray}
-                  modelsFilterArray={modelsFilterArray}
-                  setChecked={setChecked}
-                  setPage={setPage}
-                />
-              </div>
-              <div className="test-title-container">
-                <TestSmecher />
               </div>
             </div>
           </div>
@@ -143,18 +136,15 @@ const Products = () => {
               setChecked={setChecked}
               sort={sort}
               setSort={setSort}
+              displayAllProducts={displayAllProducts}
             />
             <div className="page-container">
-              <h1>Products Nr: {singleProductData?.queryProducts.length}</h1>
               <div className="products-container-v2">
                 {/* <div className="cards-container"> */}
                 <div className="cards-container-outer">
                   <div className="card-collection">
                     {singleProductData?.queryProducts.map((item, index) => (
-                      <>
-                        {/* <ProductsV2 products={item} key={index} /> */}
-                        <Cards products={item} />
-                      </>
+                      <Cards products={item} key={index} />
                     ))}
                   </div>
                 </div>

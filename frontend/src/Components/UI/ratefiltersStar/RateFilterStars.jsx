@@ -14,7 +14,7 @@ const RateFilterStars = () => {
   allProductsData?.totalProducts.map((item) => rateArray.push(item.rating));
   let uniqueRatesArray = rateArray.filter((item, index) => rateArray.indexOf(item) === index);
 
-  console.log(uniqueRatesArray);
+  // console.log(uniqueRatesArray);
 
   // show stars based on rating
   function showStars(rating) {

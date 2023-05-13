@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./limit.css";
+import TipAfisare from "./tipAfisare/TipAfisare";
 
 const ListingPanel = ({
   queryProduct,
@@ -14,14 +15,20 @@ const ListingPanel = ({
   setChecked,
   sort,
   setSort,
+  displayAllProducts,
 }) => {
   const [limitOpen, setLimitOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
   const limitArray = [30, 60, 90];
 
-  const sortListArray = ["Price: Low to High", "Price: High to Low", "Newest", "Oldest"];
-
-  const srote = [];
+  const sortListArray = [
+    "Price: Low to High",
+    "Price: High to Low",
+    "Newest",
+    "Oldest",
+    "Rating: Low to High",
+    "Rating: High to Low",
+  ];
 
   const sortHandleOpen = () => {
     setSortOpen(!sortOpen);
@@ -31,7 +38,7 @@ const ListingPanel = ({
     e.preventDefault();
     setSort(e.currentTarget.textContent);
     setSortOpen(!sortOpen);
-    console.log(e.currentTarget.textContent);
+    // console.log(e.currentTarget.textContent);
   };
 
   const limitHandleOpen = () => {
@@ -43,17 +50,17 @@ const ListingPanel = ({
     setLimitOpen(!limitOpen);
   };
 
-  const removeFilter = (e) => {
-    e.preventDefault();
-    if (brand) {
-      setChecked(false);
-      setBrand([]);
-    }
-    if (model) {
-      setModel([]);
-      setChecked(false);
-    }
-  };
+  // const removeFilter = (e) => {
+  //   e.preventDefault();
+  //   if (brand) {
+  //     setChecked(false);
+  //     setBrand([]);
+  //   }
+  //   if (model) {
+  //     setModel([]);
+  //     setChecked(false);
+  //   }
+  // };
 
   const removeAllFilters = (e) => {
     e.preventDefault();
@@ -68,8 +75,9 @@ const ListingPanel = ({
       <div className="listing-panel-container">
         <div className="listing-panel-heading">
           <div className="listing-page-title">
-            <h4 className="title-phrasing"> de facut trecerea datelor de la un url la altu </h4>
-            Phone{combineFilter.length > 0 ? " - " : null}
+            <h4 className="title-phrasing"> </h4>
+            Phone
+            {combineFilter.length > 0 ? " - " : ` - ${displayAllProducts?.length} de produse`}
             {brand.length > 0 ? (
               <div className="phrasing">
                 <span>{brand.length > 0 ? `Brand: ${brand}` : null}</span>
@@ -114,7 +122,7 @@ const ListingPanel = ({
                         <li
                           key={key}
                           value={item}
-                          className={item === item ? "active" : ""}
+                          className={item ? "active" : ""}
                           onClick={sortButton}
                         >
                           <Link to="#">{item}</Link>
@@ -150,6 +158,7 @@ const ListingPanel = ({
                 </div>
               ) : null}
             </div>
+            <TipAfisare />
           </div>
         </div>
       </div>

@@ -20,8 +20,6 @@ export const productsApi = createApi({
           return `&brand=${item}`;
         });
 
-        console.log(productBrand);
-
         const stringBrand = productBrand.join("");
 
         const productModel = model.map((item) => {
