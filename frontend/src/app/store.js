@@ -6,6 +6,7 @@ import postAddProductCategoryReducer from "../features/productCategory/postAddPr
 import { productsApi } from "../features/product/rtkProducts";
 import addToCardSliceReducer from "../features/product/addToCardSlice";
 import addToCartReducer from "../features/product/addToCart/addToCartSlice";
+import cardsViewSlice from "../features/buttons/buttonsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     product: postProductReducer,
     addToCard: addToCardSliceReducer,
     addToCart: addToCartReducer,
+    cardsView: cardsViewSlice,
     productCategory: postAddProductCategoryReducer,
     [productsApi.reducerPath]: productsApi.reducer,
   },

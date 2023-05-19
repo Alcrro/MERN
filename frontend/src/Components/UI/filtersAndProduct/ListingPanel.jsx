@@ -70,6 +70,7 @@ const ListingPanel = ({
   };
 
   let combineFilter = [...brand, ...model];
+  console.log(combineFilter);
   return (
     <>
       <div className="listing-panel-container">
@@ -77,7 +78,7 @@ const ListingPanel = ({
           <div className="listing-page-title">
             <h4 className="title-phrasing"> </h4>
             Phone
-            {combineFilter.length > 0 ? " - " : ` - ${displayAllProducts?.length} de produse`}
+            {combineFilter.length === 0 ? ` - ${displayAllProducts?.length} de produse` : null}
             {brand.length > 0 ? (
               <div className="phrasing">
                 <span>{brand.length > 0 ? `Brand: ${brand}` : null}</span>
@@ -88,6 +89,11 @@ const ListingPanel = ({
                 <span>{model.length > 0 ? `Model: ${model}` : null}</span>
               </div>
             ) : null}
+            <div className="queryFilters">
+              {brand.length > 0 || model.length > 0
+                ? `- ${queryProduct?.length} filtered products`
+                : ""}
+            </div>
           </div>
         </div>
         {combineFilter.length > 1 ? (

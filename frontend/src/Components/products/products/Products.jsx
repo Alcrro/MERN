@@ -15,6 +15,7 @@ import TestFilterV3 from "../../UI/sideBarFilters/testFilter/TestFilterV3";
 import Home from "../../../Pages/Home/Home";
 import { NavLink, Navigate, useLocation } from "react-router-dom";
 import AllCategories from "../../UI/category/allCategories/AllCategories";
+import { useSelector } from "react-redux";
 
 const Products = () => {
   const [limit, setLimit] = useState(30);
@@ -26,6 +27,9 @@ const Products = () => {
   const [checked, setChecked] = useState(false);
 
   // const { rating, setRating } = SideBarFilters([]);
+
+  const cardViewListClass = useSelector((state) => state.cardsView.cardViewListClassName);
+  const cardViewGridClass = useSelector((state) => state.cardsView.cardViewGridClassName);
 
   const { data: allProductsData } = useGetAllProductsQuery();
   const { data: singleProductData } = useGetProductsQuery({
@@ -142,7 +146,11 @@ const Products = () => {
               <div className="products-container-v2">
                 {/* <div className="cards-container"> */}
                 <div className="cards-container-outer">
-                  <div className="card-collection">
+                  <div
+                    className={`card-collection ${
+                      cardViewGridClass ? cardViewGridClass : cardViewListClass
+                    }`}
+                  >
                     {singleProductData?.queryProducts.map((item, index) => (
                       <Cards products={item} key={index} />
                     ))}

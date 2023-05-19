@@ -7,6 +7,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+
 .card-v2 {
   width: 100%;
   min-height: 395px;
@@ -151,6 +152,7 @@
     margin: -5px -5px -5px;
     width: 600px;
   }
+
   .page-container {
     display: block;
     float: none;

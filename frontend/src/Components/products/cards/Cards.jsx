@@ -1,15 +1,18 @@
 import React from "react";
 import "./cards.css";
 import SingleCardRating from "../../UI/singleCardRating/SingleCardRating";
-import AddToCartButton from "../../UI/add-to-cart-button/Add-to-cart-button";
 import AddToCartV2Button from "../../UI/add-to-cart-v2-button/AddToCartV2Button";
-import { Link, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Cards = (props) => {
   const data = props.products;
+
+  const cardViewListClass = useSelector((state) => state.cardsView.cardViewListClassName);
+  const cardViewGridClass = useSelector((state) => state.cardsView.cardViewGridClassName);
+
   return (
     <div className="card-item">
-      <div className="card-v2">
+      <div className={`card-v2 ${cardViewGridClass ? cardViewGridClass : cardViewListClass}`}>
         <div className="card-v2-wrapper">
           <div className="card-v2-info">
             <a href={`/product/${data._id}`} className="card-v2-thumb">

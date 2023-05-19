@@ -107,7 +107,6 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
     description,
     admin,
   } = req.body;
-  console.log(req.body);
 
   const product = await Products.create({
     brand: productBrand,
@@ -133,7 +132,6 @@ exports.addToCart = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
 
   const product = await Products.findById(req.user.id);
-  console.log(product);
 
   // const products = await Products.find();
   // products.map((product) => {
