@@ -70,7 +70,7 @@ const ListingPanel = ({
   };
 
   let combineFilter = [...brand, ...model];
-  console.log(combineFilter);
+
   return (
     <>
       <div className="listing-panel-container">

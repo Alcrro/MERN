@@ -24,6 +24,20 @@ body {
   justify-content: space-between;
   list-style: none;
 }
+.add-to-cart-li {
+  position: relative;
+  width: 80px;
+  text-align: end;
+  padding: 2px 0;
+}
+
+.add-to-cart-li a:hover + .connector {
+  display: block;
+}
+.add-to-cart-icon {
+  height: 10px;
+  justify-content: center;
+}
 
 .menu-inner ul li {
   margin: 0 10px;
@@ -41,8 +55,13 @@ body {
 .user-profile {
   position: relative;
 }
+
 .bun-venit:hover {
   cursor: pointer;
+}
+
+.add-to-cart-li span {
+  display: block;
 }
 
 .category-inner {
@@ -90,4 +109,21 @@ body {
   text-decoration: none;
   color: #000;
   text-transform: uppercase;
+}
+
+@media (max-width: 992px) {
+  .add-to-cart-li {
+    position: relative;
+    width: 14px;
+    text-align: end;
+  }
+  .add-to-cart-li span {
+    display: none;
+    padding-bottom: 20px;
+  }
+
+  .add-to-cart-icon {
+    height: 18px;
+    justify-content: center;
+  }
 }

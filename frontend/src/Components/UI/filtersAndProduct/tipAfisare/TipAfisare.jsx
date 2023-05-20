@@ -9,8 +9,7 @@ const TipAfisare = () => {
 
   const cardViewListV = useSelector((state) => state.cardsView.cardViewList);
   const cardViewGridV = useSelector((state) => state.cardsView.cardViewGrid);
-  console.log(cardViewListV);
-  console.log(cardViewGridV);
+
   const dispatch = useDispatch();
 
   const isActiveList = (e) => {

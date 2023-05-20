@@ -3,16 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../../features/auth/authSlice";
 import { ShoppingCart } from "phosphor-react";
-import Cookie from "js-cookie";
 
 import "../header/header.css";
 import { toast } from "react-toastify";
+import AddToCartIcon from "../../Components/UI/add-to-cart-icon/AddToCartIcon";
+import AddToCartModal from "../../Components/UI/add-to-cart-modal/AddToCartModal";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const cart = useSelector((state) => state.addToCart.cart);
 
   const onLogout = () => {
     dispatch(logout());
@@ -38,8 +38,10 @@ const Header = () => {
             </li>
             <li className="add-to-cart-li">
               <Link to="/cart/products">
-                <ShoppingCart size={24} />
+                <AddToCartIcon />
+                <span>My Cart</span>
               </Link>
+              <AddToCartModal />
             </li>
             {user ? (
               <>

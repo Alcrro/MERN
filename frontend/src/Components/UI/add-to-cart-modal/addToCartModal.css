@@ -1,0 +1,120 @@
+.connector {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  z-index: 1;
+}
+
+.add-to-cart-modal-container {
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: -90px;
+  z-index: 1;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+}
+
+.add-to-cart-modal-inner {
+  background-color: white;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.add-to-cart-modal-title {
+  padding: 10px;
+
+  border-bottom: 1px #eee solid;
+  font-size: 10px;
+  color: #005eb8;
+}
+
+.add-to-cart-modal-body {
+  display: flex;
+  height: 280px;
+  width: 290px;
+  flex-direction: column;
+
+  overflow-y: auto;
+}
+.add-to-cart-modal-body .in {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px #eee solid;
+  padding: 5px;
+  font-size: 11px;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-to-cart-modal-body .in:hover {
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+.add-to-cart-modal-description {
+  width: 120px;
+}
+.add-to-cart-modal-quantity {
+  width: 30px;
+}
+
+.add-to-cart-modal-amount {
+  font-weight: bold;
+  color: #005eb8;
+}
+.add-to-cart-modal-close {
+  width: 30px;
+}
+
+.add-to-cart-modal-body::-webkit-scrollbar {
+  width: 0.5rem;
+}
+.add-to-cart-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 35px;
+  border: 1px solid white;
+}
+.add-to-cart-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 35px;
+}
+
+.add-to-cart-modal-total-quantity {
+  display: block;
+  background-color: white;
+  color: #888;
+  font-weight: bold;
+  font-size: 85%;
+  overflow: hidden;
+  border-top: 1px solid #e5e5e5;
+  padding: 5px;
+}
+.add-to-cart-modal-total-quantity span {
+  display: block;
+  float: left;
+  padding: 0 2px;
+}
+
+.add-to-cart-modal-total-amount {
+  display: block;
+  background-color: white;
+  color: #888;
+  font-weight: bold;
+  font-size: 85%;
+  overflow: hidden;
+  border-top: 1px solid #e5e5e5;
+  padding: 5px;
+}
+
+.add-to-cart-modal-cart-button {
+  border-top: 1px solid #e5e5e5;
+  padding: 10px;
+}
+
+.add-to-cart-modal-total-amount:last-of-type {
+  float: right;
+  font-weight: bold;
+  font-size: 85%;
+  border: 0;
+}

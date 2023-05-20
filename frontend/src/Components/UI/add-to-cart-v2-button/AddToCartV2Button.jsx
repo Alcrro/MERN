@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../add-to-cart-v2-button/addToCartV2button.css";
 
 import { addToCart } from "../../../features/product/addToCart/addToCartSlice";
 
 const AddToCartV2Button = (props) => {
-  const data = props;
-  const items = useSelector((state) => state.addToCart.items);
-  const cart = useSelector((state) => state.addToCart.cart);
+  // console.log(props);
 
   const dispatch = useDispatch();
 

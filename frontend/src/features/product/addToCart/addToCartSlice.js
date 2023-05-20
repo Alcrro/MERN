@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, current } from "@reduxjs/toolkit";
+import produce from "immer";
 const initialState = {
-  cart: [],
+  card: [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
 };
@@ -11,16 +11,23 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const itemIndex = state.cart.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.card.findIndex((item) => item.data._id === action.payload.data._id);
+
       if (itemIndex >= 0) {
-        state.cart[itemIndex].cartQuantity += 1;
+        state.card[itemIndex].itemQuantity += 1;
+        state.card[itemIndex].itemAmountPrice =
+          action.payload.data.price * state.card[itemIndex].itemQuantity;
       } else {
-        const tempProduct = { ...action.payload, cartQuantity: 1 };
-        state.cart.push(tempProduct);
+        const tempProduct = {
+          ...action.payload,
+          itemQuantity: 1,
+          itemAmountPrice: action.payload.data.price,
+        };
+        state.card.push(tempProduct);
       }
     },
     removeFromCart: (state, action) => {
-      const index = state.cart.findIndex((item) => item.id === action.payload.id);
+      const index = state.card.findIndex((item) => item.id === action.payload.id);
       if (index >= 0) {
         state.cart.splice(index, 1);
       }

@@ -80,18 +80,4 @@
 
 /* start List Cards */
 
-.page-container:has(.card-v2-list) {
-  width: 100%;
-}
-
-.card-collection.card-v2-list {
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-}
-
-.card-v2-info:has(.card-v2-list) {
-  background-color: red;
-}
-
 /* end List Cards */

@@ -1,0 +1,26 @@
+.add-to-cart-icon {
+  position: relative;
+  width: fit-content;
+  float: left;
+}
+.add-to-cart-icon span {
+  position: absolute;
+  right: 0;
+  top: -5px;
+  font-size: 14px;
+  background: linear-gradient(to right, #cf3f50, #fe2d34);
+  padding: 4px;
+  border-radius: 50%;
+  color: white;
+  line-height: 10px;
+}
+
+.add-to-cart-icon::after {
+  position: absolute;
+  font-family: "Bootstrap-icons";
+  content: "\F243";
+  font-size: 22px;
+  padding: 5px;
+  top: -10px;
+  left: -10px;
+}
