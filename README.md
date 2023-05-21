@@ -13,7 +13,7 @@ https://www.youtube.com/watch?v=Wynv0A_9cmM
 
 
 - add to cart page 
-![image](https://github.com/Alcrro/MERN/assets/96865252/6de2a91a-a79a-4dbf-ae21-8800f3957cdf)
+![image](https://github.com/Alcrro/MERN/assets/96865252/6d13eadf-a2fb-4225-b5ed-9701fc8d1dfb)
 
 - cart is empty + modal
 ![image](https://github.com/Alcrro/MERN/assets/96865252/6cc35095-e418-45a8-8290-184a22aa635d)
