@@ -19,7 +19,7 @@ https://www.youtube.com/watch?v=Wynv0A_9cmM
 ![image](https://github.com/Alcrro/MERN/assets/96865252/52274dcb-78e0-4009-ac40-01a908f6aaf6)
 
 - modal cart hover
-![image](https://github.com/Alcrro/MERN/assets/96865252/79384b1f-15a2-4324-96db-ba5caee5fc20)
+![image](https://github.com/Alcrro/MERN/assets/96865252/1ec0281b-2439-4472-9490-131301998c2b)
 
 - products page
 ![image](https://github.com/Alcrro/MERN/assets/96865252/67c30366-cee3-42e2-b7fd-ea8baf447773)
