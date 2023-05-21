@@ -16,7 +16,7 @@ https://www.youtube.com/watch?v=Wynv0A_9cmM
 ![image](https://github.com/Alcrro/MERN/assets/96865252/6d13eadf-a2fb-4225-b5ed-9701fc8d1dfb)
 
 - cart is empty + modal
-![image](https://github.com/Alcrro/MERN/assets/96865252/6cc35095-e418-45a8-8290-184a22aa635d)
+![image](https://github.com/Alcrro/MERN/assets/96865252/52274dcb-78e0-4009-ac40-01a908f6aaf6)
 
 - modal cart hover
 ![image](https://github.com/Alcrro/MERN/assets/96865252/79384b1f-15a2-4324-96db-ba5caee5fc20)
