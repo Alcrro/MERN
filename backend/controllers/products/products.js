@@ -1,7 +1,7 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const Products = require("../../models/products/Products");
-const Register = require("../../models/auth/Register");
+const Register = require("../../models/auth/register");
 
 // @desc    Fetch all products
 // @route   GET /api/products

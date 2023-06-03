@@ -1,6 +1,6 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
-const Register = require("../../models/auth/Register");
+const Register = require("../../models/auth/register");
 
 //@desc					Get all user
 //@route 				GET

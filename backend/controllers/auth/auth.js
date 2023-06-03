@@ -2,7 +2,7 @@ const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
-const Register = require("../../models/auth/Register");
+const Register = require("../../models/auth/register");
 
 //	@description					register user
 //	@route								POST /api/auth/register
