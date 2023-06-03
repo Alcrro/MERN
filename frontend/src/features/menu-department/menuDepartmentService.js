@@ -1,5 +1,5 @@
 const getMenuDepartmentCategory = async (menuData) => {
-  const response = await fetch("http://localhost:3001/menuDepartment", menuData);
+  const response = await fetch("https://alcrro.onrender.com/menuDepartment", menuData);
   const data = await response.json();
 
   return data;

@@ -2,7 +2,7 @@ import axios from "axios";
 
 import authHeader from "../auth/authHeader";
 
-const API_URL = "http://localhost:5000/api/admin/";
+const API_URL = "https://alcrro.onrender.com/api/admin/";
 
 // Get product by id
 const getProductById = async (id) => {
