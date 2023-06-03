@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../../features/auth/authSlice";
-import { ShoppingCart } from "phosphor-react";
 
 import "../header/header.css";
 import { toast } from "react-toastify";
@@ -13,6 +12,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const activeClass = useSelector((state) => state.hoverLink.className);
 
   const onLogout = () => {
     dispatch(logout());
@@ -36,13 +36,19 @@ const Header = () => {
             <li className="products-cards">
               <Link to="/products">Products</Link>
             </li>
-            <li className="add-to-cart-li">
+
+            <li
+              className={`add-to-cart-li ${activeClass}`}
+              // onMouseOver={handleMouseEnter}
+              // onMouseOut={handleMouseLeave}
+            >
               <Link to="/cart/products">
                 <AddToCartIcon />
-                <span>My Cart</span>
+                <span>Cart</span>
               </Link>
               <AddToCartModal />
             </li>
+
             {user ? (
               <>
                 <li className="user-profile">

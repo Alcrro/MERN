@@ -7,6 +7,8 @@ import { productsApi } from "../features/product/rtkProducts";
 import addToCardSliceReducer from "../features/product/addToCardSlice";
 import addToCartReducer from "../features/product/addToCart/addToCartSlice";
 import cardsViewSlice from "../features/buttons/buttonsSlice";
+import hoverLinkReducer from "../features/cartModal/cartModalSlice";
+import menuDepartmentReducer from "../features/menu-department/menuDepartmentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +18,8 @@ export const store = configureStore({
     addToCard: addToCardSliceReducer,
     addToCart: addToCartReducer,
     cardsView: cardsViewSlice,
+    hoverLink: hoverLinkReducer,
+    menuDepartment: menuDepartmentReducer,
     productCategory: postAddProductCategoryReducer,
     [productsApi.reducerPath]: productsApi.reducer,
   },

@@ -1,0 +1,142 @@
+.navbar-aux-outer {
+  background: linear-gradient(
+    to right,
+    #ff1d25 5%,
+    #a0328c 35%,
+    #7040a4 45%,
+    #4359c7 55%,
+    #0082e6 70%
+  );
+}
+.navbar-aux-outer {
+  line-height: 45px;
+}
+
+.navbar-aux-outer .container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.navbar-aux-outer.tick {
+  display: block;
+  padding: 2px 0;
+}
+
+.navbar-aux-container .navbar-box-footer {
+  color: white;
+}
+
+.navbar-aux-head {
+  position: relative;
+  line-height: 42px;
+  width: 83px;
+}
+.navbar-aux-head.tick {
+  position: relative;
+  line-height: 45px;
+  width: 83px;
+}
+
+.navbar-aux-head-inner {
+  position: absolute;
+  top: 4px;
+  background-color: white;
+  padding: 0 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.navbar-aux-head-inner.tick {
+  position: relative;
+  padding: 0 10px;
+  background-color: white;
+  border-radius: 5px;
+  top: 4px;
+  line-height: 38px;
+}
+
+.navbar-aux-head-inner span {
+  position: relative;
+  top: -4px;
+}
+.navbar-aux-head-inner.tick span {
+  position: relative;
+  top: 0;
+}
+
+.navbar-box-inner ul li a {
+  margin: 6px;
+}
+.navbar-box-inner ul li a:hover {
+  border: 1px solid white;
+  margin: 5px;
+  border-radius: 15px;
+}
+
+.navbar-box-footer ul {
+  list-style: none;
+}
+
+.navbar-box-footer ul li a {
+  text-decoration: none;
+  color: white;
+  margin: 6px;
+}
+
+.navbar-box-footer:hover {
+  border: 1px solid white;
+  margin: 5px;
+  border-radius: 15px;
+}
+
+@media (min-width: 500px) {
+  .navbar-aux-outer .container {
+    width: 500px;
+  }
+  .navbar-aux-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 1rem;
+  }
+  .navbar-aux-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 1rem;
+  }
+  .navbar-box-inner {
+    display: flex;
+    flex-direction: row;
+  }
+  .navbar-box-inner ul {
+    list-style: none;
+  }
+  .navbar-box-inner ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-aux-outer .container {
+    width: 768px;
+  }
+}
+@media (min-width: 992px) {
+  .navbar-aux-outer .container {
+    width: 960px;
+  }
+}
+@media (min-width: 1260px) {
+  .navbar-aux-outer .container {
+    width: 1240px;
+  }
+}
+@media (min-width: 1530px) {
+  .navbar-aux-outer .container {
+    width: 1520px;
+  }
+}

@@ -13,6 +13,10 @@ const ProductsSchema = new mongoose.Schema({
     required: [true, "Please add a brand name"],
   },
 
+  stock: {
+    type: Number,
+  },
+
   memorieInterna: {
     type: String,
     required: [true, "Please add a memorie interna"],

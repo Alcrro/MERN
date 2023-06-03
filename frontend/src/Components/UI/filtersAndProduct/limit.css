@@ -133,14 +133,13 @@
 }
 .control-group {
   display: flex;
-  float: left;
-  width: 100%;
-  height: 100%;
+  flex-direction: row;
+
   padding: 10px;
+  padding-top: 5px;
   font-size: 16px;
   font-weight: 600;
   color: #000;
-  align-items: center;
 }
 
 .sort-control-item {
@@ -152,13 +151,12 @@
 .limit-control-item {
   font-size: 14px;
   font-weight: 400;
-  padding: 0 10px 0 10px;
 }
 
 .limit-control-btn-dropdown,
 .sort-control-btn-dropdown {
   display: block;
-  width: 165px;
+  width: 140px;
 }
 .limit-control-btn-dropdown button,
 .sort-control-btn-dropdown button {
@@ -176,7 +174,7 @@
   display: block;
   position: absolute;
   background-color: #fff;
-  min-width: 165px;
+  min-width: 140px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   text-align: center;
@@ -193,20 +191,26 @@
 .listing-limit-dropdown a,
 .listing-sort-dropdown a {
   display: block;
-  color: black;
   font-weight: 100;
-  padding: 5px 12px;
+  padding: 5px 10px;
   text-decoration: none;
+  font-size: 14px;
+  color: #444;
 }
 
 .sort-control-btn-dropdown {
   position: relative;
 }
 
+.dropdown-menu {
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
 .sort-control-btn-dropdown span:after {
   content: "";
   position: absolute;
-  left: 140px;
+  left: 120px;
   top: 50%;
   transform: translateY(-50%);
   width: 0;
@@ -223,7 +227,7 @@
 .limit-control-btn-dropdown span:after {
   content: "";
   position: absolute;
-  left: 140px;
+  left: 120px;
   top: 50%;
   transform: translateY(-50%);
   width: 0;
@@ -231,4 +235,10 @@
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid #000;
+}
+
+.sort-control-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

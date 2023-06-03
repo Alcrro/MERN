@@ -1,0 +1,19 @@
+.megamenu-always-open {
+  position: absolute;
+  top: 45px;
+  background-color: white;
+  width: 240px;
+}
+.navbar-left .megamenu-container ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  color: #000;
+  flex-grow: 1;
+}
+
+.navbar-left .megamenu-container ul li a {
+  line-height: 20px;
+  color: #000;
+  padding: 6px 10px;
+}

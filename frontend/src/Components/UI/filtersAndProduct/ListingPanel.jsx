@@ -110,59 +110,62 @@ const ListingPanel = ({
           </div>
         ) : null}
         <div className="listing-panel-footer sort-option">
-          <div className="sort-control-group"></div>
-
-          <div className="control-group">
-            <div className="sort-control-item">
-              <span>Sort by:</span>
-            </div>
-            <div className="sort-control-btn-dropdown">
-              <button type="button" onClick={sortHandleOpen}>
-                <span onChange={setSort}>{sort}</span>
-              </button>
-              {sortOpen ? (
-                <div className="listing-sort-dropdown">
-                  <ul className="dropdown-menu">
-                    {sortListArray.map((item, key) => {
-                      return (
-                        <li
-                          key={key}
-                          value={item}
-                          className={item ? "active" : ""}
-                          onClick={sortButton}
-                        >
-                          <Link to="#">{item}</Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+          <div className="sort-control-group">
+            <div className="control-group">
+              <div className="sort-items">
+                <div className="sort-control-item">
+                  <span>Sort by:</span>
                 </div>
-              ) : null}
-            </div>
-
-            <div className="limit-control-item">
-              <span>Limit:</span>
-            </div>
-            <div className="limit-control-btn-dropdown">
-              <button type="button" onClick={limitHandleOpen}>
-                <span onChange={limitButton}>Limit {limit}</span>
-              </button>
-              {limitOpen ? (
-                <div className="listing-limit-dropdown">
-                  <ul className="dropdown-menu">
-                    {limitArray.map((item, key) => (
-                      <li
-                        key={key}
-                        value={item}
-                        className={limit === item ? "active" : ""}
-                        onClick={limitButton}
-                      >
-                        <Link to="#">Limit {item}</Link>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="sort-control-btn-dropdown">
+                  <button type="button" onClick={sortHandleOpen}>
+                    <span onChange={setSort}>{sort}</span>
+                  </button>
+                  {sortOpen ? (
+                    <div className="listing-sort-dropdown">
+                      <ul className="dropdown-menu">
+                        {sortListArray.map((item, key) => {
+                          return (
+                            <li
+                              key={key}
+                              value={item}
+                              className={item ? "active" : ""}
+                              onClick={sortButton}
+                            >
+                              <Link to="#">{item}</Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
+              <div className="limit-items">
+                <div className="limit-control-item">
+                  <span>Limit:</span>
+                </div>
+                <div className="limit-control-btn-dropdown">
+                  <button type="button" onClick={limitHandleOpen}>
+                    <span onChange={limitButton}>Limit {limit}</span>
+                  </button>
+                  {limitOpen ? (
+                    <div className="listing-limit-dropdown">
+                      <ul className="dropdown-menu">
+                        {limitArray.map((item, key) => (
+                          <li
+                            key={key}
+                            value={item}
+                            className={limit === item ? "active" : ""}
+                            onClick={limitButton}
+                          >
+                            <Link to="#">Limit {item}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
             </div>
             <TipAfisare />
           </div>

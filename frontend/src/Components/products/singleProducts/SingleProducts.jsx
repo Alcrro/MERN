@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetSingleProductQuery } from "../../../features/product/rtkProducts";
 import NoMatch from "../../../Pages/NoMatch/NoMatch";
@@ -37,12 +37,12 @@ const SingleProducts = () => {
           </div>
           <div className="single-product-container-price1">
             <div className="single-product-price1">
-              {data?.product.price}
+              {data?.product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               <span> $</span>
             </div>
             <div className="add-button-container">
               <AddToFavoriteV2Button />
-              <AddToCartV2Button />
+              <AddToCartV2Button data={data.product} />
             </div>
           </div>
         </div>

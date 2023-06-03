@@ -1,9 +1,10 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import produce from "immer";
+
 const initialState = {
   card: [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
+  message: null,
 };
 
 const cartSlice = createSlice({
@@ -25,12 +26,36 @@ const cartSlice = createSlice({
         };
         state.card.push(tempProduct);
       }
+
+      // create an array of all items
+      const itemsWithPrice = state.card.map((item) => item);
+
+      // calculate price
+      const totalPrice = itemsWithPrice.reduce((sum, num) => sum + num.itemAmountPrice, 0);
+      const totalQuantity = itemsWithPrice.reduce((sum, num) => sum + num.itemQuantity, 0);
+      state.cartTotalAmount = totalPrice;
+      state.cartTotalQuantity = totalQuantity;
     },
-    removeFromCart: (state, action) => {
-      const index = state.card.findIndex((item) => item.id === action.payload.id);
-      if (index >= 0) {
-        state.cart.splice(index, 1);
+
+    removeSingleCart: (state, action) => {
+      const cartItem = state.card.findIndex((item) => item.data._id === action.payload.data._id);
+      if (state.card[cartItem].itemQuantity > 1) {
+        state.card[cartItem].itemQuantity -= 1;
+        state.card[cartItem].itemAmountPrice =
+          action.payload.data.price * state.card[cartItem].itemQuantity;
+        state.cartTotalAmount = state.card.reduce((sum, num) => sum + num.itemAmountPrice, 0);
+      } else if (state.card[cartItem].itemQuantity === 1) {
+        state.card.splice(cartItem, 1);
       }
+      state.cartTotalQuantity = state.card.reduce((sum, num) => sum + num.itemQuantity, 0);
+      state.cartTotalAmount = state.card.reduce((sum, num) => sum + num.itemAmountPrice, 0);
+    },
+
+    removeFromCart: (state, action) => {
+      const cartItem = state.card.findIndex((item) => item.data._id === action.payload.data._id);
+      state.card.splice(cartItem, 1);
+      state.cartTotalQuantity = state.card.reduce((sum, num) => sum + num.itemQuantity, 0);
+      state.cartTotalAmount = state.card.reduce((sum, num) => sum + num.itemAmountPrice, 0);
     },
     clearCart: (state) => {
       state.cart = [];
@@ -38,6 +63,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, removeSingleCart, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

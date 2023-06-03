@@ -1,0 +1,37 @@
+.megamenu-body ul {
+  cursor: pointer;
+}
+@media (min-width: 500px) {
+  .subcategories {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: white;
+    left: 250px;
+    top: 0;
+    min-width: 300px;
+  }
+  .subcategories li {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .subcategories {
+    width: 800px;
+  }
+  .subcategories li {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1260px) {
+  .subcategories {
+    width: 800px;
+  }
+}

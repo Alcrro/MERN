@@ -3,6 +3,7 @@ import "./cards.css";
 import SingleCardRating from "../../UI/singleCardRating/SingleCardRating";
 import AddToCartV2Button from "../../UI/add-to-cart-v2-button/AddToCartV2Button";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Cards = (props) => {
   const data = props.products;
@@ -15,7 +16,7 @@ const Cards = (props) => {
       <div className={`card-v2 ${cardViewGridClass ? cardViewGridClass : cardViewListClass}`}>
         <div className="card-v2-wrapper">
           <div className="card-v2-info">
-            <a href={`/product/${data._id}`} className="card-v2-thumb">
+            <Link to={`/product/${data._id}`} className="card-v2-thumb">
               <div className="card-v2-thumb-inner">
                 <img
                   src={require("../../../Assets/images/panda.png")}
@@ -30,15 +31,25 @@ const Cards = (props) => {
                   <SingleCardRating data={data} />
                 </div>
                 <div className="card-estimate-placeholder">
-                  <span>in stock</span>
+                  <span className="card-stock">
+                    {data.stock < 3 ? "stock: " : ""}
+
+                    {data.stock === 1 ? (
+                      <span className="danger-stock">ultimul produs in stock</span>
+                    ) : data.stock > 1 && data.stock <= 3 ? (
+                      <span className="danger-stock">ultimele {data.stock} produse</span>
+                    ) : data.stock > 3 ? (
+                      <span> in stock </span>
+                    ) : null}
+                  </span>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
           <div className="card-v2-content">
             <div className="card-v2-price">
               <p className="product-new-price">
-                {data.price}
+                {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 <sup>
                   <small className="decimal">,</small>
                   99

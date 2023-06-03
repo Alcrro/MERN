@@ -8,7 +8,7 @@ const AddToCartButton = () => {
   return (
     <div className="add-to-cart-container">
       <button className="btn add-to-cart">
-        Add to Cart {item ? <span className="btn cart-aux-button">({item})</span> : null}
+        Add to Cart1 {item ? <span className="btn cart-aux-button">({item})</span> : null}
       </button>
     </div>
   );

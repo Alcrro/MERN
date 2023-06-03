@@ -4,10 +4,13 @@ import { useSelector } from "react-redux";
 
 const AddToCartIcon = () => {
   const itemQ = useSelector((state) => state.addToCart);
+  // console.log(itemQ);
 
   return (
     <div className="add-to-cart-icon">
-      {itemQ.cartTotalQuantity > 0 ? <span>{itemQ.cartTotalQuantity}</span> : null}
+      <div className="add-to-cart-icon-inner">
+        {itemQ.cartTotalQuantity > 0 ? <span>{itemQ.cartTotalQuantity}</span> : null}
+      </div>
     </div>
   );
 };

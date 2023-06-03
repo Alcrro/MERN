@@ -1,46 +1,100 @@
 import React from "react";
 import "./addToCartModal.css";
-import { useSelector } from "react-redux";
-import AddToCartV2Button from "../add-to-cart-v2-button/AddToCartV2Button";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import {
+  removeFromCart,
+  addToCart,
+  removeSingleCart,
+} from "../../../features/product/addToCart/addToCartSlice";
 
 const AddToCartModal = () => {
   const cart = useSelector((state) => state.addToCart);
-  console.log(cart.card);
+  const isHover = useSelector((state) => state.hoverLink.hovering);
+  const cartSum = useSelector((state) => state.addToCart.card);
+  const totalPrice = useSelector((state) => state.addToCart);
+  const removeItem = useSelector((state) => state.removeFromCart);
+
+  const dispatch = useDispatch();
+
+  const removeModalItems = (product) => {
+    // console.log(id);
+    dispatch(removeFromCart(product));
+    // console.log(cart);
+  };
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
+  const handleRemoveToCart = (product) => {
+    dispatch(removeSingleCart(product));
+  };
+
   return (
-    <div className="connector">
+    <>
       <div className="add-to-cart-modal-container">
         <div className="add-to-cart-modal-inner">
           <div className="add-to-cart-modal-title">LIST ITEMS:</div>
           <div className="add-to-cart-modal-body">
-            {cart?.card.map((item, key) => {
-              return (
-                <div key={key} className="in">
-                  <img
-                    src={require("../../../Assets/images/panda.png")}
-                    alt=""
-                    width={"50px"}
-                    height={"50px"}
-                  />
-                  <div className="add-to-cart-modal-description">{item.data.description}</div>
-                  <div className="add-to-cart-modal-quantity">x{item.itemQuantity}</div>
-                  <div className="add-to-cart-modal-amount">{item.itemAmountPrice} $</div>
-                  <div className="add-to-cart-modal-close">X</div>
-                </div>
-              );
-            })}
+            {cart?.card.length > 0 ? (
+              cart?.card.map((item, key) => {
+                return (
+                  <Link to={"/cart/products"} key={key} className={`modal-link`}>
+                    <div className="in">
+                      <div className="inner">
+                        <div className="add-to-cart-modal-image">
+                          <img
+                            src={require("../../../Assets/images/panda.png")}
+                            alt=""
+                            width={"50px"}
+                            height={"50px"}
+                          />
+                        </div>
+
+                        <div className="add-to-cart-modal-description">{item.data.description}</div>
+
+                        <div className="add-to-cart-modal-quantity">
+                          <div className="group-info">
+                            <button onClick={() => handleRemoveToCart(item)}>-</button>
+                            <div>x{item.itemQuantity}</div>
+                            <button onClick={() => handleAddToCart(item)}>+</button>
+                          </div>
+                        </div>
+                        <div className="add-to-cart-modal-amount">
+                          {item.itemAmountPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $
+                        </div>
+                      </div>
+
+                      <div
+                        className="add-to-cart-modal-close"
+                        onClick={() => removeModalItems(item)}
+                      >
+                        <span>X</span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })
+            ) : (
+              <div className="modal-empty-cart">Your cart is empty</div>
+            )}
           </div>
           <div className="add-to-cart-modal-total-quantity">
             <span>Total: </span>
-            <span> {cart?.card.length} products</span>
-            <span className="add-to-cart-modal-total-amount">20000 $</span>
+            <span> {totalPrice.cartTotalQuantity} products</span>
+            <span className="add-to-cart-modal-total-amount">
+              {totalPrice.cartTotalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $
+            </span>
           </div>
 
-          <div className="add-to-cart-modal-cart-button">
-            <AddToCartV2Button />
+          <div className="add-to-cart-modal-cart-inner">
+            <Link to="/cart/products" className="cart-btn">
+              Your Cart
+            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,10 +1,38 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./addToCart.css";
-import AddToCartV2Button from "../../UI/add-to-cart-v2-button/AddToCartV2Button";
+import { Link } from "react-router-dom";
+import {
+  addToCart,
+  removeFromCart,
+  removeSingleCart,
+} from "../../../features/product/addToCart/addToCartSlice";
 
 const AddToCart = () => {
   const cart = useSelector((state) => state.addToCart);
+  const totalPrice = useSelector((state) => state.addToCart);
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    if (product.itemQuantity >= product.data.stock) {
+    } else {
+      dispatch(addToCart(product));
+    }
+  };
+  const handleRemoveToCart = (product) => {
+    if (product.itemQuantity > 1) {
+      dispatch(removeSingleCart(product));
+    } else if (product.itemQuantity === 1) {
+      dispatch(removeFromCart());
+    }
+  };
+
+  const removeModalItems = (product) => {
+    // console.log(id);
+    dispatch(removeFromCart(product));
+    // console.log(cart);
+  };
 
   return (
     <div className="add-to-cart-container">
@@ -15,22 +43,38 @@ const AddToCart = () => {
             <div className="add-to-container-body">
               {cart?.card.map((item, key) => {
                 return (
-                  <div className="add-to-cart-item" key={key}>
-                    <div className="add-to-cart-inner">
-                      <img
-                        src={require("../../../Assets/images/panda.png")}
-                        alt=""
-                        width={"150px"}
-                        height={"150px"}
-                      />
-                      <div>{item.data.description}</div>
+                  <>
+                    <div className="add-to-cart-item" key={key}>
+                      <div className="add-to-cart-close" onClick={() => removeModalItems(item)}>
+                        <span>X</span>
+                      </div>
+                      <div className="add-to-cart-inner">
+                        <img
+                          src={require("../../../Assets/images/panda.png")}
+                          alt=""
+                          width={"150px"}
+                          height={"150px"}
+                        />
+                        <div>{item.data.description}</div>
 
-                      <div className="add-to-cart-footer">
-                        <div className="add-to-cart-price">{item.itemAmountPrice} $</div>
-                        <div className="add-to-cart-quantity">{item.itemQuantity}</div>
+                        <div className="add-to-cart-footer">
+                          <div className="add-to-cart-price">
+                            {item.itemAmountPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                            $
+                          </div>
+                          <div className="add-to-cart-quantity">
+                            <div className="group-info">
+                              <button onClick={() => handleRemoveToCart(item)}>-</button>
+                              <div>{item.itemQuantity}</div>
+                              <button onClick={() => handleAddToCart(item)}>+</button>
+                            </div>
+
+                            <div className="message-info">{}</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 );
               })}
             </div>
@@ -40,7 +84,9 @@ const AddToCart = () => {
               <div className="add-to-cart-total-cost-product">
                 <div className="order-summary-line">
                   <span>Products price:</span>
-                  <span>19.1999 $</span>
+                  <span>
+                    {totalPrice.cartTotalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $
+                  </span>
                 </div>
               </div>
               <div className="add-to-cart-total-cost-delivery">
@@ -51,9 +97,15 @@ const AddToCart = () => {
               </div>
               <div className="add-to-cart-total">
                 <h3>Total:</h3>
-                <span>19.199 $</span>
+                <span>
+                  {totalPrice.cartTotalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $
+                </span>
               </div>
-              <AddToCartV2Button />
+              <div className="checkout-inner">
+                <Link to="/cart/checkout" className="checkout-btn">
+                  Checkout
+                </Link>
+              </div>
             </div>
           </div>
         </>
