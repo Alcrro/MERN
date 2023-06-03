@@ -1,6 +1,6 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
-const Products = require("../../models/products/Products");
+const Products = require("../../models/products/products");
 const Register = require("../../models/auth/register");
 
 // @desc    Fetch all products
