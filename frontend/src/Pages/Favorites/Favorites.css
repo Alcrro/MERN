@@ -1,0 +1,106 @@
+.fav-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.fav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  gap: 1rem;
+}
+
+.fav-header__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -.4px;
+}
+
+.fav-header__count {
+  font-size: .82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.fav-clear-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: .5rem 1rem;
+  font-size: .82rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #dc2626;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .12s;
+}
+
+.fav-clear-btn:hover { background: #fecaca; }
+
+html[data-theme="dark"] .fav-clear-btn {
+  background: rgba(239,68,68,.12);
+  border-color: rgba(239,68,68,.25);
+  color: #f87171;
+}
+
+.fav-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ── Empty ── */
+.fav-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
+  gap: .75rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.fav-empty__icon {
+  color: #fca5a5;
+  margin-bottom: .5rem;
+}
+
+.fav-empty__title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -.3px;
+}
+
+.fav-empty__sub {
+  font-size: .88rem;
+  color: var(--text-light);
+  max-width: 320px;
+}
+
+.fav-empty__btn {
+  margin-top: .5rem;
+  padding: .7rem 1.4rem;
+  background: linear-gradient(135deg, var(--primary), #7c3aed);
+  color: #fff;
+  font-weight: 700;
+  font-size: .88rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: opacity .15s;
+}
+
+.fav-empty__btn:hover { opacity: .88; }
+
+@media (max-width: 992px) { .fav-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  .fav-page { padding: 1rem .75rem 5rem; }
+  .fav-grid { grid-template-columns: repeat(2, 1fr); }
+}
