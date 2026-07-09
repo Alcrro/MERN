@@ -79,5 +79,5 @@ RegisterSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const Register = mongoose.model("Register", RegisterSchema);
+const Register = mongoose.model("Register", RegisterSchema, "users");
 module.exports = { Register, ROLES };

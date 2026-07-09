@@ -25,6 +25,7 @@
 		"font-awesome": "^4.7.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.9.0",
+		"nodemailer": "^9.0.3",
 		"react-to-print": "^2.14.12",
 		"slugify": "^1.6.5"
 	},
