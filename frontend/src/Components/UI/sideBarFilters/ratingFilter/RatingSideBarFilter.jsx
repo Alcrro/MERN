@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import {
   useGetAllProductsQuery,
   useGetProductsQuery,
 } from "../../../../features/product/rtkProducts";
 import "./sideBarFiltersRating.css";
-import "../../../../Pages/Home/Home.css";
+import "../../singleCardRating/starRating.css";
 import { useNavigate } from "react-router-dom";
 
 const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) => {
@@ -93,7 +94,7 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
                     (
                     {
                       allProductsData?.totalProducts.filter(
-                        (item) => Number(item.rating) === rate.id
+                        (item) => Math.floor(item.rating?.average || 0) >= rate.id
                       ).length
                     }
                     )

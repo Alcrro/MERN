@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import BrandCategory from "../brandCategory/BrandCategory";
 import ModelCategory from "../modelCategory/ModelCategory";

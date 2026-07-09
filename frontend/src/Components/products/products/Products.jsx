@@ -2,18 +2,10 @@ import React from "react";
 import { useState } from "react";
 import "../../products/products.css";
 import { useGetAllProductsQuery, useGetProductsQuery } from "../../../features/product/rtkProducts";
-import ProductsV2 from "../../UI/filtersAndProduct/FiltersAndProducts";
 import ListingPanel from "../../UI/filtersAndProduct/ListingPanel";
 import SideBarFilters from "../../UI/sideBarFilters/ratingFilter/RatingSideBarFilter";
-import BrandFilter from "../../UI/sideBarFilters/brandFilter/BrandFilter";
-import ModelFilter from "../../UI/sideBarFilters/modelFilter/ModelFilter";
 import Pagination from "../../UI/pagination/Pagination";
-import TestSmecher from "../../UI/sideBarFilters/testFilter/TestFilter";
 import Cards from "../cards/Cards";
-import TestFilter from "../../UI/sideBarFilters/testFilter/TestFilterV2";
-import TestFilterV3 from "../../UI/sideBarFilters/testFilter/TestFilterV3";
-import Home from "../../../Pages/Home/Home";
-import { NavLink, Navigate, useLocation } from "react-router-dom";
 import AllCategories from "../../UI/category/allCategories/AllCategories";
 import { useSelector } from "react-redux";
 
@@ -25,6 +17,9 @@ const Products = () => {
   const [rating, setRating] = useState([]);
   const [model, setModel] = useState([]);
   const [checked, setChecked] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const activeFilterCount = brand.length + rating.length + model.length;
 
   // const { rating, setRating } = SideBarFilters([]);
 
@@ -55,13 +50,14 @@ const Products = () => {
   // display all products with models filter
   let modelsFilterArray = [];
 
-  const displayAllProductsModelFilter = displayAllProductsBrandFilter?.filter((item, index) => {
-    modelsFilterArray.indexOf(item.model) === -1 && modelsFilterArray.push(item.model);
+  const displayAllProductsModelFilter = displayAllProductsBrandFilter?.filter((item) => {
+    if (modelsFilterArray.indexOf(item.model) === -1) modelsFilterArray.push(item.model);
+    return true;
   });
 
   let brandFilterArray = [];
-  displayAllProductsModelFilter?.filter((item) => {
-    brandFilterArray.indexOf(item.brand) === -1 && brandFilterArray.push(item.brand);
+  displayAllProductsModelFilter?.forEach((item) => {
+    if (brandFilterArray.indexOf(item.brand) === -1) brandFilterArray.push(item.brand);
   });
 
   // DE VERIFICAT
@@ -83,17 +79,64 @@ const Products = () => {
   }
 
   // create an array of brands names
-  let namesArray = [];
-  allProductsData?.totalProducts.map((item) => namesArray.push(item.brand));
-  let uniqueNamesArray = namesArray.filter((item, index) => namesArray.indexOf(item) === index);
 
-  //create an array of models names
-  let modelsArray = [];
-  allProductsData?.totalProducts.map((item) => modelsArray.push(item.model));
-  let uniqueModelsArray = modelsArray.filter((item, index) => modelsArray.indexOf(item) === index);
+  const FilterContent = () => (
+    <>
+      <div className="filters-v2-container">
+        <AllCategories
+          data={singleProductData}
+          model={model}
+          setModel={setModel}
+          brand={brand}
+          setBrand={setBrand}
+          setPage={setPage}
+          setLimit={setLimit}
+          checked={checked}
+          setChecked={setChecked}
+          setSort={setSort}
+          rating={rating}
+          setRating={setRating}
+        />
+      </div>
+      <div className="container-brand-filter">
+        <div className="brand-filter-body">
+          <div className="sidebar-filter-rating-container">
+            <SideBarFilters
+              rating={rating}
+              setRating={setRating}
+              setLimit={setLimit}
+              brand={brand}
+              queryProduct={singleProductData?.queryProducts}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <>
+      {/* Mobile filter backdrop */}
+      {filterOpen && <div className="mob-filter-backdrop" onClick={() => setFilterOpen(false)} />}
+
+      {/* Mobile filter sheet */}
+      <div className={`mob-filter-sheet${filterOpen ? " mob-filter-sheet--open" : ""}`}>
+        <div className="mob-filter-sheet__head">
+          <span>Filtre {activeFilterCount > 0 && <span className="mob-filter-badge">{activeFilterCount}</span>}</span>
+          <button onClick={() => setFilterOpen(false)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div className="mob-filter-sheet__body">
+          <FilterContent />
+        </div>
+        <div className="mob-filter-sheet__foot">
+          <button className="mob-filter-apply" onClick={() => setFilterOpen(false)}>
+            Vezi {singleProductData?.queryProducts?.length ?? 0} produse
+          </button>
+        </div>
+      </div>
+
       <div className="container-products-outer">
         <div className="filter">
           <div className="filters-v2-container">
@@ -141,10 +184,11 @@ const Products = () => {
               sort={sort}
               setSort={setSort}
               displayAllProducts={displayAllProducts}
+              onOpenFilters={() => setFilterOpen(true)}
+              activeFilterCount={activeFilterCount}
             />
             <div className="page-container">
               <div className="products-container-v2">
-                {/* <div className="cards-container"> */}
                 <div className="cards-container-outer">
                   <div
                     className={`card-collection ${
@@ -158,14 +202,14 @@ const Products = () => {
                 </div>
               </div>
             </div>
+            <Pagination
+              pagesArray={pagesArray}
+              limit={limit}
+              setPage={setPage}
+              pagesFilterArray={pagesFilterArray}
+            />
           </div>
         </div>
-        <Pagination
-          pagesArray={pagesArray}
-          limit={limit}
-          setPage={setPage}
-          pagesFilterArray={pagesFilterArray}
-        />
       </div>
     </>
   );

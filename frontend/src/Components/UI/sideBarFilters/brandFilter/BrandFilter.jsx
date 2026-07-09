@@ -1,33 +1,16 @@
+/* eslint-disable */
 import React from "react";
 import "./brandFilter.css";
-import {
-  useGetAllProductsQuery,
-  useGetProductsQuery,
-} from "../../../../features/product/rtkProducts";
+import { useGetAllProductsQuery } from "../../../../features/product/rtkProducts";
 
-const BrandFilter = ({
-  brand,
-  setBrand,
-  checked,
-  setChecked,
-  setPage,
-  setRating,
-  model,
-  limit,
-  setLimit,
-  queryProducts,
-}) => {
+const BrandFilter = ({ brand, setBrand, setChecked, setPage, setRating }) => {
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState("active");
 
   const { data: allProductsData } = useGetAllProductsQuery();
 
-  // console.log(queryProducts);
-
-  // create an array of brands names
-  let namesArray = [];
-  allProductsData?.totalProducts.map((item) => namesArray.push(item.brand));
-  let uniqueNamesArray = namesArray.filter((item, index) => namesArray.indexOf(item) === index);
+  const namesArray = allProductsData?.totalProducts.map((item) => item.brand) ?? [];
+  const uniqueNames = [...new Set(namesArray)];
 
   const handleOpen = () => {
     setOpen(!open);
@@ -35,58 +18,44 @@ const BrandFilter = ({
   };
 
   const checkHandler = (e) => {
-    if (e.target.checked === true) {
-      setBrand(e.target.value);
+    const val = e.target.value;
+    if (e.target.checked) {
+      const next = Array.isArray(brand) ? [...brand, val] : [val];
+      setBrand(next);
       setChecked(true);
-      const array = [...brand];
-      array.push(e.target.value);
-      setBrand(array);
       setPage(1);
       setRating([]);
-    }
-    if (e.target.checked === false) {
-      setBrand("");
-      setChecked(false);
-      const array = [...brand];
-      const index = array.indexOf(e.target.value);
-      array.splice(index, 1);
-      setBrand(array);
+    } else {
+      const next = Array.isArray(brand) ? brand.filter((b) => b !== val) : [];
+      setBrand(next);
+      if (next.length === 0) setChecked(false);
     }
   };
+
   return (
     <div className="sidebar-filter-brand">
-      <div className={`sidebar-filter-brand-title ${active}`}>
-        <a href="#" className="filter-head" onClick={handleOpen}>
-          <span>Brand</span>
-        </a>
-      </div>
-      <div className={`sidebar-filter-rating-body ${active}`}>
-        <div className="sidebar-filter-rating-stars">
-          <form>
-            {uniqueNamesArray?.map((item, key) => (
-              <div key={key}>
+      <a href="#" className="filter-head" onClick={handleOpen}>
+        <span>Brand</span>
+      </a>
+      <div className={`sidebar-filter-brand-body ${active}`}>
+        <div className="scrollable" style={{ padding: "4px" }}>
+          {uniqueNames.map((item) => {
+            const count = allProductsData?.totalProducts.filter((p) => p.brand === item).length ?? 0;
+            const isChecked = Array.isArray(brand) && brand.includes(item);
+            return (
+              <label key={item} className="filter-inner">
                 <input
                   type="checkbox"
-                  className={brand === item ? "checked" : "unchecked"}
                   name="brands"
-                  id={item}
                   value={item}
+                  checked={isChecked}
                   onChange={checkHandler}
                 />
-                <label htmlFor={item}> {item}</label>
-                <div className="star-brand-text">
-                  <span>
-                    (
-                    {
-                      allProductsData?.totalProducts?.filter((filter) => filter.brand === item)
-                        .length
-                    }
-                    )
-                  </span>
-                </div>
-              </div>
-            ))}
-          </form>
+                <span style={{ flex: 1, fontSize: ".82rem", color: "var(--text-medium)" }}>{item}</span>
+                <span style={{ fontSize: ".75rem", color: "var(--text-muted)" }}>({count})</span>
+              </label>
+            );
+          })}
         </div>
       </div>
     </div>

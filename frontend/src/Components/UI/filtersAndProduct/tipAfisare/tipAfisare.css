@@ -1,483 +1,92 @@
-.control-group div:last-child {
-  margin-left: auto;
-}
-
+/* ─── View toggle ───────────────────────────────────────── */
 .tip-afisare-container {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  gap: 6px;
+}
+
+.tip-afisare-head {
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.tip-afisare-body {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
 }
 
 .cards-view-list,
 .cards-view-grid {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.tip-afisare-head {
-  font-weight: 400;
-  font-size: 14px;
-  padding: 5px;
-}
-
-.tip-afisare-body {
-  padding: 5px;
-}
-.tip-afisare-body i {
-  font-size: 14px;
-}
-
-.tip-afisare-body button {
-  cursor: pointer;
-  background-color: transparent;
+.cards-view-list button,
+.cards-view-grid button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  background: transparent;
   border: none;
-  padding: 10px 10px;
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: 15px;
+  transition: background .12s, color .12s;
 }
 
-.cards-view-list {
-  border: 1px solid #ccc;
-  border-right: transparent;
+.cards-view-list button:hover,
+.cards-view-grid button:hover {
+  background: var(--bg-page);
+  color: var(--text-dark);
 }
 
-.cards-view-grid {
-  border: 1px solid #ccc;
-  background-color: transparent;
+.cards-view-list.card-v2-list button,
+.cards-view-grid.card-v2-grid button {
+  background: var(--primary-light);
+  color: var(--primary);
 }
 
-.cards-view-list.card-v2-list {
-  background-color: #e0e0e0;
+.cards-view-list { border-right: 1px solid var(--border); }
+
+/* ─── List view card layout ─────────────────────────────── */
+.card-collection.card-v2-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.cards-view-grid.card-v2-grid {
-  background-color: #e0e0e0;
+.card-collection.card-v2-list .card-item {
+  width: 100%;
 }
 
-/* Start list Cards */
-
-@media (min-width: 500px) {
-  .filter {
-    display: none;
-  }
-  .listing-panel-container {
-    display: block;
-  }
-
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 100%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 100%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 100%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
-
-  .sort-control-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-@media (min-width: 600px) {
-  .filter {
-    display: none;
-  }
-  .listing-panel-container {
-    display: block;
-  }
-
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 55%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
+.card-v2.card-v2-list .card-v2-wrapper {
+  flex-direction: row;
 }
 
-@media (min-width: 760px) {
-  .filter {
-    display: none;
-  }
-  .listing-panel-container {
-    display: block;
-  }
-
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 55%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
-}
-@media (min-width: 768px) {
-  .filter {
-    display: none;
-  }
-  .listing-panel-container {
-    display: block;
-  }
-
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 55%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
-}
-@media (min-width: 878px) {
-  .filter {
-    display: none;
-  }
-  .listing-panel-container {
-    display: block;
-  }
-
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 55%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
-}
-@media (min-width: 992px) {
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 55%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
-}
-@media (min-width: 1500px) {
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 40%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
-}
-@media (min-width: 1530px) {
-  .container-products-outer {
-    width: 100%;
-  }
-  .card-collection {
-    margin: -5px -5px -5px;
-    width: 768px;
-  }
-  .page-container {
-    display: block;
-    float: none;
-    width: fit-content;
-    height: fit-content;
-  }
-  .cards-container-outer .card-collection {
-    display: flex;
-    width: 100%;
-  }
-  .card-collection.card-v2-list .card-item {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  .card-v2.card-v2-list .card-v2-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-  .card-collection.card-v2-list .card-v2-info {
-    width: 75%;
-  }
-
-  .card-v2.card-v2-list .card-v2-thumb {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-  }
-  .card-v2.card-v2-list .card-v2-thumb-inner {
-    width: 35%;
-  }
-  .card-v2.card-v2-list .pad-description {
-    width: 73%;
-  }
-
-  .card-collection.card-v2-list .card-v2-content {
-    width: 25%;
-  }
+.card-v2.card-v2-list .card-v2-thumb-inner {
+  width: 180px;
+  height: 160px;
+  flex-shrink: 0;
 }
 
-/* End list Cards */
+.card-v2.card-v2-list .pad-description {
+  flex: 1;
+}
+
+.card-v2.card-v2-list .card-v2-content {
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 160px;
+  padding: 16px;
+  border-left: 1px solid var(--border);
+}
+
+.card-v2.card-v2-list .card-v2-add-to-cart {
+  width: 100%;
+}

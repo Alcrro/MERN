@@ -1,47 +1,19 @@
 import React from "react";
+import "./starRating.css";
 
-const SingleCardRating = (props) => {
-  const data = props.data;
-  // console.log(data);
+const SingleCardRating = ({ data }) => {
+  const average = data?.rating?.average ?? 0;
+  const count = data?.rating?.count ?? 0;
+  const width = `${(average / 5) * 100}%`;
+
+  if (average === 0) return null;
 
   return (
     <>
-      {data.rating === "1" ? (
-        <>
-          <div className="first-star-rating star-rating-read">
-            <div className="star-rating-inner" style={{ width: "20%" }}></div>
-          </div>
-          <span> {data.rating}</span>
-        </>
-      ) : data.rating === "2" ? (
-        <>
-          <div className="first-star-rating star-rating-read">
-            <div className="star-rating-inner" style={{ width: "40%" }}></div>
-          </div>
-          <span> {data.rating}</span>
-        </>
-      ) : data.rating === "3" ? (
-        <>
-          <div className="first-star-rating star-rating-read">
-            <div className="star-rating-inner" style={{ width: "60%" }}></div>
-          </div>
-          <span> {data.rating}</span>
-        </>
-      ) : data.rating === "4" ? (
-        <>
-          <div className="first-star-rating star-rating-read">
-            <div className="star-rating-inner" style={{ width: "80%" }}></div>
-          </div>
-          <span> {data.rating}</span>
-        </>
-      ) : data.rating === "5" ? (
-        <>
-          <div className="first-star-rating star-rating-read">
-            <div className="star-rating-inner" style={{ width: "100%" }}></div>
-          </div>
-          <span> {data.rating}</span>
-        </>
-      ) : null}
+      <div className="first-star-rating star-rating-read">
+        <div className="star-rating-inner" style={{ width }} />
+      </div>
+      <span> {average.toFixed(1)} ({count})</span>
     </>
   );
 };

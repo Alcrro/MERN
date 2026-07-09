@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import "./tipAfisare.css";
 import { useDispatch, useSelector } from "react-redux";

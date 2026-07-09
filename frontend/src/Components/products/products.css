@@ -1,48 +1,68 @@
+/* ─── Outer container ───────────────────────────────────── */
 .container-products-outer {
-  display: block;
-  width: 1520px;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0 10px;
-  padding-top: 10px;
-}
-
-.sort-options {
   display: flex;
-  flex-wrap: wrap;
+  max-width: 1280px;
   margin: 0 auto;
-  max-width: 350px;
-  padding: 0 10px;
+  padding: 20px 24px;
+  gap: 20px;
+  align-items: flex-start;
 }
 
-.container-filtere {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  width: 1000px;
+/* ─── Mobile < 992px : single column, no sidebar ─────── */
+@media (max-width: 991px) {
+  .container-products-outer {
+    flex-direction: column;
+    padding: 16px;
+  }
+  .container-products-outer .filter {
+    display: none;
+  }
+  .js-products-container {
+    width: 100%;
+  }
+  .page-container {
+    float: none;
+    width: 100%;
+  }
+  .card-collection.card-v2-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sort-control-group .control-group {
+    flex-direction: column;
+  }
 }
 
-.limit,
-.sort {
-  padding-right: 10px;
-
-  text-align: center;
+@media (max-width: 480px) {
+  .card-collection.card-v2-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.limit select {
-  background-color: transparent;
-  border: 1px solid white;
-  background-color: #fff;
-  padding: 0.2rem;
-  width: 100px;
-  text-align: center;
+/* ─── Desktop ≥ 992px : sidebar + content ──────────────── */
+@media (min-width: 992px) {
+  .container-products-outer { flex-direction: row; }
+  .container-products-outer .filter { display: block; }
+  .js-products-container { flex: 1; min-width: 0; }
+  .main-container-body { width: 100%; }
+  .page-container { float: none; width: 100%; margin-top: 10px; }
+  .products-container-v2 { width: 100%; }
+  .cards-container-outer { display: block; }
+  .sort-control-group .control-group { flex-direction: row; }
+  .card-collection.card-v2-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.sort select {
-  background-color: transparent;
-  border: 1px solid white;
-  background-color: #fff;
-  padding: 0.2rem;
-  width: 100px;
-  text-align: center;
+@media (min-width: 1300px) {
+  .card-collection.card-v2-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ─── Sort selects (legacy, unused now) ─────────────────── */
+.limit select, .sort select {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .3rem .6rem;
+  font-size: .875rem;
+  font-family: inherit;
+  color: var(--text-dark);
+  cursor: pointer;
 }

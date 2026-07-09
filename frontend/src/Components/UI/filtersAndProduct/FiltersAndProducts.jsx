@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Link } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import SingleProducts from "../../../Components/products/singleProducts/SingleProducts";

@@ -1,0 +1,64 @@
+.star-rating-body a {
+  display: block;
+  text-decoration: none !important;
+}
+
+.star-rating-checkbox {
+  margin-right: 7px;
+}
+
+.first-star-rating {
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  color: #ccc;
+}
+
+.first-star-rating::before {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  font-size: 18px;
+  content: "\2605\2605\2605\2605\2605";
+  width: fit-content;
+  color: #ccc;
+}
+
+.star-rating-inner::before {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  font-size: 18px;
+  content: "\2605\2605\2605\2605\2605";
+  width: fit-content;
+  color: #f9bf3b;
+}
+
+.first-star-rating .star-rating-inner {
+  white-space: nowrap;
+  position: absolute;
+  line-height: inherit;
+  height: inherit;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.first-star-rating span {
+  color: #222;
+  padding: 0 5px;
+  font-size: 14px;
+}
+
+.star-rating-body span {
+  text-decoration: none;
+  color: #6b6969;
+  font-size: 12px;
+}
+
+.card-v2-rating span {
+  text-decoration: none;
+  color: var(--text-light);
+  font-size: 14px;
+}

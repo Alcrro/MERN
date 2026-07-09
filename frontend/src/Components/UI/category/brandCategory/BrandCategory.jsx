@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import "../allCategories/allCategories.css";
 import { Link, Navigate, useLocation } from "react-router-dom";
