@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import "./styles/dark.css";
 import Home from "./Pages/Home/Home";
@@ -20,6 +20,10 @@ import Checkout from "./Components/UI/checkout/Checkout";
 import NavbarAux from "./Components/nav/navbar-aux/NavbarAux";
 import Breadcrumb from "./Components/UI/Breadcrumb/Breadcrumb";
 import Profile from "./Pages/Profile/Profile";
+import ProfileInfo from "./Pages/Profile/ProfileInfo";
+import ProfileOrders from "./Pages/Profile/ProfileOrders";
+import ProfileAddress from "./Pages/Profile/ProfileAddress";
+import ProfileSettings from "./Pages/Profile/ProfileSettings";
 import Favorites from "./Pages/Favorites/Favorites";
 import Footer from "./Layouts/footer/Footer";
 
@@ -31,6 +35,7 @@ const App = () => {
         <NavbarAux />
         <Breadcrumb />
         {/* <UserAuthProvider> */}
+        <main className="app-main">
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/auth/login" element={<Login />} />
@@ -44,7 +49,13 @@ const App = () => {
           <Route path="/cart/checkout" element={<Checkout />} />
 
           <Route element={<PrivateRoutes />}>
-            <Route path="/profile/*" element={<Profile />} />
+            <Route path="/profile" element={<Profile />}>
+              <Route index element={<Navigate to="info" replace />} />
+              <Route path="info"     element={<ProfileInfo />} />
+              <Route path="orders"   element={<ProfileOrders />} />
+              <Route path="address"  element={<ProfileAddress />} />
+              <Route path="settings" element={<ProfileSettings />} />
+            </Route>
             <Route exact path="/add/product" element={<AddProductForm />} />
             <Route exact path="admin/adauga-categorii" element={<AddCategory />} />
           </Route>
@@ -54,6 +65,7 @@ const App = () => {
           <Route path="*" element={<NoMatch />} />
           <Route path="/product/*" element={<NoMatch />} />
         </Routes>
+        </main>
         {/* </UserAuthProvider> */}
         <Footer />
       </div>
