@@ -1,80 +1,71 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
-const Products = require("../../models/product/products");
-const Register = require("../../models/auth/register");
+const Products = require("../../models/product/Product");
 
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
 exports.getProducts = asyncHandler(async (req, res) => {
-  const { search, sort, brand, rating, model } = req.query;
-  const products = await Products.find({});
+  const { search, sort, brand, rating, model, kind, tip, availability } = req.query;
 
-  //Check is there any query
-
-  // const limit = 10;
-  // const skip = 1;
-  const queryObject = {};
-  console.log(queryObject);
-
-  // if (search) {
-  //   queryObject.name = { $regex: search, $options: "i" };
-  // }
-
-  //no await
-  let result = Products.find(queryObject);
-
-  // chian sort conditions
-  if (sort === "Price: Low to High") {
-    result = result.sort("price");
-  }
-  if (sort === "Price: High to Low") {
-    result = result.sort("-price");
-  }
-  if (sort === "Newest") {
-    result = result.sort("-createdAt");
-  }
-  if (sort === "Oldest") {
-    result = result.sort("createdAt");
-  }
-  if (sort === "Rating: Low to High") {
-    result = result.sort("rating");
-  }
-  if (sort === "Rating: High to Low") {
-    result = result.sort("-rating");
-  }
-
-  if (brand) {
-    result = result.find({ brand: brand });
-  }
-  if (rating) {
-    result = result.find({ rating: rating });
-  }
-  if (model) {
-    result = result.find({ model: model });
-  }
-
-  //chain skip and limit
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 30;
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.min(100, Number(req.query.limit) || 30);
   const skip = (page - 1) * limit;
 
-  result = result.skip(skip).limit(limit);
+  const queryObject = {};
 
-  const test = await result;
+  if (search) {
+    queryObject.$text = { $search: search };
+  }
+  if (brand) {
+    const brands = Array.isArray(brand) ? brand : [brand];
+    queryObject.brand = { $in: brands };
+  }
+  if (rating) {
+    queryObject["rating.average"] = { $gte: Number(rating) };
+  }
+  if (model) {
+    const models = Array.isArray(model) ? model : [model];
+    queryObject.model = { $in: models };
+  }
+  if (kind) {
+    queryObject.kind = kind;
+  }
+  if (tip) {
+    queryObject.tip = tip;
+  }
+  if (availability) {
+    queryObject["stock.availability"] = availability;
+  }
 
-  const totalProducts = await Products.countDocuments();
-  const numberOfPages = Math.ceil(totalProducts / limit);
+  const sortMap = {
+    "Price: Low to High":   "price",
+    "Price: High to Low":   "-price",
+    "Newest":               "-createdAt",
+    "Oldest":               "createdAt",
+    "Rating: Low to High":  "rating.average",
+    "Rating: High to Low":  "-rating.average",
+    "-rating":              "-rating.average",
+    "price":                "price",
+  };
+  const sortStr = sortMap[sort] || "-createdAt";
+
+  const [queryProducts, totalFiltered, totalProducts] = await Promise.all([
+    Products.find(queryObject).sort(sortStr).skip(skip).limit(limit),
+    Products.countDocuments(queryObject),
+    Products.find({}).sort("-createdAt"),
+  ]);
+
+  const numberOfPages = Math.ceil(totalFiltered / limit);
 
   res.status(200).json({
     success: true,
-    totalProductsNumberQuery: totalProducts,
+    totalProductsNumberQuery: totalFiltered,
     numberOfPages,
     currentPage: page,
     limit,
-    queryProducts: test,
-    totalProducts: products,
-    // test: products,
+    queryProducts,
+    totalProducts,
   });
 });
 
@@ -100,50 +91,29 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
 exports.postProduct = asyncHandler(async (req, res, next) => {
   const {
     productBrand,
-    productRating,
     productModel,
     productMemorieInterna,
     price,
     description,
-    admin,
+    stock,
+    availability,
   } = req.body;
 
   const product = await Products.create({
     brand: productBrand,
-    rating: productRating,
     model: productModel,
     memorieInterna: productMemorieInterna,
     price: price,
     description: description,
+    rating: { average: 0, count: 0 },
+    stock: { quantity: stock ?? 0, availability: availability ?? "In Stoc" },
+    user: req.user.id,
   });
 
   res.status(201).json({
     success: true,
-    product: product,
+    product,
     message: "Product created successfully",
   });
 });
 
-// @desc 	Add a product to cart
-// @route 	POST /api/add-to-cart
-// @access 	Public
-
-exports.addToCart = asyncHandler(async (req, res, next) => {
-  req.body.user = req.user.id;
-
-  const product = await Products.findById(req.user.id);
-
-  // const products = await Products.find();
-  // products.map((product) => {
-  //   if (product._id == req.body.id) {
-  //     product.cart = true;
-  //     product.save();
-  //   }
-  // });
-
-  res.status(201).json({
-    success: true,
-    products,
-    message: "Product added to cart successfully",
-  });
-});

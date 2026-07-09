@@ -3,14 +3,13 @@ const {
   getProducts,
   postProduct,
   getProduct,
-  addToCart,
 } = require("../../controllers/products/products");
+const { protect, authorize } = require("../../middleware/auth/auth");
 
 const router = express.Router();
 
 router.route("/products").get(getProducts);
-router.route("/admin/product").post(postProduct);
 router.route("/product/:id").get(getProduct);
-router.route("/add-to-cart").post(addToCart);
+router.route("/admin/product").post(protect, authorize("vendor", "admin"), postProduct);
 
 module.exports = router;

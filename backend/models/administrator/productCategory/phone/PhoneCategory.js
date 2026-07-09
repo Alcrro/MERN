@@ -9,7 +9,6 @@ const PhoneCategorySchema = new mongoose.Schema({
 });
 
 PhoneCategorySchema.pre("save", function (next) {
-  console.log("Successfully saved", this.phoneCategoryName);
   next();
 });
 

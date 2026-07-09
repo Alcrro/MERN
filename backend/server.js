@@ -1,35 +1,38 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const notFoundMiddleware = require("../backend/middleware/middlewareRoutes/not-found");
+const notFoundMiddleware = require("./middleware/middlewareRoutes/not-found");
 const cors = require("cors");
 const errorHandler = require("./middleware/error/error");
 const cookieParser = require("cookie-parser");
 
 const connectDB = require("./configs/mongoDB");
 
-//Load env vars
-dotenv.config({ path: "./backend/configs/.env" });
-
-//Connect to database
+dotenv.config();
 connectDB();
 
 const server = express();
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
 server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
-server.use(cors());
+server.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  credentials: true,
+}));
 
-//middleware
-notFoundMiddleware;
 
 //Mount routers
 
+server.use("/api/categories", require("./routes/categories/categories"));
 server.use("/api/auth", require("./routes/auth/auth"));
-server.use("/api/", require("./routes/user/user"));
+server.use("/api/users", require("./routes/user/user"));
 server.use("/api/", require("./routes/products/products"));
 server.use("/api/admin/", require("./routes/productCategory/productCategory"));
+server.use("/api/product/:productId/reviews", require("./routes/review/review"));
+server.use("/api/reviews", require("./routes/review/review"));
+server.use("/api/product/:productId/stock", require("./routes/stock/stock"));
+server.use("/api/admin/product/:productId/stock", require("./routes/stock/stock"));
+server.use("/api/orders", require("./routes/order/order"));
+server.use("/api/addresses", require("./routes/address/address"));
 server.use(notFoundMiddleware);
 
 server.use(errorHandler);
