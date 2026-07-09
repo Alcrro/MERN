@@ -9,7 +9,7 @@
 }
 
 .filter {
-  width: 228px;
+  width: 240px;
   flex-shrink: 0;
   position: sticky;
   top: calc(var(--ann-h) + var(--header-h) + var(--nav-h) + 16px);
@@ -32,11 +32,13 @@
 
 /* ─── Sidebar filter sections ───────────────────────────── */
 .sidebar-filter-brand,
-.sidebar-filter-rating {
+.sidebar-filter-rating,
+.brand-v2-container,
+.model-v2-container {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   overflow: hidden;
 }
 
@@ -44,19 +46,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 14px;
-  font-size: .82rem;
-  font-weight: 600;
-  color: var(--text-dark);
+  padding: 10px 14px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   text-decoration: none;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
   cursor: pointer;
-  transition: background .12s;
+  transition: background .12s, color .12s;
 }
 
-.filter-head:hover { background: var(--bg-page); }
-.filter-head span::after { content: " ▾"; font-size: .65rem; color: var(--text-muted); }
+.filter-head:hover { background: var(--bg-page); color: var(--text-dark); }
+
+/* SVG chevron via mask */
+.filter-head span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.filter-head span::after {
+  content: "";
+  display: inline-block;
+  width: 14px; height: 14px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center/contain no-repeat;
+  flex-shrink: 0;
+  opacity: .5;
+}
 
 .sidebar-filter-rating-body,
 .sidebar-filter-brand-body { padding: 4px; }
@@ -67,8 +88,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 10px;
-  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  border-radius: 0;
   cursor: pointer;
   transition: background .12s;
 }
@@ -90,8 +111,16 @@
   flex: 1;
 }
 
-.star-brand-text { display: inline; }
-.star-brand-text span { font-size: .75rem; color: var(--text-muted); }
+.filter-inner:has(input:checked) label { color: var(--text-dark); font-weight: 600; }
+
+.star-brand-text { flex-shrink: 0; }
+.star-brand-text span {
+  font-size: .72rem;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border-radius: 10px;
+  padding: 1px 5px;
+}
 .filter-body { padding: 0; }
 .brand-filter-body { padding: 0; }
 .container-brand-filter { margin-top: 0; }
@@ -103,9 +132,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 10px;
+  padding: 6px 12px;
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   transition: background .12s;
 }
 
@@ -117,15 +146,21 @@
   cursor: pointer;
   flex-shrink: 0;
 }
-.star-rating-link span { font-size: .75rem; color: var(--text-muted); }
-.star-rating-body { padding: 4px; }
+.star-rating-link span {
+  font-size: .72rem;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border-radius: 10px;
+  padding: 1px 5px;
+}
+.star-rating-body { padding: 4px 0; }
 
 /* ─── Scrollable filter list ────────────────────────────── */
-.scrollable { max-height: 160px; overflow-y: auto; scrollbar-width: thin; }
+.scrollable { max-height: 180px; overflow-y: auto; scrollbar-width: thin; }
 .scrollable::-webkit-scrollbar { width: 3px; }
 .scrollable::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* ─── Mobile filter button ─────────────────────────────── */
+/* ─── Filter button (mobile only — sidebar visible on desktop) ── */
 .mob-filter-btn {
   display: none;
   align-items: center;
@@ -140,9 +175,6 @@
   cursor: pointer;
   position: relative;
   transition: border-color .13s;
-  width: 100%;
-  justify-content: center;
-  margin-bottom: 10px;
 }
 .mob-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
 
@@ -160,9 +192,9 @@
   padding: 0 4px;
 }
 
-/* ─── Mobile filter bottom sheet ───────────────────────── */
+/* ─── Filter backdrop ───────────────────────────────────── */
 .mob-filter-backdrop {
-  display: none;
+  display: block;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.5);
@@ -170,21 +202,26 @@
   backdrop-filter: blur(2px);
 }
 
+/* ─── Filter sheet (bottom sheet, rendered only when open) ── */
 .mob-filter-sheet {
-  display: none;
+  display: flex;
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  max-height: 85vh;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(860px, 96vw);
+  max-height: 82vh;
   background: var(--bg-card);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  box-shadow: 0 -8px 32px rgba(0,0,0,.2);
+  box-shadow: 0 -8px 40px rgba(0,0,0,.22);
   z-index: 800;
   flex-direction: column;
-  transform: translateY(100%);
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  animation: filterSlideUp .25s cubic-bezier(.4,0,.2,1);
 }
 
-.mob-filter-sheet--open { transform: translateY(0); }
+@keyframes filterSlideUp {
+  from { transform: translateX(-50%) translateY(100%); }
+  to   { transform: translateX(-50%) translateY(0); }
+}
 
 .mob-filter-sheet__head {
   display: flex;
@@ -222,17 +259,6 @@
   margin-left: 6px;
 }
 
-/* drag handle */
-.mob-filter-sheet::before {
-  content: "";
-  display: block;
-  width: 40px; height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 10px auto 0;
-  flex-shrink: 0;
-}
-
 .mob-filter-sheet__body {
   flex: 1;
   overflow-y: auto;
@@ -268,16 +294,16 @@
     flex-direction: column;
   }
 
-  /* hide desktop sidebar */
   .filter { display: none; }
-
-  /* show mobile filter button */
-  .mob-filter-btn        { display: flex; }
-  .mob-filter-backdrop   { display: block; }
-  .mob-filter-sheet      { display: flex; }
 
   /* compact listing panel */
   .listing-panel-container { padding: 10px 12px; }
+
+  /* full-width on mobile */
+  .mob-filter-sheet { width: 100%; max-height: 88vh; }
+
+  /* show filter button on mobile */
+  .mob-filter-btn { display: flex; width: 100%; justify-content: center; margin-bottom: 10px; }
 
   /* cards: 2 cols on mobile, 1 col on very small */
   .card-collection.card-v2-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -289,5 +315,5 @@
 
 /* ─── Dark mode filter sheet ────────────────────────────── */
 html[data-theme="dark"] .mob-filter-sheet {
-  box-shadow: 0 -8px 32px rgba(0,0,0,.5);
+  box-shadow: 0 -8px 40px rgba(0,0,0,.55);
 }

@@ -1,19 +1,18 @@
-/* ─── Brand & Model sidebar cards ───────────────────────── */
+/* ─── Brand & Model sidebar cards (styles shared with productsv2.css) ── */
 .brand-v2-container,
 .model-v2-container {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   overflow: hidden;
 }
 
-/* filter-head styles live in productsv2.css; only add what's unique here */
 .filters-v2-container { margin: 0; }
 
-/* ─── Filter rows ────────────────────────────────────────── */
+/* ─── Filter rows ─────────────────────────────────────────── */
 .filter-body {
-  padding: 4px;
+  padding: 0;
   font-size: .82rem;
 }
 
@@ -35,8 +34,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 10px;
-  border-radius: var(--radius-sm);
+  padding: 6px 12px;
   cursor: pointer;
   transition: background .12s;
 }
@@ -61,7 +59,15 @@
   text-overflow: ellipsis;
 }
 
+.filter-inner:has(input:checked) label { color: var(--text-dark); font-weight: 600; }
+
 .star-brand-text { flex-shrink: 0; }
-.star-brand-text span { font-size: .75rem; color: var(--text-muted); }
+.star-brand-text span {
+  font-size: .72rem;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border-radius: 10px;
+  padding: 1px 5px;
+}
 
 .filter-body-separator { display: none; }
