@@ -1,0 +1,313 @@
+/* ── Base ─────────────────────────────────────────────────── */
+.ft {
+  background: var(--bg-card);
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ── Trust strip ──────────────────────────────────────────── */
+.ft-trust {
+  border-bottom: 1px solid var(--border);
+}
+
+.ft-trust__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+.ft-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1.1rem 1rem;
+  border-right: 1px solid var(--border);
+  transition: background .15s;
+}
+
+.ft-trust__item:last-child {
+  border-right: none;
+}
+
+.ft-trust__item:hover {
+  background: var(--bg-page);
+}
+
+.ft-trust__icon {
+  color: #3b82f6;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.ft-trust__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.ft-trust__sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* ── Main grid ────────────────────────────────────────────── */
+.ft-main {
+  border-bottom: 1px solid var(--border);
+}
+
+.ft-main__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.2fr;
+  gap: 2.5rem;
+}
+
+/* brand column */
+.ft-logo {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  text-transform: lowercase;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: .75rem;
+  line-height: 1;
+}
+
+.ft-brand__desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.65;
+  max-width: 240px;
+  margin-bottom: 1.1rem;
+}
+
+.ft-socials {
+  display: flex;
+  gap: 8px;
+}
+
+.ft-social {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-page);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.ft-social:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* link columns */
+.ft-col__title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dark);
+  margin-bottom: .9rem;
+}
+
+.ft-col__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.ft-col__list a,
+.ft-col__list span {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color .12s;
+  display: inline-block;
+}
+
+.ft-col__list a:hover {
+  color: var(--primary);
+}
+
+/* contact column */
+.ft-contact li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-light);
+}
+
+.ft-contact svg {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+/* ── Bottom bar ───────────────────────────────────────────── */
+.ft-bottom {
+  background: var(--bg-page);
+  border-top: 1px solid var(--border);
+}
+
+.ft-bottom__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: .85rem 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ft-copy {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.ft-legal {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ft-legal a {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color .12s;
+}
+
+.ft-legal a:hover {
+  color: var(--primary);
+}
+
+.ft-legal__sep {
+  color: var(--border);
+  font-size: 0.75rem;
+}
+
+/* ── ft-links-wrap: inline pe desktop, 2-col pe mobile ───── */
+.ft-links-wrap {
+  display: contents; /* pe desktop se comportă ca elemente individuale în grid */
+}
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ft {
+    padding-bottom: 0;
+  }
+
+  /* trust strip: 2x2 grid compact */
+  .ft-trust__inner {
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+  }
+
+  .ft-trust__item {
+    padding: .75rem 12px;
+    gap: 8px;
+  }
+
+  /* al 3-lea item: border-right pentru că e stânga jos */
+  .ft-trust__item:nth-child(2) { border-right: none; }
+  .ft-trust__item:nth-child(3) { border-top: 1px solid var(--border); }
+  .ft-trust__item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+
+  /* main: 1 coloană, padding redus */
+  .ft-main__inner {
+    grid-template-columns: 1fr;
+    padding: 1rem 16px;
+    gap: 0;
+  }
+
+  /* brand: logo stânga, socials dreapta */
+  .ft-brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: .85rem;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: .85rem;
+  }
+
+  .ft-brand__desc { display: none; }
+  .ft-socials { margin-bottom: 0; }
+
+  /* link-uri: 2 coloane într-un card cu bg ușor */
+  .ft-links-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--bg-page);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: .85rem;
+  }
+
+  .ft-links-wrap .ft-col {
+    padding: .85rem 1rem;
+  }
+
+  .ft-links-wrap .ft-col:first-child {
+    border-right: 1px solid var(--border-light);
+  }
+
+  .ft-links-wrap .ft-col__title {
+    font-size: 0.65rem;
+    margin-bottom: .6rem;
+  }
+
+  .ft-links-wrap .ft-col__list {
+    gap: .4rem;
+  }
+
+  .ft-links-wrap .ft-col__list a {
+    font-size: 0.8rem;
+  }
+
+  /* contact: card cu bg */
+  .ft-main__inner > .ft-col:last-child {
+    background: var(--bg-page);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: .85rem 1rem;
+    margin-bottom: .5rem;
+  }
+
+  .ft-main__inner > .ft-col:last-child .ft-col__title {
+    font-size: 0.65rem;
+    margin-bottom: .6rem;
+  }
+
+  /* bottom bar */
+  .ft-bottom__inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: .35rem;
+    padding: .65rem 16px;
+  }
+
+  .ft-legal {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
