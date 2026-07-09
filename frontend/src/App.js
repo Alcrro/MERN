@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import "./styles/dark.css";
 import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
 import Login from "./Pages/Auth/Login";
@@ -17,6 +18,10 @@ import Cards from "./Components/products/cards/Cards";
 import "./Components/UI/html-Scrollbar/HtmlScrollbar.css";
 import Checkout from "./Components/UI/checkout/Checkout";
 import NavbarAux from "./Components/nav/navbar-aux/NavbarAux";
+import Breadcrumb from "./Components/UI/Breadcrumb/Breadcrumb";
+import Profile from "./Pages/Profile/Profile";
+import Favorites from "./Pages/Favorites/Favorites";
+import Footer from "./Layouts/footer/Footer";
 
 const App = () => {
   return (
@@ -24,31 +29,33 @@ const App = () => {
       <div className="fPage">
         <Header />
         <NavbarAux />
+        <Breadcrumb />
         {/* <UserAuthProvider> */}
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/user/auth" element={<Login />}>
-            <Route exact path="login" element={<Login />} />
-            <Route exact path="register" element={<Register />} />
-          </Route>
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
           <Route exact path="products" element={<ProductsList />} />
           <Route exact path="cards" element={<Cards />} />
           <Route exact path="product">
             <Route path=":id" element={<SingleProducts />} />
           </Route>
-          <Route path="/cart/products" element={<AddToCart />} />
+          <Route path="/cart" element={<AddToCart />} />
           <Route path="/cart/checkout" element={<Checkout />} />
 
           <Route element={<PrivateRoutes />}>
+            <Route path="/profile/*" element={<Profile />} />
             <Route exact path="/add/product" element={<AddProductForm />} />
             <Route exact path="admin/adauga-categorii" element={<AddCategory />} />
           </Route>
 
+          <Route path="/favorites" element={<Favorites />} />
           <Route exact path="/about" element={<About />} />
           <Route path="*" element={<NoMatch />} />
           <Route path="/product/*" element={<NoMatch />} />
         </Routes>
         {/* </UserAuthProvider> */}
+        <Footer />
       </div>
     </Router>
   );

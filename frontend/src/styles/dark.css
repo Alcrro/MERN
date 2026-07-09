@@ -1,0 +1,109 @@
+/* ─── Dark mode overrides for hardcoded colors ─────────────
+   Applied only when html[data-theme="dark"] is set.
+   These patch values that couldn't use CSS variables.
+─────────────────────────────────────────────────────────── */
+
+/* ── Home: featured section gradient ──────────────────────── */
+html[data-theme="dark"] .featured-section-wrap {
+  background: linear-gradient(160deg, #1e293b 0%, #161c2d 100%);
+}
+
+/* ── Home: hero placeholder ────────────────────────────────── */
+html[data-theme="dark"] .hero-image-placeholder {
+  background: linear-gradient(135deg, var(--primary-light) 0%, #1e1b4b 100%);
+}
+
+/* ── Home: skeleton shimmer ────────────────────────────────── */
+html[data-theme="dark"] .skeleton-img,
+html[data-theme="dark"] .skeleton-line {
+  background: #334155;
+}
+
+/* ── Auth / Profile: input backgrounds ────────────────────── */
+html[data-theme="dark"] .form-group input[type="text"],
+html[data-theme="dark"] .form-group input[type="email"],
+html[data-theme="dark"] .form-group input[type="password"],
+html[data-theme="dark"] .container-login form input,
+html[data-theme="dark"] .container-register form input,
+html[data-theme="dark"] .auth-select,
+html[data-theme="dark"] .prf-fg input {
+  background-color: var(--bg-input);
+  color: var(--text-dark);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .form-group input:focus,
+html[data-theme="dark"] .container-login form input:focus,
+html[data-theme="dark"] .container-register form input:focus,
+html[data-theme="dark"] .auth-select:focus,
+html[data-theme="dark"] .prf-fg input:focus {
+  background-color: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+}
+
+html[data-theme="dark"] .prf-disabled {
+  background: var(--bg-page) !important;
+}
+
+/* ── Single product: image background ─────────────────────── */
+html[data-theme="dark"] .sp-img-wrap {
+  background: linear-gradient(145deg, #1e2a4a 0%, #1e293b 55%, #1a2e1f 100%);
+}
+
+/* ── Single product: skeleton / bar ────────────────────────── */
+html[data-theme="dark"] .sp-bar-track {
+  background: #334155;
+}
+
+/* ── Cards: hover border ─────────────────────────────────────*/
+html[data-theme="dark"] .card-v2:hover,
+html[data-theme="dark"] .card-item:hover {
+  border-color: #3b4f6e;
+}
+
+/* ── Cards: availability badges (keep readable on dark) ────── */
+html[data-theme="dark"] .avail-green  { background: #052e16; color: #86efac; }
+html[data-theme="dark"] .avail-orange { background: #431407; color: #fdba74; }
+html[data-theme="dark"] .avail-red    { background: #450a0a; color: #fca5a5; }
+html[data-theme="dark"] .avail-purple { background: #2e1065; color: #c4b5fd; }
+
+/* ── Role badges (dropdown) ────────────────────────────────── */
+html[data-theme="dark"] .role-admin  { background: #451a03; color: #fcd34d; }
+html[data-theme="dark"] .role-vendor { background: #052e16; color: #6ee7b7; }
+html[data-theme="dark"] .role-client { background: var(--primary-light); color: var(--primary); }
+
+/* ── Profile role badges ───────────────────────────────────── */
+html[data-theme="dark"] .prf-role-client { background: #1e3a5f; color: #93c5fd; }
+html[data-theme="dark"] .prf-role-vendor { background: #052e16; color: #6ee7b7; }
+html[data-theme="dark"] .prf-role-admin  { background: #2e1065; color: #c4b5fd; }
+
+/* ── Danger zone delete button ─────────────────────────────── */
+html[data-theme="dark"] .prf-delete-btn {
+  background: #450a0a;
+  color: #fca5a5;
+  border-color: #991b1b;
+}
+html[data-theme="dark"] .prf-delete-btn:hover {
+  background: #7f1d1d;
+}
+
+/* ── Logout hover ──────────────────────────────────────────── */
+html[data-theme="dark"] .dropdown-logout:hover {
+  background: #450a0a;
+}
+
+/* ── Announcement bar (was using --text-dark which flip in dark) */
+html[data-theme="dark"] .announcement-bar {
+  background: var(--ann-bg);
+}
+
+/* ── Scrollbar (dark) ──────────────────────────────────────── */
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}

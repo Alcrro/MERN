@@ -1,84 +1,93 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, Outlet } from "react-router-dom";
-import { login } from "../../features/auth/authSlice";
+import { useNavigate, Link } from "react-router-dom";
+import { login, reset } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import "./auth.css";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    password: "",
-  });
+  const [formData, setFormData]   = useState({ email: "", password: "" });
+  const [showPass, setShowPass]   = useState(false);
+  const { email, password }       = formData;
 
-  const { name, password } = formData;
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+  const { user, isLoading, isError, message } = useSelector((s) => s.auth);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { user, isLoading, isSuccess, isError, message } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   useEffect(() => {
     if (isError) {
-      toast.error(message);
+      toast.error(message || "Email sau parolă incorecte.");
+      dispatch(reset());
     }
-    //Redirect when logged in
-    if (isSuccess || user) {
-      navigate("/");
-      toast.success(message);
-    }
-  }, [isError, isSuccess, message, user, navigate, dispatch]);
+  }, [isError, message, dispatch]);
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const onChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-
-    const userData = {
-      name,
-      password,
-    };
-    dispatch(login(userData));
+    dispatch(login({ email, password }));
   };
 
   return (
-    <div className="container-login">
-      <section>
-        <h1>Login</h1>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Bun venit!</h1>
+        <p className="auth-subtitle">Conectează-te la contul tău</p>
+
         <form onSubmit={onSubmit}>
           <div className="form-group">
-            <label> Introdu name: </label>
+            <label htmlFor="email">Email</label>
             <input
-              type="name"
-              id="name"
-              name="name"
+              type="email"
+              id="email"
+              name="email"
+              value={email}
               onChange={onChange}
-              value={name}
+              placeholder="exemplu@email.com"
               required
-              placeholder="Enter your name"
-            />
-          </div>
-          <div className="form-group">
-            <label> Introdu password: </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={onChange}
-              value={password}
-              required
-              placeholder="Enter your password"
+              autoComplete="email"
             />
           </div>
 
-          <button>Login</button>
+          <div className="form-group">
+            <label htmlFor="password">Parolă</label>
+            <div className="auth-pass-wrap">
+              <input
+                type={showPass ? "text" : "password"}
+                id="password"
+                name="password"
+                value={password}
+                onChange={onChange}
+                placeholder="Parola ta"
+                required
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                className="auth-eye"
+                onClick={() => setShowPass((v) => !v)}
+                tabIndex={-1}
+              >
+                {showPass ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" className="auth-submit-btn" disabled={isLoading}>
+            {isLoading ? "Se conectează…" : "Conectează-te"}
+          </button>
         </form>
-      </section>
+
+        <p className="auth-link">
+          Nu ai cont?{" "}
+          <Link to="/auth/register">Înregistrează-te</Link>
+        </p>
+      </div>
     </div>
   );
 };

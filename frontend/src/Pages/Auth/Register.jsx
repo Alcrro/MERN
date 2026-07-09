@@ -1,130 +1,137 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { register, reset } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import "./auth.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
-    admin: false,
+    name: "", email: "", password: "", password2: "",
   });
+  const [showPass, setShowPass]   = useState(false);
+  const [showPass2, setShowPass2] = useState(false);
+  const { name, email, password, password2 } = formData;
 
-  const { name, email, password, password2, admin } = formData;
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+  const { user, isLoading, isError, message } = useSelector((s) => s.auth);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { user, isLoading, isSuccess, isError, message } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   useEffect(() => {
     if (isError) {
-      toast.error(message);
-    } else if (isSuccess) {
-      toast.success(message);
+      toast.error(message || "A apărut o eroare. Încearcă din nou.");
+      dispatch(reset());
     }
-  }, [isError, isSuccess, message, user, navigate, dispatch]);
+  }, [isError, message, dispatch]);
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const checkAdmin = (e) => {
-    setFormData((prevState) => ({ ...prevState, admin: e.target.checked }));
-    if (e.target.checked) {
-      console.log("✅ Checkbox is checked");
-    } else {
-      console.log("⛔️ Checkbox is NOT checked");
-    }
-  };
+  const onChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     if (password !== password2) {
-      toast.error("Passwords do not match");
-    } else {
-      const userData = {
-        name,
-        email,
-        password,
-        admin: admin,
-      };
-      dispatch(register(userData));
+      toast.error("Parolele nu coincid.");
+      return;
     }
+    if (password.length < 6) {
+      toast.error("Parola trebuie să aibă cel puțin 6 caractere.");
+      return;
+    }
+    dispatch(register({ name, email, password, role: "client" }));
   };
 
   return (
-    <div className="container-register">
-      <section>
-        <h1>Register </h1>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Cont nou</h1>
+        <p className="auth-subtitle">Creează-ți contul gratuit</p>
+
         <form onSubmit={onSubmit}>
           <div className="form-group">
-            <label> Introdu numele </label>
+            <label htmlFor="name">Nume complet</label>
             <input
               type="text"
               id="name"
               name="name"
-              autoComplete="on"
-              onChange={onChange}
               value={name}
+              onChange={onChange}
+              placeholder="Ion Popescu"
               required
-              placeholder="Enter your name"
+              autoComplete="name"
             />
           </div>
+
           <div className="form-group">
-            <label> Introdu email </label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               name="email"
-              autoComplete="on"
-              onChange={onChange}
               value={email}
-              required
-              placeholder="Enter your email"
-            />
-          </div>
-          <div className="form-group">
-            <label> Introdu parola </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
               onChange={onChange}
-              value={password}
+              placeholder="exemplu@email.com"
               required
-              placeholder="Enter your password"
+              autoComplete="email"
             />
           </div>
+
           <div className="form-group">
-            <label> Confirma parola </label>
-            <input
-              type="password"
-              id="password2"
-              name="password2"
-              onChange={onChange}
-              value={password2}
-              required
-              placeholder="Confirm your password"
-            />
+            <label htmlFor="password">Parolă</label>
+            <div className="auth-pass-wrap">
+              <input
+                type={showPass ? "text" : "password"}
+                id="password"
+                name="password"
+                value={password}
+                onChange={onChange}
+                placeholder="Minim 6 caractere"
+                required
+                autoComplete="new-password"
+              />
+              <button type="button" className="auth-eye"
+                onClick={() => setShowPass((v) => !v)} tabIndex={-1}>
+                {showPass ? "🙈" : "👁️"}
+              </button>
+            </div>
           </div>
+
           <div className="form-group">
-            <label> Vrei admin boss? </label>
-            <input type="checkbox" name="admin" id="admin" onChange={checkAdmin} value={admin} />
+            <label htmlFor="password2">Confirmă parola</label>
+            <div className="auth-pass-wrap">
+              <input
+                type={showPass2 ? "text" : "password"}
+                id="password2"
+                name="password2"
+                value={password2}
+                onChange={onChange}
+                placeholder="Repetă parola"
+                required
+                autoComplete="new-password"
+              />
+              <button type="button" className="auth-eye"
+                onClick={() => setShowPass2((v) => !v)} tabIndex={-1}>
+                {showPass2 ? "🙈" : "👁️"}
+              </button>
+            </div>
+            {password2 && password !== password2 && (
+              <span className="auth-field-err">Parolele nu coincid</span>
+            )}
           </div>
-          <div className="button-group">
-            <button className="btn btn-block">Register</button>
-          </div>
+
+          <button type="submit" className="auth-submit-btn" disabled={isLoading}>
+            {isLoading ? "Se înregistrează…" : "Creează cont"}
+          </button>
         </form>
-      </section>
+
+        <p className="auth-link">
+          Ai deja cont?{" "}
+          <Link to="/auth/login">Conectează-te</Link>
+        </p>
+      </div>
     </div>
   );
 };

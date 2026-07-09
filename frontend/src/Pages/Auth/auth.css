@@ -1,132 +1,296 @@
-body {
-  background-color: #f5f5f5;
-  font-family: "Courier New", Courier, monospace;
-}
-
-/* Start Login form */
-.container-login {
-  width: 100%;
-  height: 550px;
+.auth-page {
+  min-height: calc(100vh - 7rem);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  padding: 2rem 1rem;
+  background-color: var(--bg-page);
 }
 
-.container-login section {
-  display: block;
-  background-color: #fff;
-  padding: 2rem;
-  width: 400px;
-  border-radius: 10px;
-}
-
-.container-login form {
-  text-align: center;
-}
-
-.container-login form input {
-  display: block;
+.auth-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  max-width: 420px;
 }
 
-.container-login h1 {
-  display: block;
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.container-login .form-group {
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.container-login .form-group label {
-  display: block;
-  font-size: 1.2rem;
+.auth-card h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-dark);
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
-.container-login button {
-  display: block;
+.auth-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-medium);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #000;
-  font-size: 1.2rem;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-dark);
+  background-color: #fafafa;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background-color: var(--bg-card);
+}
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.form-group-checkbox label {
+  font-size: 0.9rem;
+  color: var(--text-medium);
   cursor: pointer;
 }
 
-/* End Login form */
+.form-group-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
 
-/* Start Register form */
+.auth-submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  margin-top: 0.5rem;
+}
 
+.auth-submit-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.auth-submit-btn:active {
+  transform: scale(0.99);
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.auth-link a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* Password show/hide */
+.auth-pass-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-pass-wrap input {
+  flex: 1;
+  padding-right: 2.5rem !important;
+}
+
+.auth-eye {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+  color: var(--text-light);
+  transition: color .15s;
+}
+
+.auth-eye:hover { color: var(--text-dark); }
+
+/* Select */
+.auth-select {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-dark);
+  background-color: #fafafa;
+  outline: none;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 2rem;
+}
+
+.auth-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background-color: var(--bg-card);
+}
+
+/* Inline field error */
+.auth-field-err {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin-top: 2px;
+}
+
+/* Legacy class support */
+.container-login,
 .container-register {
   width: 100%;
-  height: 550px;
+  min-height: calc(100vh - 7rem);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  padding: 2rem 1rem;
+  background-color: var(--bg-page);
 }
 
+.container-login section,
 .container-register section {
-  display: block;
-  background-color: #fff;
-  padding: 2rem;
-  width: 400px;
-  border-radius: 10px;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
 }
 
-.container-register form {
+.container-login h1,
+.container-register h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
+.container-login form,
+.container-register form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.container-login .form-group,
+.container-register .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0;
+}
+
+.container-login .form-group label,
+.container-register .form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-medium);
+}
+
+.container-login form input,
 .container-register form input {
   display: block;
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-dark);
+  background-color: #fafafa;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  margin-bottom: 0;
 }
 
-.container-register h1 {
-  display: block;
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.container-login form input:focus,
+.container-register form input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background-color: var(--bg-card);
 }
 
-.container-register .form-group {
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.container-register .form-group label {
-  display: block;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-}
-
+.container-login button,
 .container-register button {
   display: block;
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #000;
-  font-size: 1.2rem;
+  padding: 0.75rem;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
+  transition: background-color 0.15s;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
 }
-/* End Register form */
+
+.container-login button:hover,
+.container-register button:hover {
+  background-color: var(--primary-dark);
+}
+
+.button-group {
+  margin-top: 0.5rem;
+}
