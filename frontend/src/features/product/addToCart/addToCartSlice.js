@@ -1,10 +1,26 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  card: [],
-  cartTotalQuantity: 0,
-  cartTotalAmount: 0,
-  message: null,
+const KEY = "alcrro-cart";
+
+const load = () => {
+  try { return JSON.parse(localStorage.getItem(KEY)) ?? { card: [], cartTotalQuantity: 0, cartTotalAmount: 0 }; }
+  catch { return { card: [], cartTotalQuantity: 0, cartTotalAmount: 0 }; }
+};
+
+const save = (state) => {
+  localStorage.setItem(KEY, JSON.stringify({
+    card: state.card,
+    cartTotalQuantity: state.cartTotalQuantity,
+    cartTotalAmount: state.cartTotalAmount,
+  }));
+};
+
+const initialState = { ...load(), message: null };
+
+const recalc = (state) => {
+  state.cartTotalQuantity = state.card.reduce((s, i) => s + i.itemQuantity, 0);
+  state.cartTotalAmount   = state.card.reduce((s, i) => s + i.itemAmountPrice, 0);
+  save(state);
 };
 
 const cartSlice = createSlice({
@@ -12,57 +28,40 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const itemIndex = state.card.findIndex((item) => item.data._id === action.payload.data._id);
-
-      if (itemIndex >= 0) {
-        state.card[itemIndex].itemQuantity += 1;
-        state.card[itemIndex].itemAmountPrice =
-          action.payload.data.price * state.card[itemIndex].itemQuantity;
+      const idx = state.card.findIndex((i) => i.data._id === action.payload.data._id);
+      if (idx >= 0) {
+        state.card[idx].itemQuantity  += 1;
+        state.card[idx].itemAmountPrice = action.payload.data.price * state.card[idx].itemQuantity;
       } else {
-        const tempProduct = {
-          ...action.payload,
-          itemQuantity: 1,
-          itemAmountPrice: action.payload.data.price,
-        };
-        state.card.push(tempProduct);
+        state.card.push({ ...action.payload, itemQuantity: 1, itemAmountPrice: action.payload.data.price });
       }
-
-      // create an array of all items
-      const itemsWithPrice = state.card.map((item) => item);
-
-      // calculate price
-      const totalPrice = itemsWithPrice.reduce((sum, num) => sum + num.itemAmountPrice, 0);
-      const totalQuantity = itemsWithPrice.reduce((sum, num) => sum + num.itemQuantity, 0);
-      state.cartTotalAmount = totalPrice;
-      state.cartTotalQuantity = totalQuantity;
+      recalc(state);
     },
 
     removeSingleCart: (state, action) => {
-      const cartItem = state.card.findIndex((item) => item.data._id === action.payload.data._id);
-      if (state.card[cartItem].itemQuantity > 1) {
-        state.card[cartItem].itemQuantity -= 1;
-        state.card[cartItem].itemAmountPrice =
-          action.payload.data.price * state.card[cartItem].itemQuantity;
-        state.cartTotalAmount = state.card.reduce((sum, num) => sum + num.itemAmountPrice, 0);
-      } else if (state.card[cartItem].itemQuantity === 1) {
-        state.card.splice(cartItem, 1);
+      const idx = state.card.findIndex((i) => i.data._id === action.payload.data._id);
+      if (idx < 0) return;
+      if (state.card[idx].itemQuantity > 1) {
+        state.card[idx].itemQuantity  -= 1;
+        state.card[idx].itemAmountPrice = action.payload.data.price * state.card[idx].itemQuantity;
+      } else {
+        state.card.splice(idx, 1);
       }
-      state.cartTotalQuantity = state.card.reduce((sum, num) => sum + num.itemQuantity, 0);
-      state.cartTotalAmount = state.card.reduce((sum, num) => sum + num.itemAmountPrice, 0);
+      recalc(state);
     },
 
     removeFromCart: (state, action) => {
-      const cartItem = state.card.findIndex((item) => item.data._id === action.payload.data._id);
-      state.card.splice(cartItem, 1);
-      state.cartTotalQuantity = state.card.reduce((sum, num) => sum + num.itemQuantity, 0);
-      state.cartTotalAmount = state.card.reduce((sum, num) => sum + num.itemAmountPrice, 0);
+      const idx = state.card.findIndex((i) => i.data._id === action.payload.data._id);
+      if (idx >= 0) state.card.splice(idx, 1);
+      recalc(state);
     },
+
     clearCart: (state) => {
-      state.cart = [];
+      state.card = [];
+      recalc(state);
     },
   },
 });
 
 export const { addToCart, removeFromCart, removeSingleCart, clearCart } = cartSlice.actions;
-
 export default cartSlice.reducer;

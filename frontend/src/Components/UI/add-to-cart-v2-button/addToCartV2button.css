@@ -4,14 +4,24 @@
 
 .add-to-cart-v2-button-inner .btn {
   width: 100%;
-  background: #3985e0;
-  background: -webkit-linear-gradient(left, #4a60c1 10%, #3985e0);
-  background: linear-gradient(to right, #4a60c1 10%, #3985e0);
-  border-width: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-radius: 5px;
+  background-color: var(--primary);
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
   color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
   line-height: 20px;
   cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.add-to-cart-v2-button-inner .btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.add-to-cart-v2-button-inner .btn:active {
+  transform: scale(0.97);
 }
