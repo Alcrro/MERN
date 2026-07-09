@@ -1,0 +1,21 @@
+.announcement-bar {
+  background: var(--ann-bg);
+  color: rgba(255,255,255,.78);
+  font-size: .75rem;
+  font-weight: 400;
+  height: var(--ann-h);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: .01em;
+}
+
+.ann-left,
+.ann-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ann-right { color: rgba(255,255,255,.55); }
