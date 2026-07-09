@@ -2,90 +2,106 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://alcrro.onrender.com/api/" }),
-  tagTypes: ["Products"],
-  //define endpoints here
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.REACT_APP_API_URL || ""}/api/`,
+    credentials: "include",
+  }),
+  tagTypes: ["Products", "Reviews", "Categories"],
   endpoints: (builder) => ({
+    /* ── Categories ── */
+    getCategories: builder.query({
+      query: () => "categories",
+      providesTags: [{ type: "Categories" }],
+      keepUnusedDataFor: 3600, // cache 1 oră — categoriile se schimbă rar
+    }),
+
+    /* ── Products ── */
     getAllProducts: builder.query({
-      query: () => {
-        return "products";
-      },
+      query: () => "products",
       providesTags: [{ type: "Products" }],
     }),
     getProducts: builder.query({
-      query: (args) => {
-        const { limit, page, sort, brand, rating, model } = args;
-
-        const productBrand = brand.map((item) => {
-          return `&brand=${item}`;
-        });
-
-        const stringBrand = productBrand.join("");
-
-        const productModel = model.map((item) => {
-          return `&model=${item}`;
-        });
-        const stringModel = productModel.join("");
-        // console.log(stringModel);
-
-        const productRating = rating.map((item) => {
-          return `&rating=${item}`;
-        });
-        // console.log(productRating);
-        const stringRating = productRating.join("");
-
-        return `products?sort=${sort}&limit=${limit}&page=${page}${stringModel}${stringBrand}${stringRating}
-        `;
-      },
-      providesTags: [{ type: "Products" }],
-    }),
-    addProduct: builder.mutation({
-      query: (body) => {
-        return {
-          url: `admin/product`,
-          method: "POST",
-          body,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
+      query: ({ limit, page, sort, brand, rating, model }) => {
+        const q = [
+          `sort=${sort}`,
+          `limit=${limit}`,
+          `page=${page}`,
+          ...model.map((m) => `model=${m}`),
+          ...brand.map((b) => `brand=${b}`),
+          ...rating.map((r) => `rating=${r}`),
+        ].join("&");
+        return `products?${q}`;
       },
       providesTags: [{ type: "Products" }],
     }),
     getSingleProduct: builder.query({
-      query: (id) => {
-        return `product/${id}`;
-      },
-      providesTags: [{ type: "Products" }],
+      query: (id) => `product/${id}`,
+      providesTags: (result, error, id) => [{ type: "Products", id }],
+    }),
+    addProduct: builder.mutation({
+      query: (body) => ({
+        url: "admin/product",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Products" }],
     }),
     updateProduct: builder.mutation({
-      query: (body) => {
-        return {
-          url: `api/product`,
-          method: "PUT",
-          body,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-      },
-      providesTags: [{ type: "Products" }],
+      query: (body) => ({
+        url: "api/product",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: [{ type: "Products" }],
     }),
     deleteProduct: builder.mutation({
-      query: (id) => {
-        return {
-          url: `api/product/${id}`,
-          method: "DELETE",
-        };
-      },
-      providesTags: [{ type: "Products" }],
+      query: (id) => ({
+        url: `api/product/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Products" }],
+    }),
+
+    /* ── Reviews ── */
+    getReviews: builder.query({
+      query: (productId) => `product/${productId}/reviews`,
+      providesTags: (result, error, productId) => [{ type: "Reviews", id: productId }],
+    }),
+    addReview: builder.mutation({
+      query: ({ productId, value, comment }) => ({
+        url: `product/${productId}/reviews`,
+        method: "POST",
+        body: { value, comment },
+      }),
+      invalidatesTags: (result, error, { productId }) => [
+        { type: "Reviews", id: productId },
+        { type: "Products", id: productId },
+        { type: "Products" },
+      ],
+    }),
+    deleteReview: builder.mutation({
+      query: ({ reviewId, productId }) => ({
+        url: `reviews/${reviewId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { productId }) => [
+        { type: "Reviews", id: productId },
+        { type: "Products", id: productId },
+        { type: "Products" },
+      ],
     }),
   }),
 });
 
 export const {
+  useGetCategoriesQuery,
   useGetAllProductsQuery,
   useGetProductsQuery,
-  useAddProductMutation,
   useGetSingleProductQuery,
+  useAddProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useGetReviewsQuery,
+  useAddReviewMutation,
+  useDeleteReviewMutation,
 } = productsApi;

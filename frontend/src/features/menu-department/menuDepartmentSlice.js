@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import menuDepartmentService from "./menuDepartmentService";
-import { useDispatch } from "react-redux";
 
 const initialState = {
   menuDepartment: [],

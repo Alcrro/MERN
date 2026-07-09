@@ -1,130 +1,151 @@
-import React from "react";
-import { useState } from "react";
-
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import "./addProductForm.css";
 import { useAddProductMutation } from "../../../features/product/rtkProducts";
+import { AVAILABILITY } from "../../../constants/availability";
 
 const AddProductForm = () => {
-  const [productBrand, setProductBrand] = useState("");
-  const [price, setPrice] = useState("");
-  const [productModel, setProductModel] = useState("");
-  const [productMemorieInterna, setProductMemorieInterna] = useState("");
-  const [productRating, setProductRating] = useState("");
+  const [form, setForm] = useState({
+    productBrand: "",
+    productModel: "",
+    productMemorieInterna: "",
+    price: "",
+    stock: "",
+    availability: "In Stoc",
+    description: "",
+  });
 
-  const [description, setDescription] = useState("");
+  const [addProduct, { isLoading }] = useAddProductMutation();
 
-  const [addProduct] = useAddProductMutation();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addProduct({
-      productBrand,
-      price,
-      description,
-      productModel,
-      productMemorieInterna,
-      productRating,
-    });
+  const onChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await addProduct(form).unwrap();
+      toast.success("Produs adăugat cu succes!");
+      setForm({
+        productBrand: "",
+        productModel: "",
+        productMemorieInterna: "",
+        price: "",
+        stock: "",
+        availability: "In Stoc",
+        description: "",
+      });
+    } catch (err) {
+      toast.error(err?.data?.message || "Eroare la adăugarea produsului");
+    }
+  };
+
   return (
     <div className="container-add-product-outer">
       <div className="container-add-product-inner">
-        <h1>Add Product Form</h1>
+        <h1>Adaugă produs</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Brand</label>
+            <label htmlFor="productBrand">Brand</label>
             <input
               type="text"
               name="productBrand"
               id="productBrand"
-              value={productBrand}
-              onChange={(e) => setProductBrand(e.target.value)}
-              // ref={productNameRef}
+              value={form.productBrand}
+              onChange={onChange}
               required
-              placeholder="Add product brand..."
+              placeholder="ex: Samsung"
             />
           </div>
+
           <div className="form-group">
-            <label htmlFor="price">Price</label>
+            <label htmlFor="productModel">Model</label>
+            <input
+              type="text"
+              name="productModel"
+              id="productModel"
+              value={form.productModel}
+              onChange={onChange}
+              required
+              placeholder="ex: Galaxy S24"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="price">Preț ($)</label>
             <input
               type="number"
               name="price"
               id="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              // ref={productPriceRef}
+              value={form.price}
+              onChange={onChange}
               required
-              placeholder="Add product price..."
+              min="0"
+              placeholder="ex: 999"
             />
           </div>
+
           <div className="form-group">
-            <label htmlFor="model">Model</label>
-            <input
-              type="text"
-              name="productModel"
-              id="model"
-              value={productModel}
-              onChange={(e) => setProductModel(e.target.value)}
-              // required
-              placeholder="Add product model..."
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="productRating">Product rating</label>
-            <input
-              type="text"
-              name="productRating"
-              id="productRating"
-              value={productRating}
-              onChange={(e) => setProductRating(e.target.value)}
-              // required
-              placeholder="Add product Rating..."
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="productMemorieInterna">Internal Storage</label>
+            <label htmlFor="productMemorieInterna">Memorie internă</label>
             <input
               type="text"
               name="productMemorieInterna"
               id="productMemorieInterna"
-              value={productMemorieInterna}
-              onChange={(e) => setProductMemorieInterna(e.target.value)}
-              // required
-              placeholder="Add product Internal Storage..."
+              value={form.productMemorieInterna}
+              onChange={onChange}
+              required
+              placeholder="ex: 256GB"
             />
           </div>
-          {/* <div className="form-group">
-            <label htmlFor="countInStock">Count In Stock</label>
-            <input
-              type="text"
-              name="countInStock"
-              id="countInStock"
-              // value={countInStock}
-              // onChange={onChange}
-              // required
-              placeholder="Add product count in stock..."
-            />
-          </div> */}
+
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="stock">Stoc (bucăți)</label>
+            <input
+              type="number"
+              name="stock"
+              id="stock"
+              value={form.stock}
+              onChange={onChange}
+              required
+              min="0"
+              placeholder="ex: 50"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="availability">Disponibilitate</label>
+            <select
+              name="availability"
+              id="availability"
+              value={form.availability}
+              onChange={onChange}
+            >
+              {Object.values(AVAILABILITY).map((val) => (
+                <option key={val} value={val}>
+                  {val}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Descriere</label>
             <textarea
               name="description"
               id="description"
-              cols="30"
-              rows="10"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              // ref={productDescriptionRef}
-              required
-              placeholder="Add product description..."
-            ></textarea>
+              rows="4"
+              value={form.description}
+              onChange={onChange}
+              placeholder="Descriere produs (opțional — se generează automat din brand + model)"
+            />
           </div>
-          <button>Add Product</button>
+
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Se adaugă..." : "Adaugă produs"}
+          </button>
         </form>
       </div>
-      <ToastContainer className={"toast-container hidden"} />
     </div>
   );
 };

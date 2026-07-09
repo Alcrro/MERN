@@ -1,51 +1,27 @@
 import axios from "axios";
-import { toast } from "react-toastify";
-import jwt_decode from "jwt-decode";
-import Cookies from "js-cookie";
 
-const API_URL = "/api/auth/";
+const API_URL = `${process.env.REACT_APP_API_URL || ""}/api/auth/`;
+const cfg = { withCredentials: true };
 
-//Register user
 const register = async (userData) => {
-  const response = await axios.post(API_URL + "register", userData);
-
-  return response.data;
+  const response = await axios.post(API_URL + "register", userData, cfg);
+  const user = response.data.user;
+  localStorage.setItem("user", JSON.stringify(user));
+  return user;
 };
 
-//Login	user
 const login = async (userData) => {
-  const response = await axios.post(API_URL + "login", userData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  let token = response.data.token;
-  let decoded = jwt_decode(token);
-  // console.log(decoded);
-
-  return response.data;
+  const response = await axios.post(API_URL + "login", userData, cfg);
+  const user = response.data.user;
+  localStorage.setItem("user", JSON.stringify(user));
+  return user;
 };
 
-// Logout user
-const logout = async (userData) => {
-  const response = axios.post(API_URL + "logout", userData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response.data;
+const logout = async () => {
+  await axios.get(API_URL + "logout", cfg);
+  localStorage.removeItem("user");
 };
 
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("token"));
-};
-
-const authService = {
-  register,
-  logout,
-  login,
-  getCurrentUser,
-};
+const authService = { register, login, logout };
 
 export default authService;
