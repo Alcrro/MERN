@@ -1,9 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import {
-  useGetAllProductsQuery,
-  useGetProductsQuery,
-} from "../../../../features/product/rtkProducts";
+import { useGetAllProductsQuery } from "../../../../features/product/rtkProducts";
 import "./modelfilter.css";
 
 const ModelFilter = ({
@@ -42,77 +39,33 @@ const ModelFilter = ({
     }
   };
 
+  const modelsToShow = (model === "" ? uniqueModelsArray : modelsFilterArray) ?? [];
+
   return (
     <div className="model-title">
       <a href="#" className="filter-head" onClick={handleOpen}>
         <span>Model</span>
       </a>
       <div className={`model ${active}`}>
-        <form>
-          <div>
-            {model === ""
-              ? uniqueModelsArray
-                  ?.sort((a, b) => {
-                    return a.localeCompare(b);
-                  })
-                  .map((item, key) => (
-                    <div key={key}>
-                      <input
-                        type="checkbox"
-                        className={model === item ? "checked" : "unchecked"}
-                        name="model"
-                        id={item}
-                        value={item}
-                        onChange={onOptionChangeModelNameHandler}
-                      />
-                      <label htmlFor={item}> {item}</label>
-                      <div className="star-brand-text">
-                        <span>
-                          (
-                          {
-                            allProductsData?.totalProducts?.filter(
-                              (filter) => filter.model === item
-                            ).length
-                          }
-                          )
-                        </span>
-                      </div>
-                    </div>
-                  ))
-              : modelsFilterArray
-                  ?.sort((a, b) => {
-                    return a.localeCompare(b);
-                  })
-                  .map((item, key) => {
-                    return (
-                      <div key={key}>
-                        <input
-                          type="checkbox"
-                          className={model === item ? "checked" : "unchecked"}
-                          name="model"
-                          id={item}
-                          value={item}
-                          onChange={onOptionChangeModelNameHandler}
-                        />
-                        <label htmlFor={item}> {item}</label>
-                        <div className="star-brand-text">
-                          <span>
-                            (
-                            {
-                              allProductsData?.totalProducts
-                                ?.map((item) => {
-                                  return item;
-                                })
-                                .filter((filter) => filter.model === item).length
-                            }
-                            )
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-          </div>
-        </form>
+        <div className="scrollable">
+          {modelsToShow.sort((a, b) => a.localeCompare(b)).map((item) => {
+            const count = allProductsData?.totalProducts?.filter((p) => p.model === item).length ?? 0;
+            const isChecked = Array.isArray(model) && model.includes(item);
+            return (
+              <label key={item} className="filter-inner">
+                <input
+                  type="checkbox"
+                  name="model"
+                  value={item}
+                  checked={isChecked}
+                  onChange={onOptionChangeModelNameHandler}
+                />
+                <span style={{ flex: 1, fontSize: ".82rem", color: "var(--text-medium)" }}>{item}</span>
+                <div className="star-brand-text"><span>({count})</span></div>
+              </label>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

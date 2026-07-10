@@ -1,44 +1,22 @@
 /* eslint-disable */
 import React, { useState } from "react";
-import {
-  useGetAllProductsQuery,
-  useGetProductsQuery,
-} from "../../../../features/product/rtkProducts";
+import { useGetAllProductsQuery } from "../../../../features/product/rtkProducts";
 import "./sideBarFiltersRating.css";
 import "../../singleCardRating/starRating.css";
-import { useNavigate } from "react-router-dom";
 
-const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) => {
+const rateObject = [
+  { id: 5, style: 100 },
+  { id: 4, style: 80 },
+  { id: 3, style: 60 },
+  { id: 2, style: 40 },
+  { id: 1, style: 20 },
+];
+
+const SideBarFilters = ({ rating, setRating }) => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("active");
 
-  // console.log(queryProduct);
-
   const { data: allProductsData } = useGetAllProductsQuery();
-
-  // method 2
-  const rateObject = [
-    {
-      id: 1,
-      style: 20,
-    },
-    {
-      id: 2,
-      style: 40,
-    },
-    {
-      id: 3,
-      style: 60,
-    },
-    {
-      id: 4,
-      style: 80,
-    },
-    {
-      id: 5,
-      style: 100,
-    },
-  ];
 
   const handleOpen = () => {
     setOpen(!open);
@@ -46,63 +24,43 @@ const SideBarFilters = ({ rating, setRating, queryProduct, brand, setLimit }) =>
   };
 
   const checkInput = (e) => {
-    if (e.target.checked === true) {
-      setRating(e.target.value);
-      const array = [...rating];
-      array.push(e.target.value);
-      setRating(array);
-      // console.log(array);
+    const val = e.target.value;
+    const arr = Array.isArray(rating) ? [...rating] : [];
+    if (e.target.checked) {
+      setRating([...arr, val]);
+    } else {
+      setRating(arr.filter((r) => r !== val));
     }
-    if (e.target.checked === false) {
-      setRating("");
-      const array = [...rating];
-      const index = array.indexOf(e.target.value);
-      array.splice(index, 1);
-      setRating(array);
-    }
-  };
-  const merge = (e) => {
-    e.preventDefault();
-    console.log(e.target);
   };
 
   return (
     <div className="sidebar-filter-rating">
-      <div className={`sidebar-filter-rating-title`}>
-        <a href="#" className="filter-head" onClick={handleOpen}>
-          <span>Rating</span>
-        </a>
-      </div>
-      <div className={`sidebar-filter-rating-body ${active}`}>
-        <div className="sidebar-filter-rating-stars">
-          <form className="star-rating-body">
-            {rateObject
-              .sort((a, b) => b.id - a.id)
-              .map((rate, key) => (
-                <div key={rate.id} className={`star-rating-link rate-${rate.id}`} onClick={merge}>
-                  <input
-                    type="checkbox"
-                    className="star-rating-checkbox"
-                    name="stars"
-                    value={rate.id}
-                    onChange={checkInput}
-                  />
-                  <div className="first-star-rating star-rating-read">
-                    <div className="star-rating-inner" style={{ width: `${rate.style}%` }}></div>
-                  </div>
-                  <span>
-                    (
-                    {
-                      allProductsData?.totalProducts.filter(
-                        (item) => Math.floor(item.rating?.average || 0) >= rate.id
-                      ).length
-                    }
-                    )
-                  </span>
-                </div>
-              ))}
-          </form>
-        </div>
+      <a href="#" className="filter-head" onClick={handleOpen}>
+        <span>Rating</span>
+      </a>
+      <div className={`filter-body scrollable ${active}`}>
+        {rateObject.map((rate) => {
+          const count = allProductsData?.totalProducts.filter(
+            (item) => Math.floor(item.rating?.average || 0) >= rate.id
+          ).length ?? 0;
+          const isChecked = Array.isArray(rating) && rating.includes(String(rate.id));
+          return (
+            <label key={rate.id} className="filter-inner">
+              <input
+                type="checkbox"
+                name="stars"
+                value={rate.id}
+                checked={isChecked}
+                onChange={checkInput}
+              />
+              <div className="first-star-rating star-rating-read">
+                <div className="star-rating-inner" style={{ width: `${rate.style}%` }} />
+              </div>
+              <span className="rating-filter-and-up">& up</span>
+              <div className="star-brand-text"><span>({count})</span></div>
+            </label>
+          );
+        })}
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ const BrandFilter = ({ brand, setBrand, setChecked, setPage, setRating }) => {
         <span>Brand</span>
       </a>
       <div className={`sidebar-filter-brand-body ${active}`}>
-        <div className="scrollable" style={{ padding: "4px" }}>
+        <div className="scrollable">
           {uniqueNames.map((item) => {
             const count = allProductsData?.totalProducts.filter((p) => p.brand === item).length ?? 0;
             const isChecked = Array.isArray(brand) && brand.includes(item);

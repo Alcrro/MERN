@@ -1,8 +1,6 @@
-/* eslint-disable */
 import React from "react";
 import BrandCategory from "../brandCategory/BrandCategory";
 import ModelCategory from "../modelCategory/ModelCategory";
-import RatingCategory from "../ratingCategory/RatingCategory";
 
 const AllCategories = ({
   data,
@@ -11,43 +9,29 @@ const AllCategories = ({
   brand,
   setBrand,
   setPage,
-  setLimit,
-  checked,
-  setChecked,
-  setSort,
-  rating,
   setRating,
-}) => {
-  return (
-    <>
+  hideBrand = false,
+}) => (
+  <>
+    {!hideBrand && (
       <BrandCategory
         data={data}
-        model={model}
-        setModel={setModel}
         brand={brand}
         setBrand={setBrand}
-        setPage={setPage}
-        setLimit={setLimit}
-        checked={checked}
-        setChecked={setChecked}
-        setSort={setSort}
-        setRating={setRating}
-      />
-      <ModelCategory
-        data={data}
         model={model}
-        setModel={setModel}
-        brand={brand}
-        setBrand={setBrand}
         setPage={setPage}
-        setLimit={setLimit}
-        checked={checked}
-        setChecked={setChecked}
-        setSort={setSort}
         setRating={setRating}
       />
-    </>
-  );
-};
+    )}
+    <ModelCategory
+      data={data}
+      model={model}
+      setModel={setModel}
+      brand={brand}
+      setPage={setPage}
+      setRating={setRating}
+    />
+  </>
+);
 
 export default AllCategories;

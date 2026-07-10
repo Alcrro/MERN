@@ -1,4 +1,5 @@
 /* ─── Brand & Model sidebar cards (styles shared with productsv2.css) ── */
+.filter-v2-container,
 .brand-v2-container,
 .model-v2-container {
   background: var(--bg-card);
@@ -22,6 +23,7 @@
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+  scrollbar-gutter: stable;
 }
 
 .filter-body.scrollable::-webkit-scrollbar { width: 3px; }

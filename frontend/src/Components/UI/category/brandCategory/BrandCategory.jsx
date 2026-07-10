@@ -1,137 +1,31 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import "../allCategories/allCategories.css";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import FilterSection from "../filterSection/FilterSection";
+import { getUniqueValues, countByField } from "../filterUtils";
 
-const BrandCategory = ({
-  data,
-  brand,
-  setBrand,
-  checked,
-  setChecked,
-  setPage,
-  setRating,
-  model,
-  limit,
-  setLimit,
-}) => {
-  const dataQuery = data?.queryProducts;
-  const dataAllProducts = data?.totalProducts;
+const BrandCategory = ({ data, brand, setBrand, model, setPage, setRating }) => {
+  const allProducts = data?.totalProducts;
+  const queryProducts = data?.queryProducts;
 
-  const [open, setOpen] = useState(true);
+  const source = model.length === 0 ? allProducts : queryProducts;
+  const items = getUniqueValues(source, "brand").sort();
 
-  // display unique brands
-  let brandsArray = [];
-  dataAllProducts?.map((item) => brandsArray.push(item.brand));
-  let uniqueBrandsArray = brandsArray.filter((item, index) => brandsArray.indexOf(item) === index);
-
-  // display filtered brands
-  let brandsFilteredArray = [];
-  dataQuery?.map((item) => brandsFilteredArray.push(item.brand));
-  let filteredBrandsArray = brandsFilteredArray.filter(
-    (item, index) => brandsFilteredArray.indexOf(item) === index
-  );
-
-  const checkHandler = (e) => {
-    if (e.target.checked === true) {
-      setBrand(e.target.value);
-      setChecked(true);
-      const array = [...brand];
-      array.push(e.target.value);
-      setBrand(array);
+  const handleToggle = (value, isChecked) => {
+    if (isChecked) {
+      setBrand([...brand, value]);
       setPage(1);
       setRating([]);
+    } else {
+      setBrand(brand.filter(b => b !== value));
     }
-    if (e.target.checked === false) {
-      setBrand("");
-      setChecked(false);
-      const array = [...brand];
-      const index = array.indexOf(e.target.value);
-      array.splice(index, 1);
-      setBrand(array);
-    }
-  };
-
-  const handleOpen = () => {
-    setOpen(!open);
   };
 
   return (
-    <div className="brand-v2-container">
-      <a href="#" className="filter-head" onClick={handleOpen}>
-        <span>Brand</span>
-      </a>
-      {open ? (
-        <div className={`collapse out`}>
-          <div className={`filter-body scrollable`}>
-            {model.length === 0
-              ? uniqueBrandsArray
-                  ?.sort((a, b) => b.value - a.value)
-                  .map((item, index) => {
-                    return (
-                      <div className="filter-inner" key={index}>
-                        <input
-                          type="checkbox"
-                          id={item}
-                          value={item}
-                          className="bineMas"
-                          onChange={checkHandler}
-                        />
-
-                        <label htmlFor={item}>{item}</label>
-
-                        <div className="star-brand-text">
-                          <span>
-                            (
-                            {
-                              dataAllProducts
-                                ?.map((item) => {
-                                  return item;
-                                })
-                                .filter((filter) => filter.brand === item).length
-                            }
-                            )
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })
-              : filteredBrandsArray
-                  ?.sort((a, b) => a.value - b.value)
-                  .map((item, index) => {
-                    return (
-                      <div className="filter-inner" key={index}>
-                        <input
-                          type="checkbox"
-                          id={item}
-                          value={item}
-                          className={brand === item ? "checked" : "unchecked"}
-                          onChange={checkHandler}
-                        />
-                        <label htmlFor={item}>{item}</label>
-                        <div className="star-brand-text">
-                          <span>
-                            (
-                            {
-                              dataAllProducts
-                                ?.map((item) => {
-                                  return item;
-                                })
-                                .filter((filter) => filter.brand === item).length
-                            }
-                            )
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-          </div>
-          <div className="filter-body">
-            <div className="filter-body-separator"></div>
-          </div>
-        </div>
-      ) : null}
-    </div>
+    <FilterSection
+      title="Brand"
+      items={items}
+      selected={brand}
+      onToggle={handleToggle}
+      getCount={(value) => countByField(allProducts, "brand", value)}
+    />
   );
 };
 
