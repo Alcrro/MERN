@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CloseIcon, GridIcon, ChevronIcon, ChevronRight, LogoutIcon } from "../icons";
-import { PROMO_LINKS, ROLE_LABEL } from "../../../Utils/constants";
+import { PROMO_LINKS, ROLE_LABEL } from "../../../utils/constants";
 import "./MobileDrawer.css";
 
 const MobileDrawer = ({ open, onClose, user, onLogout, categories }) => {

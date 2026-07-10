@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "./addProductForm.css";
 import { useAddProductMutation } from "../../../features/product/rtkProducts";
-import { AVAILABILITY } from "../../../constants/availability";
+import { AVAILABILITY } from "../../../utils/constants";
 
 const AddProductForm = () => {
   const [form, setForm] = useState({

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../features/product/rtkProducts";
-import { PROMO_LINKS } from "../../../Utils/constants";
+import { PROMO_LINKS } from "../../../utils/constants";
 import CategoryDropdown from "./CategoryDropdown";
 import "./navbarAux.css";
 
