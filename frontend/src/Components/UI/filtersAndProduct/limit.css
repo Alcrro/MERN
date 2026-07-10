@@ -165,27 +165,72 @@
 .lp-select__opt--active       { background: var(--primary-light); color: var(--primary); font-weight: 700; }
 .lp-select__opt--active:hover { background: var(--primary-light); }
 
-/* ── Mobile ──────────────────────────────────────────────── */
-@media (max-width: 768px) {
+/* ── Mobile filter button ────────────────────────────────── */
+.mob-filter-btn {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  position: relative;
+  transition: border-color .13s;
+}
+.mob-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+.mob-filter-btn-badge {
+  background: var(--primary);
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ── Tablet (≤ 991px): show filter btn, compact bar, hide toggle label ── */
+@media (max-width: 991px) {
   .lp-bar { padding: 12px 12px 10px; gap: 8px; }
+  .tip-afisare-head { display: none; }
+  .mob-filter-btn { display: flex; }
+}
 
-  .lp-controls-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+/* ── Small (≤ 580px): filter+toggle on top row, selects side-by-side below ── */
+@media (max-width: 580px) {
+  .mob-filter-btn { order: 1; }
+  .tip-afisare-container { order: 2; margin-left: auto; }
+  /* forced flex line-break: ::after shares order:2 but comes last in source,
+     so it appears after the toggle and forces selects onto a new row */
+  .lp-controls-row::after {
+    content: '';
+    order: 2;
+    flex-basis: 100%;
+    height: 0;
   }
-
-  /* filter button spans full width */
-  .mob-filter-btn {
-    grid-column: 1 / -1;
-  }
-
-  /* selects fill their cell */
-  .lp-select { width: 100%; }
+  .lp-select { order: 3; flex: 1; min-width: 120px; }
   .lp-select__btn { width: 100%; justify-content: space-between; }
+  .lp-select__val { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+}
 
-  /* tip afisare pushed to end */
-  .tip-afisare-container { grid-column: 2; justify-self: end; }
+/* ── Very small (≤ 400px): selects stack full-width, hide prefix labels ── */
+@media (max-width: 400px) {
+  .lp-select { width: 100%; flex: none; }
+  .lp-select__prefix { display: none; }
+}
+
+/* ── Tiny (≤ 220px): filter btn + toggle full-width ─────── */
+@media (max-width: 220px) {
+  .mob-filter-btn { width: 100%; justify-content: center; }
+  .lp-controls-row .tip-afisare-container { width: 100%; justify-content: center; margin-left: 0; }
 }
 
 /* ─── Legacy selectors (kept for compatibility) ─────────── */
