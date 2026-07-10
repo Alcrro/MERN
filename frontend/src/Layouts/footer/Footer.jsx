@@ -1,8 +1,32 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { FacebookIcon, InstagramIcon, TikTokIcon, EmailIcon, PhoneIcon, ClockIcon, TRUST } from "./footerIcons";
 import { YEAR, PRODUCT_LINKS, ACCOUNT_LINKS, LEGAL_LINKS } from "./footerConstants";
 import "./footer.css";
+
+const Chevron = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
+
+const FtCol = ({ title, children, listClass = "" }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="ft-col">
+      <button
+        className={`ft-col__title${open ? " ft-col__title--open" : ""}`}
+        onClick={() => setOpen(o => !o)}
+      >
+        {title}
+        <span className="ft-chevron"><Chevron /></span>
+      </button>
+      <ul className={`ft-col__list${open ? " ft-col__list--open" : ""}${listClass ? ` ${listClass}` : ""}`}>
+        {children}
+      </ul>
+    </div>
+  );
+};
 
 const Footer = () => (
   <footer className="ft">
@@ -37,29 +61,19 @@ const Footer = () => (
           </div>
         </div>
 
-        <div className="ft-links-wrap">
-          <div className="ft-col">
-            <h3 className="ft-col__title">Produse</h3>
-            <ul className="ft-col__list">
-              {PRODUCT_LINKS.map((l) => <li key={l.to}><Link to={l.to}>{l.label}</Link></li>)}
-            </ul>
-          </div>
-          <div className="ft-col">
-            <h3 className="ft-col__title">Contul meu</h3>
-            <ul className="ft-col__list">
-              {ACCOUNT_LINKS.map((l) => <li key={l.to}><Link to={l.to}>{l.label}</Link></li>)}
-            </ul>
-          </div>
-        </div>
+        <FtCol title="Produse">
+          {PRODUCT_LINKS.map((l) => <li key={l.to}><Link to={l.to}>{l.label}</Link></li>)}
+        </FtCol>
 
-        <div className="ft-col">
-          <h3 className="ft-col__title">Contact</h3>
-          <ul className="ft-col__list ft-contact">
-            <li><EmailIcon /><a href="mailto:contact@alcrro.ro">contact@alcrro.ro</a></li>
-            <li><PhoneIcon /><a href="tel:0800123456">0800 123 456</a></li>
-            <li><ClockIcon /><span>Lun–Vin, 09:00–20:00</span></li>
-          </ul>
-        </div>
+        <FtCol title="Contul meu">
+          {ACCOUNT_LINKS.map((l) => <li key={l.to}><Link to={l.to}>{l.label}</Link></li>)}
+        </FtCol>
+
+        <FtCol title="Contact" listClass="ft-contact">
+          <li><EmailIcon /><a href="mailto:contact@alcrro.ro">contact@alcrro.ro</a></li>
+          <li><PhoneIcon /><a href="tel:0800123456">0800 123 456</a></li>
+          <li><ClockIcon /><span>Lun–Vin, 09:00–20:00</span></li>
+        </FtCol>
 
       </div>
     </div>

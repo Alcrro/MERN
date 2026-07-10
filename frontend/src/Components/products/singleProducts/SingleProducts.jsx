@@ -46,7 +46,7 @@ const SingleProducts = () => {
       <nav className="sp-bc">
         <Link to="/">Acasă</Link><span>/</span>
         <Link to="/products">Produse</Link><span>/</span>
-        <Link to={`/products?brand=${p.brand}`}>{p.brand}</Link><span>/</span>
+        <Link to={`/products/${p.brand.toLowerCase()}`}>{p.brand}</Link><span>/</span>
         <span className="sp-bc-cur">{productName}</span>
       </nav>
 

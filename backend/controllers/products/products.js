@@ -6,7 +6,7 @@ const Products = require("../../models/product/Product");
 // @route   GET /api/products
 // @access  Public
 exports.getProducts = asyncHandler(async (req, res) => {
-  const { search, sort, brand, rating, model, kind, tip, availability } = req.query;
+  const { search, sort, brand, rating, model, kind, tip, availability, stocare, ram } = req.query;
 
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.min(100, Number(req.query.limit) || 30);
@@ -35,7 +35,16 @@ exports.getProducts = asyncHandler(async (req, res) => {
     queryObject.tip = tip;
   }
   if (availability) {
-    queryObject["stock.availability"] = availability;
+    const avArr = Array.isArray(availability) ? availability : [availability];
+    queryObject["stock.availability"] = { $in: avArr };
+  }
+  if (stocare) {
+    const stocareArr = Array.isArray(stocare) ? stocare : [stocare];
+    queryObject.stocare = { $in: stocareArr };
+  }
+  if (ram) {
+    const ramArr = Array.isArray(ram) ? ram : [ram];
+    queryObject.RAM = { $in: ramArr };
   }
 
   const sortMap = {

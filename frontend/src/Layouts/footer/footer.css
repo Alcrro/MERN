@@ -29,13 +29,8 @@
   transition: background .15s;
 }
 
-.ft-trust__item:last-child {
-  border-right: none;
-}
-
-.ft-trust__item:hover {
-  background: var(--bg-page);
-}
+.ft-trust__item:last-child { border-right: none; }
+.ft-trust__item:hover { background: var(--bg-page); }
 
 .ft-trust__icon {
   color: #3b82f6;
@@ -57,9 +52,7 @@
 }
 
 /* ── Main grid ────────────────────────────────────────────── */
-.ft-main {
-  border-bottom: 1px solid var(--border);
-}
+.ft-main { border-bottom: 1px solid var(--border); }
 
 .ft-main__inner {
   max-width: 1200px;
@@ -70,7 +63,7 @@
   gap: 2.5rem;
 }
 
-/* brand column */
+/* ── Brand column ─────────────────────────────────────────── */
 .ft-logo {
   display: inline-block;
   font-size: 1.5rem;
@@ -93,10 +86,7 @@
   margin-bottom: 1.1rem;
 }
 
-.ft-socials {
-  display: flex;
-  gap: 8px;
-}
+.ft-socials { display: flex; gap: 8px; }
 
 .ft-social {
   width: 34px;
@@ -117,14 +107,31 @@
   background: var(--primary-light);
 }
 
-/* link columns */
+/* ── Link columns ─────────────────────────────────────────── */
 .ft-col__title {
+  appearance: none;
+  background: none;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text-dark);
   margin-bottom: .9rem;
+}
+
+.ft-chevron {
+  display: none;
+  color: var(--text-muted);
+  transition: transform .2s;
 }
 
 .ft-col__list {
@@ -143,11 +150,9 @@
   display: inline-block;
 }
 
-.ft-col__list a:hover {
-  color: var(--primary);
-}
+.ft-col__list a:hover { color: var(--primary); }
 
-/* contact column */
+/* ── Contact column ───────────────────────────────────────── */
 .ft-contact li {
   display: flex;
   align-items: center;
@@ -161,10 +166,7 @@
 }
 
 /* ── Bottom bar ───────────────────────────────────────────── */
-.ft-bottom {
-  background: var(--bg-page);
-  border-top: 1px solid var(--border);
-}
+.ft-bottom { background: var(--bg-page); }
 
 .ft-bottom__inner {
   max-width: 1200px;
@@ -176,16 +178,9 @@
   gap: 1rem;
 }
 
-.ft-copy {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
+.ft-copy { font-size: 0.75rem; color: var(--text-muted); }
 
-.ft-legal {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.ft-legal { display: flex; align-items: center; gap: 6px; }
 
 .ft-legal a {
   font-size: 0.75rem;
@@ -194,107 +189,60 @@
   transition: color .12s;
 }
 
-.ft-legal a:hover {
-  color: var(--primary);
-}
+.ft-legal a:hover { color: var(--primary); }
+.ft-legal__sep { color: var(--border); font-size: 0.75rem; }
 
-.ft-legal__sep {
-  color: var(--border);
-  font-size: 0.75rem;
-}
-
-/* ── ft-links-wrap: inline pe desktop, 2-col pe mobile ───── */
-.ft-links-wrap {
-  display: contents; /* pe desktop se comportă ca elemente individuale în grid */
-}
-
-/* ── Mobile ───────────────────────────────────────────────── */
+/* ── Mobile (≤ 768px) ─────────────────────────────────────── */
 @media (max-width: 768px) {
-  .ft {
-    padding-bottom: 0;
-  }
-
-  /* trust strip: 2x2 grid compact */
-  .ft-trust__inner {
-    grid-template-columns: 1fr 1fr;
-    padding: 0;
-  }
-
-  .ft-trust__item {
-    padding: .75rem 12px;
-    gap: 8px;
-  }
-
-  /* al 3-lea item: border-right pentru că e stânga jos */
+  /* trust: 2×2 */
+  .ft-trust__inner { grid-template-columns: 1fr 1fr; padding: 0; }
+  .ft-trust__item { padding: .75rem 12px; gap: 8px; }
   .ft-trust__item:nth-child(2) { border-right: none; }
   .ft-trust__item:nth-child(3) { border-top: 1px solid var(--border); }
   .ft-trust__item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
 
-  /* main: 1 coloană, padding redus */
+  /* main: flex column, brand pushed to bottom */
   .ft-main__inner {
-    grid-template-columns: 1fr;
-    padding: 1rem 16px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
     gap: 0;
+    max-width: 100%;
   }
 
-  /* brand: logo stânga, socials dreapta */
   .ft-brand {
+    order: 10;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: .85rem;
-    border-bottom: 1px solid var(--border-light);
-    margin-bottom: .85rem;
+    padding: .85rem 1rem;
+    border-top: 1px solid var(--border);
   }
-
   .ft-brand__desc { display: none; }
-  .ft-socials { margin-bottom: 0; }
 
-  /* link-uri: 2 coloane într-un card cu bg ușor */
-  .ft-links-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    background: var(--bg-page);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
+  /* accordion sections */
+  .ft-col { border-bottom: 1px solid var(--border); }
+
+  .ft-col__title {
+    padding: .85rem 1rem;
+    margin-bottom: 0;
+    cursor: pointer;
+    transition: background .12s;
+  }
+  .ft-col__title:hover { background: var(--bg-page); }
+
+  .ft-chevron { display: flex; }
+  .ft-col__title--open .ft-chevron { transform: rotate(180deg); }
+
+  .ft-col__list {
+    max-height: 0;
     overflow: hidden;
-    margin-bottom: .85rem;
+    transition: max-height .25s ease;
+    padding: 0 1rem;
   }
-
-  .ft-links-wrap .ft-col {
-    padding: .85rem 1rem;
-  }
-
-  .ft-links-wrap .ft-col:first-child {
-    border-right: 1px solid var(--border-light);
-  }
-
-  .ft-links-wrap .ft-col__title {
-    font-size: 0.65rem;
-    margin-bottom: .6rem;
-  }
-
-  .ft-links-wrap .ft-col__list {
-    gap: .4rem;
-  }
-
-  .ft-links-wrap .ft-col__list a {
-    font-size: 0.8rem;
-  }
-
-  /* contact: card cu bg */
-  .ft-main__inner > .ft-col:last-child {
-    background: var(--bg-page);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: .85rem 1rem;
-    margin-bottom: .5rem;
-  }
-
-  .ft-main__inner > .ft-col:last-child .ft-col__title {
-    font-size: 0.65rem;
-    margin-bottom: .6rem;
+  .ft-col__list--open {
+    max-height: 400px;
+    padding: 0 1rem .85rem;
   }
 
   /* bottom bar */
@@ -305,9 +253,13 @@
     gap: .35rem;
     padding: .65rem 16px;
   }
+  .ft-legal { flex-wrap: wrap; justify-content: center; }
+}
 
-  .ft-legal {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+/* ── Very small (≤ 360px): trust 1-column ────────────────── */
+@media (max-width: 360px) {
+  .ft-trust__inner { grid-template-columns: 1fr; }
+  .ft-trust__item { padding: .6rem 12px; }
+  .ft-trust__item:nth-child(n) { border-right: none; border-top: 1px solid var(--border); }
+  .ft-trust__item:first-child { border-top: none; }
 }
