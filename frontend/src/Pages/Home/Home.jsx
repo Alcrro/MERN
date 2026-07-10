@@ -1,12 +1,12 @@
 import React from "react";
 import { useGetProductsQuery, useGetCategoriesQuery } from "../../features/product/rtkProducts";
 import ProductCarousel from "../../Components/UI/ProductCarousel";
-import HeroSection from "./HeroSection";
-import FeaturesStrip from "./FeaturesStrip";
-import CategoriesSection from "./CategoriesSection";
-import PromoBanner from "./PromoBanner";
-import HomeStats from "./HomeStats";
-import NewsletterSection from "./NewsletterSection";
+import HeroSection from "../../Components/home/HeroSection";
+import FeaturesStrip from "../../Components/home/FeaturesStrip";
+import CategoriesSection from "../../Components/home/CategoriesSection";
+import PromoBanner from "../../Components/home/PromoBanner";
+import HomeStats from "../../Components/home/HomeStats";
+import NewsletterSection from "../../Components/home/NewsletterSection";
 import "./Home.css";
 
 const Home = () => {

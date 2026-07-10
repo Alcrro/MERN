@@ -1,7 +1,7 @@
 import { NavLink, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { ROLE_LABEL } from "../../Utils/constants";
-import { NAV, avatarColor } from "./profileConstants";
+import { ROLE_LABEL } from "../../utils/constants";
+import { NAV, avatarColor } from "../../Components/profile/profileConstants";
 import "./Profile.css";
 
 const Profile = () => {

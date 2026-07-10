@@ -10,7 +10,7 @@ import Header from "./Layouts/header/Header";
 import ProductsList from "./Components/products/products/Products";
 import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
-import PrivateRoutes from "./Utils/PrivateRoutes";
+import PrivateRoutes from "./utils/PrivateRoutes";
 import SingleProducts from "./Components/products/singleProducts/SingleProducts";
 import NoMatch from "./Pages/NoMatch/NoMatch";
 import AddToCart from "./Components/products/add-to-Cart/Add-to-Cart";
@@ -20,11 +20,12 @@ import Checkout from "./Components/UI/checkout/Checkout";
 import NavbarAux from "./Components/nav/navbar-aux/NavbarAux";
 import Breadcrumb from "./Components/UI/Breadcrumb/Breadcrumb";
 import Profile from "./Pages/Profile/Profile";
-import ProfileInfo from "./Pages/Profile/ProfileInfo";
-import ProfileOrders from "./Pages/Profile/ProfileOrders";
-import ProfileAddress from "./Pages/Profile/ProfileAddress";
-import ProfileSettings from "./Pages/Profile/ProfileSettings";
+import ProfileInfo from "./Components/profile/ProfileInfo";
+import ProfileOrders from "./Components/profile/ProfileOrders";
+import ProfileAddress from "./Components/profile/ProfileAddress";
+import ProfileSettings from "./Components/profile/ProfileSettings";
 import Favorites from "./Pages/Favorites/Favorites";
+import BrandPage from "./Pages/Brand/BrandPage";
 import Footer from "./Layouts/footer/Footer";
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
           <Route exact path="products" element={<ProductsList />} />
+          <Route path="products/:brand" element={<BrandPage />} />
           <Route exact path="cards" element={<Cards />} />
           <Route exact path="product">
             <Route path=":id" element={<SingleProducts />} />

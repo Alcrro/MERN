@@ -1,4 +1,4 @@
-import { MailIcon } from "./homeIcons";
+import { MailIcon } from "../homeIcons";
 import { useNewsletter } from "./useNewsletter";
 
 const NewsletterSection = () => {

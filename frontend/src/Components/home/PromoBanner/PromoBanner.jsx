@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "./homeIcons";
+import { ArrowRight } from "../homeIcons";
 
 const PromoBanner = () => (
   <section className="home-promo" aria-label="Oferte zilnice">

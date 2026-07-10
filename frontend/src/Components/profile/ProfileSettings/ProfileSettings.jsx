@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ThemeToggle from "../../Components/UI/ThemeToggle/ThemeToggle";
-import { useTheme } from "../../hooks/useTheme";
+import ThemeToggle from "../../UI/ThemeToggle/ThemeToggle";
+import { useTheme } from "../../../hooks/useTheme";
 
 const ProfileSettings = () => {
   const [currentPass, setCurrentPass] = useState("");

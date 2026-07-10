@@ -1,4 +1,4 @@
-import { FEATURES } from "./homeIcons";
+import { FEATURES } from "../homeIcons";
 
 const FeaturesStrip = () => (
   <section className="features-strip" aria-label="Avantaje">

@@ -1,4 +1,4 @@
-import { STATS } from "../../Utils/constants";
+import { STATS } from "../../../utils/constants";
 
 const HomeStats = () => (
   <section className="home-stats" aria-label="Statistici">

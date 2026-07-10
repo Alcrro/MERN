@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, TruckIcon } from "./homeIcons";
-import panda from "../../Assets/images/panda.png";
+import { ArrowRight, TruckIcon } from "../homeIcons";
+import panda from "../../../Assets/images/panda.png";
 
 const HeroSection = () => (
   <section className="hero-section" aria-label="Hero">

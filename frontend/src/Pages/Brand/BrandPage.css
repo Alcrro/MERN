@@ -1,0 +1,162 @@
+/* ── Brand page ───────────────────────────────────────────── */
+.brand-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.brand-hero {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 24px 0 40px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 52px;
+  position: relative;
+}
+
+.brand-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.brand-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--brand-accent-light, #e8eaf6) 0%, transparent 60%);
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.brand-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--brand-accent, #1428a0);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.brand-hero__name {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--brand-accent, var(--text-dark));
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+
+.brand-hero__tagline {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-medium);
+  margin-bottom: 14px;
+}
+
+.brand-hero__desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 28px;
+}
+
+.brand-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-hero__count {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.brand-hero__count strong {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.brand-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--brand-accent, var(--primary));
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: opacity .15s;
+}
+
+.brand-hero__cta:hover { opacity: .88; }
+
+.brand-hero__cta svg { flex-shrink: 0; }
+
+/* ── Glyph (big decorative letter) ───────────────────────── */
+.brand-hero__glyph {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(6rem, 12vw, 10rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--brand-accent, var(--primary));
+  opacity: .08;
+  user-select: none;
+  letter-spacing: -4px;
+}
+
+/* ── Products sections ────────────────────────────────────── */
+.brand-products {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brand-carousel-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 24px 12px;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .brand-page { padding: 0 12px 32px; }
+  .brand-hero {
+    grid-template-columns: 1fr;
+    padding: 28px 24px;
+    margin: 12px 0 24px;
+    gap: 0;
+  }
+  .brand-hero__glyph { display: none; }
+  .brand-carousel-wrap { padding: 16px 12px 8px; }
+}
+
+/* ── Dark mode ────────────────────────────────────────────── */
+html[data-theme="dark"] .brand-hero::after {
+  opacity: .25;
+}

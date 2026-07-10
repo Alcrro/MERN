@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { ROLE_LABEL } from "../../Utils/constants";
+import { ROLE_LABEL } from "../../../utils/constants";
 
 const ProfileInfo = () => {
   const { user } = useSelector((s) => s.auth);
