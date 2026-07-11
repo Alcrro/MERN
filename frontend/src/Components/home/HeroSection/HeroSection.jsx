@@ -5,7 +5,7 @@ import panda from "../../../Assets/images/panda.png";
 const HeroSection = () => (
   <section className="hero-section" aria-label="Hero">
     <div className="hero-content">
-      <span className="hero-badge">Din 2023 · Refactorizat 2026</span>
+      <span className="hero-badge">Nou în 2026</span>
       <h1 className="hero-title">
         Cel mai bun<br />
         <span className="hero-highlight">smartphone</span><br />
