@@ -1,6 +1,6 @@
 # Tech Spec: Seller Picker
 
-> **Status:** `Draft`
+> **Status:** `Shipped`
 > **Author:** Alexandru Roventa
 > **Last updated:** 2026-07-11
 > **Related PRD:** [PRD.md](./PRD.md)

@@ -1,5 +1,6 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 const Products = require("../../models/product/Product");
 
 // @desc    Fetch all products
@@ -52,23 +53,43 @@ exports.getProducts = asyncHandler(async (req, res) => {
   }
 
   const sortMap = {
-    "Price: Low to High":   "price",
-    "Price: High to Low":   "-price",
-    "Newest":               "-createdAt",
-    "Oldest":               "createdAt",
-    "Rating: Low to High":  "rating.average",
-    "Rating: High to Low":  "-rating.average",
-    "-rating":              "-rating.average",
-    "price":                "price",
+    "Price: Low to High":   { price: 1 },
+    "Price: High to Low":   { price: -1 },
+    "Newest":               { createdAt: -1 },
+    "Oldest":               { createdAt: 1 },
+    "Rating: Low to High":  { "rating.average": 1 },
+    "Rating: High to Low":  { "rating.average": -1 },
+    "-rating":              { "rating.average": -1 },
+    "price":                { price: 1 },
   };
-  const sortStr = sortMap[sort] || "-createdAt";
+  const sortObj = sortMap[sort] || { createdAt: -1 };
 
-  const [queryProducts, totalFiltered, totalProducts] = await Promise.all([
-    Products.find(queryObject).sort(sortStr).skip(skip).limit(limit),
-    Products.countDocuments(queryObject),
+  // Group by catalogRef so multiple vendors selling the same product → 1 card.
+  // Products without catalogRef each form their own group (keyed by their own _id).
+  // Pre-sort by price ASC so $first always picks the cheapest listing per group.
+  const basePipeline = [
+    { $match: queryObject },
+    { $sort: { price: 1 } },
+    { $group: {
+      _id: { $ifNull: ["$catalogRef", "$_id"] },
+      doc: { $first: "$$ROOT" },
+      sellersCount: { $sum: 1 },
+    }},
+    { $replaceRoot: { newRoot: { $mergeObjects: ["$doc", { sellersCount: "$sellersCount" }] } } },
+    { $sort: sortObj },
+  ];
+
+  const [queryProducts, countResult, totalProducts] = await Promise.all([
+    Products.aggregate([...basePipeline, { $skip: skip }, { $limit: limit }]),
+    Products.aggregate([
+      { $match: queryObject },
+      { $group: { _id: { $ifNull: ["$catalogRef", "$_id"] } } },
+      { $count: "total" },
+    ]),
     Products.find({ listingStatus: "approved" }).sort("-createdAt"),
   ]);
 
+  const totalFiltered = countResult[0]?.total ?? 0;
   const numberOfPages = Math.ceil(totalFiltered / limit);
 
   res.status(200).json({
@@ -109,6 +130,24 @@ exports.getProductBySlug = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({ success: true, product });
+});
+
+// @desc    Get all approved sellers for a catalog product
+// @route   GET /api/products/sellers/:catalogRef
+// @access  Public
+exports.getSellers = asyncHandler(async (req, res, next) => {
+  const { catalogRef } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(catalogRef)) {
+    return next(new ErrorResponse("Invalid catalogRef", 400));
+  }
+
+  const sellers = await Products.find({ catalogRef, listingStatus: "approved" })
+    .sort({ price: 1 })
+    .populate("vendor", "shopName vendorProfile")
+    .select("price stock vendor images listingStatus rating");
+
+  res.status(200).json({ success: true, sellers, count: sellers.length });
 });
 
 // @desc 	Create a product

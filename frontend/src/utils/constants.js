@@ -93,6 +93,16 @@ export const VENDOR_STATUS_TABS = [
   { key: "rejected",  label: "Respinse" },
 ];
 
+/* ─── Vendor — entity type options ──────────────────────── */
+export const TIP_ENTITATE_OPTIONS = [
+  { value: "SRL", label: "SRL" },
+  { value: "PFA", label: "PFA" },
+  { value: "SA",  label: "SA" },
+  { value: "RA",  label: "RA" },
+  { value: "II",  label: "II" },
+  { value: "ONG", label: "ONG" },
+];
+
 /* ─── Vendor sidebar links ───────────────────────────────── */
 export const VENDOR_LINKS = [
   { to: "/vendor/dashboard",           label: "Prezentare generală", end: true },
@@ -100,6 +110,7 @@ export const VENDOR_LINKS = [
   { to: "/vendor/dashboard/orders",    label: "Comenzi" },
   { to: "/vendor/dashboard/analytics", label: "Analytics" },
   { to: "/vendor/dashboard/catalog",   label: "Catalog produse" },
+  { to: "/vendor/dashboard/profile",   label: "Profil firmă", end: false },
 ];
 
 /* ─── Catalog ────────────────────────────────────────────── */

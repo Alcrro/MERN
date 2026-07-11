@@ -228,3 +228,15 @@ html[data-theme="dark"] .card-fav-btn--active {
 }
 
 .card-v2-add-to-cart { flex-shrink: 0; }
+
+/* ─── Sellers count badge ───────────────────────────────── */
+.card__sellers-badge {
+  font-size: .6rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 1px 6px;
+  border-radius: 20px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}

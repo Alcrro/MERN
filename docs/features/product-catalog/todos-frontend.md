@@ -1,67 +1,45 @@
-# Frontend TODOs: Product Catalog
+# Frontend TODOs — Product Catalog
 
-> **Last updated:** 2026-07-11
-> **Stack:** React 18, RTK Query, Redux Toolkit, React Router v6, plain CSS
-> **Conventions:** CLAUDE.md — atomic design, one hook = one action, co-located CSS
+## Faza 1 — RTK + Data layer
+- [x] `rtkCatalog.js` cu `useListCatalogQuery`, `useSearchCatalogQuery`
+- [x] `useCreateCatalogEntryMutation`, `useUpdateCatalogEntryMutation`, `useDeleteCatalogEntryMutation`
+- [x] Tag `Catalog` pentru cache invalidation
+- [x] `store.js` înregistrează `catalogApi`
 
----
+## Faza 2 — Vendor: browse catalog
+- [x] `VendorCatalog.jsx` (page) — routing cu `useSearchParams` (`?view=add`)
+- [x] `VendorCatalogPanel.jsx` — pills kind + chips tip + buton "Propune produs"
+- [x] `CatalogTable.jsx` — tabel cu search debounced, paginare, skeleton
+- [x] `CatalogRow.jsx` — rând expandabil (Fragment cu 2 `<tr>`)
+- [x] `CatalogVariantTable.jsx` — preț + stoc + publish per culoare
+- [x] `useCatalogDraft.js` — draft state cu publishing/published/error per variant
+- [x] `catalogCols.js` — `SPEC_COLS` + `COL_HEADERS` per kind
+- [x] Skeleton loading (8 rânduri shimmer animate)
+- [x] Inline specs pe mobile (< 640px) cu separator ` · `
+- [x] CSS split: VendorCatalogPanel.css, CatalogTable.css, CatalogRow.css, CatalogVariantTable.css
 
-## Phase 1 — Setup & data layer
+## Faza 2 — Vendor: search autocomplete
+- [x] `CatalogSearch.jsx` — combobox a11y (role, aria-expanded, aria-activedescendant)
+- [x] `useCatalogSearch.js` — query state, RTK, keyboard nav (↑↓Enter Escape), select/reset
+- [x] Debounce 300ms, skip dacă < 2 caractere
+- [x] Clear button când e selectat un produs
 
-> Goal: endpoint de căutare returnează date în consolă. Fără UI.
+## Faza 2 — Admin: gestiune catalog
+- [x] `AdminCatalog.jsx` (page) — redirect dacă nu ești admin
+- [x] `CatalogAdmin.jsx` — tabel cu filtru kind + paginare + delete
+- [x] `CatalogEntryModal.jsx` — add/edit modal cu specs dinamice per kind
 
-- [x] Crează `frontend/src/features/catalog/rtkCatalog.js` cu `createApi`
-- [x] Adaugă endpoint `useSearchCatalogQuery` — `GET /api/catalog?q=&kind=`
-- [x] Înregistrează `catalogApi` în `store.js`
-- [ ] Test în browser: Network tab returnează rezultate la query
+## Faza 3 — Polish
+- [x] Mobile responsive: VendorCatalogPanel, CatalogTable
+- [x] Dark mode: VendorCatalogPanel.css, CatalogRow.css, CatalogTable.css, CatalogVariantTable.css
+- [x] `type="button"` pe toate butoanele non-submit
+- [x] Loading state: skeleton în CatalogTable, "Se încarcă…" în CatalogAdmin
+- [x] Empty state: "Niciun produs găsit." în CatalogTable + CatalogAdmin
 
----
-
-## Phase 2 — CatalogSearch organism
-
-> Goal: componenta e funcțională end-to-end, fără polish.
-
-- [x] Crează `Components/vendor/CatalogSearch/CatalogSearch.jsx`
-  - [x] Input de căutare cu debounce 300ms (hook local `useDebounce`)
-  - [x] Apelează `useSearchCatalogQuery` doar dacă `q.length >= 2`
-  - [x] Afișează dropdown cu rezultate (`brand — specs.model`)
-  - [x] La click pe un rezultat, apelează prop `onSelect(catalogEntry)`
-  - [x] Buton X pentru a reseta selecția
-- [x] Crează `CatalogSearch.css` + `index.js`
-- [x] Modifică `VendorProductForm.jsx`:
-  - [x] Adaugă `<CatalogSearch kind={kind} onSelect={handleCatalogSelect} />` deasupra câmpurilor
-  - [x] Implementează `handleCatalogSelect(entry)`:
-    - `setForm({ brand: entry.brand, price: "" })` — prețul rămâne gol
-    - `setCatFields(entry.specs)`
-    - `setImages(entry.images)`
-- [x] Handle loading state — spinner în input
-- [x] Handle empty state — mesaj "Niciun produs găsit. Completează manual."
-- [x] Handle error state — mesaj discret sub input
-
----
-
-## Phase 3 — Polish & edge cases
-
-> Goal: production-ready.
-
-- [x] Dark mode — `html[data-theme="dark"] .catalog-search { }` la finalul CSS
-- [x] Mobile — dropdown la 375px (max-height + scroll intern)
-- [x] Accesibilitate — `role="listbox"`, `aria-activedescendant`, navigare cu taste ↑↓ + Enter + Escape
-- [x] CSS — BEM `.catalog-search__input`, `.catalog-search__dropdown`, `.catalog-search__item`
-- [x] Debounce — nu se face request dacă query e < 2 caractere
-- [x] Duplicate — dacă imaginile din catalog sunt deja în `images`, nu le duplica la re-selecție
-- [x] `console.log` — zero în cod final
-- [ ] `npm run build` — zero warnings
-
----
-
-## Files touched
-
-| File | Status | Notes |
-|------|--------|-------|
-| `features/catalog/rtkCatalog.js` | [x] | nou |
-| `app/store.js` | [x] | adaugă `catalogApi` |
-| `Components/vendor/CatalogSearch/CatalogSearch.jsx` | [x] | nou organism |
-| `Components/vendor/CatalogSearch/CatalogSearch.css` | [x] | nou |
-| `Components/vendor/CatalogSearch/index.js` | [x] | nou |
-| `Components/vendor/VendorProductForm/VendorProductForm.jsx` | [x] | adaugă CatalogSearch + handleCatalogSelect |
+## Gaps found
+- [ ] `CatalogAdmin.jsx` — lipsă `html[data-theme="dark"]` în `CatalogAdmin.css`
+- [ ] `CatalogEntryModal.jsx` — lipsă `html[data-theme="dark"]` în `CatalogEntryModal.css`
+- [ ] `CatalogEntryModal.jsx` — câmpurile `culoare[]` și `refPrice` nu sunt în formular
+- [ ] `CatalogBrowserModal.jsx` — component implementat dar neimportat nicăieri (dead code)
+- [ ] Nicio notificare vizuală (toast) după publish reușit în `CatalogVariantTable`
+- [ ] `searchCatalog` RTK — fără paginare; rezultate limitate la 20

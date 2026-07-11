@@ -59,6 +59,52 @@ exports.getVendorMe = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, user });
 });
 
+// @desc   Update vendor profile (legal + operational info)
+// @route  PUT /api/vendor/profile
+// @access Private/Vendor
+exports.updateVendorProfile = asyncHandler(async (req, res) => {
+  const { cui, denumireFirma, tipEntitate, orasDepozit, zileLivrare, returZile, telefon, emailContact } = req.body;
+
+  const VALID_TIP = ["SRL", "PFA", "SA", "RA", "II", "ONG"];
+
+  if (cui != null && !/^\d{2,10}$/.test(String(cui))) {
+    res.status(400);
+    throw new Error("CUI invalid — trebuie să conțină 2–10 cifre");
+  }
+  if (tipEntitate != null && !VALID_TIP.includes(tipEntitate)) {
+    res.status(400);
+    throw new Error(`tipEntitate invalid. Valori acceptate: ${VALID_TIP.join(", ")}`);
+  }
+  if (zileLivrare != null) {
+    const { min, max } = zileLivrare;
+    if (min != null && max != null && Number(min) > Number(max)) {
+      res.status(400);
+      throw new Error("zileLivrare.min nu poate fi mai mare decât max");
+    }
+  }
+
+  const update = {};
+  if (cui           != null) update["vendorProfile.cui"]           = cui;
+  if (denumireFirma != null) update["vendorProfile.denumireFirma"] = denumireFirma;
+  if (tipEntitate   != null) update["vendorProfile.tipEntitate"]   = tipEntitate;
+  if (orasDepozit   != null) update["vendorProfile.orasDepozit"]   = orasDepozit;
+  if (zileLivrare   != null) {
+    if (zileLivrare.min != null) update["vendorProfile.zileLivrare.min"] = zileLivrare.min;
+    if (zileLivrare.max != null) update["vendorProfile.zileLivrare.max"] = zileLivrare.max;
+  }
+  if (returZile     != null) update["vendorProfile.returZile"]     = returZile;
+  if (telefon       != null) update["vendorProfile.telefon"]       = telefon;
+  if (emailContact  != null) update["vendorProfile.emailContact"]  = emailContact;
+
+  const user = await Register.findByIdAndUpdate(
+    req.user._id,
+    { $set: update },
+    { new: true, runValidators: true }
+  ).select("-password");
+
+  res.status(200).json({ success: true, vendorProfile: user.vendorProfile });
+});
+
 // @desc   Get vendor's own products
 // @route  GET /api/vendor/products
 // @access Private/Vendor

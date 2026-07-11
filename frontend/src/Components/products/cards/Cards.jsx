@@ -38,6 +38,9 @@ const Cards = ({ products: data }) => {
               <div className="card-v2-meta">
                 <span className="card-brand-chip">{data.brand}</span>
                 {data.memorieInterna && <span className="card-memory-chip">{data.memorieInterna}</span>}
+                {data.sellersCount > 1 && (
+                  <span className="card__sellers-badge">{data.sellersCount} oferte</span>
+                )}
               </div>
               <h2 className="card-v2-title-wrapper">{data.model}</h2>
               <p className="card-v2-desc">{data.description}</p>

@@ -43,6 +43,16 @@ exports.updateVendorStatus = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc   Get all vendors
+// @route  GET /api/admin/vendors
+// @access Private/Admin
+exports.getAdminVendors = asyncHandler(async (req, res) => {
+  const vendors = await Register.find({ role: "vendor" })
+    .select("name email shopName vendorStatus vendorProfile createdAt")
+    .sort("-createdAt");
+  res.status(200).json({ success: true, vendors, count: vendors.length });
+});
+
 // @desc   Get pending product listings
 // @route  GET /api/admin/products/pending
 // @access Private/Admin

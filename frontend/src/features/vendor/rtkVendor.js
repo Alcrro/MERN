@@ -39,6 +39,10 @@ export const vendorApi = createApi({
       query: () => "vendor/orders",
       providesTags: ["VendorOrders"],
     }),
+    updateVendorProfile: builder.mutation({
+      query: (body) => ({ url: "vendor/profile", method: "PUT", body }),
+      invalidatesTags: ["VendorMe"],
+    }),
     getVendorAnalytics: builder.query({
       query: () => "vendor/analytics",
       providesTags: ["VendorAnalytics"],
@@ -49,6 +53,7 @@ export const vendorApi = createApi({
 export const {
   useApplyAsVendorMutation,
   useGetVendorMeQuery,
+  useUpdateVendorProfileMutation,
   useGetVendorProductsQuery,
   useCreateVendorProductMutation,
   useUpdateVendorProductMutation,

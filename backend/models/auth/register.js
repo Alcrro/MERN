@@ -2,6 +2,20 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const VendorProfileSchema = new mongoose.Schema({
+  cui:           { type: String, default: null },
+  denumireFirma: { type: String, maxlength: 150, default: null },
+  tipEntitate:   { type: String, enum: ["SRL", "PFA", "SA", "RA", "II", "ONG"], default: null },
+  orasDepozit:   { type: String, maxlength: 100, default: null },
+  zileLivrare: {
+    min: { type: Number, min: 0, default: null },
+    max: { type: Number, min: 0, default: null },
+  },
+  returZile:    { type: Number, min: 0, default: 30 },
+  telefon:      { type: String, default: null },
+  emailContact: { type: String, default: null },
+}, { _id: false });
+
 const ROLES = Object.freeze({
   CLIENT: "client",
   VENDOR: "vendor",
@@ -60,6 +74,7 @@ const RegisterSchema = new mongoose.Schema(
       maxlength: [500, "Shop description cannot exceed 500 characters"],
       default: null,
     },
+    vendorProfile: { type: VendorProfileSchema, default: () => ({}) },
   },
   {
     timestamps: true,

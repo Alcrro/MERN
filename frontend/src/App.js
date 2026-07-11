@@ -34,6 +34,7 @@ import VendorProductForm from "./Components/vendor/products/VendorProductForm";
 import VendorOrdersPanel from "./Components/vendor/dashboard/VendorOrdersPanel";
 import VendorAnalyticsPanel from "./Components/vendor/dashboard/VendorAnalyticsPanel";
 import VendorCatalog from "./Pages/Vendor/VendorCatalog/VendorCatalog";
+import VendorProfilePanel from "./Components/vendor/dashboard/VendorProfilePanel";
 import AdminCatalog from "./Pages/Admin/AdminCatalog/AdminCatalog";
 
 const App = () => {
@@ -78,6 +79,7 @@ const App = () => {
             <Route path="orders" element={<VendorOrdersPanel />} />
             <Route path="analytics" element={<VendorAnalyticsPanel />} />
             <Route path="catalog" element={<VendorCatalog />} />
+            <Route path="profile" element={<VendorProfilePanel />} />
           </Route>
 
           <Route path="/favorites" element={<Favorites />} />

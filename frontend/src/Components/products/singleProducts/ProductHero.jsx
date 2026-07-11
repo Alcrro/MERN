@@ -5,16 +5,17 @@ import { AVAIL_COLOR, DEMO_COLORS } from "./singleProductConstants";
 import { deliveryDate } from "./singleProductUtils";
 import { TruckIcon, ReturnIcon, ShieldIcon, CheckIcon, CartIcon, HeartIcon, LockIcon, CheckSmIcon, PhoneIcon } from "./singleProductIcons";
 
-const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews }) => {
+const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, listing }) => {
   const [selColor, setSelColor] = useState(0);
 
-  const avail    = p.stock?.availability;
-  const qty      = p.stock?.quantity ?? 0;
-  const aStyle   = AVAIL_COLOR[avail] || AVAIL_COLOR["In Stoc"];
-  const isOut    = avail === "Stoc Epuizat" || qty === 0;
-  const isPromo  = avail === "Promotii";
-  const price    = p.price ?? 0;
-  const fmtP     = price.toLocaleString("ro-RO");
+  const src    = listing ?? p;
+  const avail  = src.stock?.availability;
+  const qty    = src.stock?.quantity ?? 0;
+  const aStyle = AVAIL_COLOR[avail] || AVAIL_COLOR["In Stoc"];
+  const isOut  = avail === "Stoc Epuizat" || qty === 0;
+  const isPromo = avail === "Promotii";
+  const price  = src.price ?? 0;
+  const fmtP   = price.toLocaleString("ro-RO");
   const discount = isPromo ? Math.round(price * 0.1) : 0;
   const fmtFinal = (price - discount).toLocaleString("ro-RO");
   const avg      = p.rating?.average ?? 0;

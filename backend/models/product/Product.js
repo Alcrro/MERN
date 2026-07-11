@@ -44,6 +44,11 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    catalogRef: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CatalogProduct",
+      default: null,
+    },
     rating: RatingSchema,
     stock: StockSchema,
   },
@@ -97,6 +102,9 @@ ProductSchema.index({ kind: 1 });
 
 // vendor's listings + admin approval queue
 ProductSchema.index({ vendor: 1, listingStatus: 1 });
+
+// seller picker: group by catalogRef + filter approved + sort price
+ProductSchema.index({ catalogRef: 1, listingStatus: 1, price: 1 });
 ProductSchema.index({ listingStatus: 1, createdAt: -1 });
 
 // text search pe brand + description

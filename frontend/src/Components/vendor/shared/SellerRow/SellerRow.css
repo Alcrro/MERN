@@ -1,0 +1,144 @@
+.seller-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: background .12s;
+  border-bottom: 1px solid var(--border);
+}
+
+.seller-row:last-child { border-bottom: none; }
+
+.seller-row:hover { background: var(--bg-page); }
+
+.seller-row--selected { background: color-mix(in srgb, var(--primary) 6%, transparent); }
+.seller-row--selected:hover { background: color-mix(in srgb, var(--primary) 9%, transparent); }
+
+/* ── Radio bullet ───────────────────────────────────────── */
+.seller-row__radio {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: border-color .12s;
+}
+
+.seller-row__radio--on {
+  border-color: var(--primary);
+  background: radial-gradient(circle, var(--primary) 40%, transparent 41%);
+  border-width: 2px;
+}
+
+/* ── Identity: shop name + badge ────────────────────────── */
+.seller-row__identity {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.seller-row__shop {
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+.seller-row__tip {
+  font-size: .63rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  flex-shrink: 0;
+}
+
+/* ── Meta: stoc · oraș · livrare · retur ────────────────── */
+.seller-row__meta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  font-size: .72rem;
+  color: var(--text-muted);
+  min-width: 0;
+}
+
+.seller-row__sep { color: var(--border); user-select: none; }
+
+.seller-row__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.seller-row__dot--green  { background: #22c55e; }
+.seller-row__dot--amber  { background: #f59e0b; }
+.seller-row__dot--blue   { background: #3b82f6; }
+.seller-row__dot--purple { background: #8b5cf6; }
+.seller-row__dot--red    { background: #ef4444; }
+.seller-row__dot--gray   { background: #9ca3af; }
+
+/* ── Price ──────────────────────────────────────────────── */
+.seller-row__price {
+  font-size: .92rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.seller-row__currency {
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+/* ── Button ─────────────────────────────────────────────── */
+.seller-row__btn {
+  flex-shrink: 0;
+  font-size: .76rem;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s, color .12s;
+}
+
+.seller-row__btn:hover   { background: var(--primary); color: #fff; }
+.seller-row__btn--active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ── Dark mode ──────────────────────────────────────────── */
+html[data-theme="dark"] .seller-row:hover { background: rgba(255,255,255,.03); }
+html[data-theme="dark"] .seller-row--selected { background: rgba(99,102,241,.08); }
+html[data-theme="dark"] .seller-row--selected:hover { background: rgba(99,102,241,.12); }
+html[data-theme="dark"] .seller-row__tip { background: rgba(255,255,255,.05); }
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .seller-row__identity { min-width: 90px; }
+  .seller-row__meta { font-size: .68rem; }
+}
+
+@media (max-width: 480px) {
+  .seller-row { flex-wrap: wrap; gap: 6px; padding: 8px 10px; }
+  .seller-row__identity { flex: 1; }
+  .seller-row__meta { width: 100%; order: 3; }
+  .seller-row__price { order: 2; }
+  .seller-row__btn { order: 2; }
+  .seller-row__radio { order: 0; }
+}

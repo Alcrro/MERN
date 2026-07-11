@@ -2,6 +2,7 @@ const express = require("express");
 const {
   applyAsVendor,
   getVendorMe,
+  updateVendorProfile,
   getVendorProducts,
   createVendorProduct,
   updateVendorProduct,
@@ -17,6 +18,7 @@ router.post("/vendor/apply", protect, applyAsVendor);
 
 router.use("/vendor", protect, authorize("vendor"));
 router.get("/vendor/me", getVendorMe);
+router.put("/vendor/profile", updateVendorProfile);
 router.route("/vendor/products").get(getVendorProducts).post(createVendorProduct);
 router.route("/vendor/products/:id").put(updateVendorProduct).delete(deleteVendorProduct);
 router.get("/vendor/orders", getVendorOrders);

@@ -1,148 +1,135 @@
-# Tech Spec: Product Catalog
+# Tech Spec — Product Catalog
 
-> **Status:** `Draft`
-> **Author:** Alexandru Roventa
-> **Last updated:** 2026-07-11
-> **Related PRD:** [PRD.md](./PRD.md)
+- **Status:** Shipped
+- **Last updated:** 2026-07-11
 
----
+## Data flow
 
-## Overview
-
-### What we're building
-
-O colecție MongoDB `CatalogProduct` cu produse pre-seeded (telefoane, laptopuri, haine etc.) care servește ca sursă de adevăr. În `VendorProductForm` apare un câmp de căutare care face query la catalog; la selectare, câmpurile formularului se auto-completează. Vendorul poate modifica orice câmp sau ignora catalogul și completa manual.
-
-### Architecture decision log
-
-| Decision | Options considered | Why we chose this |
-|----------|--------------------|-------------------|
-| Colecție separată vs subdocument în Product | Subdocument, colecție separată | Separată — catalog e read-only pentru vendori, evoluat independent |
-| Schema catalog vs discriminator | Discriminator (ca Product), schema plată | Schema plată cu câmp `kind` + `specs` object — mai simplu de seeded și de interogat |
-| Search: text index vs regex | Regex `/query/i`, MongoDB text index | Text index — mai rapid, suportă relevance score |
-| State în form: RTK cache vs useState local | RTK cache, useState | useState local pentru query string + rezultate dropdown — e UI state pur |
-
-### Risks & trade-offs
-
-- **Risk:** Catalogul e gol la început — vendorii nu vor găsi nimic. **Mitigation:** Seeder cu top 50 telefoane + 20 laptopuri la lansare.
-- **Risk:** Specs din catalog devin vechi. **Mitigation:** Admin poate edita oricând; datele sunt doar un punct de plecare, nu sursa de adevăr la afișare.
-
----
-
-## Implementation
-
-### Data flow
-
+### Vendor (browse + publish)
 ```
-VendorProductForm
-  → input onChange (≥2 chars)
-  → useSearchCatalogQuery(q, kind)   ← RTK Query (debounced 300ms)
-  → GET /api/catalog?q=iphone&kind=Electronics
-  → CatalogProduct.find({ $text: { $search: q }, kind })
-  → dropdown cu rezultate
-  → user selectează → onSelect(catalogEntry)
-  → setForm({ brand, price, ...specs }) + setImages(catalogEntry.images)
+/vendor/dashboard/catalog
+  → VendorCatalog (useSearchParams)
+      → ?view=add  → VendorProductForm (isEdit=false)
+      → default    → VendorCatalogPanel
+                       [kind pill] → CatalogTable (key=`${kind}-${tip}`)
+                         useListCatalogQuery({ kind, tip, brand, page, limit:20 })
+                           GET /api/catalog/all?kind=&tip=&brand=&page=&limit=
+                         → CatalogRow (expandable)
+                             → CatalogVariantTable
+                                 useCatalogDraft.publishColor(entry, color)
+                                   useCreateVendorProductMutation
+                                     POST /api/vendor/products
 ```
 
-### API contracts
+### Vendor (search in form)
+```
+VendorProductForm → CatalogSearch
+  useCatalogSearch(kind, onSelect)
+    useSearchCatalogQuery({ q, kind, limit:10 }, skip: q.length < 2)
+      GET /api/catalog/?q=&kind=&limit=
+    → select entry → populează brand, specs, images în form
+```
 
-#### `GET /api/catalog`
+### Admin (manage)
+```
+/admin/catalog
+  → AdminCatalog (redirect dacă !admin)
+      → CatalogAdmin
+          useListCatalogQuery({ kind, page, limit:20 })
+            GET /api/catalog/all
+          useDeleteCatalogEntryMutation → DELETE /api/catalog/:id
+          → CatalogEntryModal (add/edit)
+              useCreateCatalogEntryMutation → POST /api/catalog/
+              useUpdateCatalogEntryMutation → PUT /api/catalog/:id
+```
 
-**Query params:**
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `q` | `string` | yes | search term (min 2 chars) |
-| `kind` | `string` | no | `Electronics` \| `Clothing` etc. — filtrare după categorie |
-| `limit` | `number` | no | default `10`, max `20` |
+## API Contracts
 
-**Response `200`:**
+### `GET /api/catalog/all`
+Public. Parametri: `kind`, `brand` (regex case-insensitive), `tip` (specs.tip), `page`, `limit` (cap 50).
 ```json
 {
-  "results": [
-    {
-      "_id": "...",
-      "kind": "Electronics",
-      "brand": "Apple",
-      "specs": {
-        "model": "iPhone 15 Pro",
-        "tip": "Telefon",
-        "stocare": "256GB",
-        "RAM": "8GB",
-        "procesor": "A17 Pro",
-        "display": "6.1\" OLED",
-        "camera": "48MP",
-        "baterie": "3274mAh",
-        "OS": "iOS 17"
-      },
-      "images": ["https://..."]
-    }
-  ],
-  "count": 1
+  "results": [CatalogProduct],
+  "total": 31,
+  "page": 1,
+  "pages": 2
 }
 ```
 
-**Error cases:**
-- `400` — `q` lipsă sau mai scurt de 2 caractere
-
----
-
-#### `POST /api/catalog` _(admin only)_
-
-**Body:** același shape ca un result de mai sus (fără `_id`)
-**Response `201`:** intrarea creată
-
-#### `PUT /api/catalog/:id` _(admin only)_
-#### `DELETE /api/catalog/:id` _(admin only)_
-
----
-
-### Frontend — component tree
-
-```
-vendor/VendorProductForm/VendorProductForm.jsx   ← MODIFY — adaugă CatalogSearch deasupra câmpurilor
-  vendor/CatalogSearch/CatalogSearch.jsx          ← NEW organism (≤ 150 linii)
-    CatalogSearch.css                             ← NEW
-    index.js                                      ← NEW
+### `GET /api/catalog/`
+Public. Full-text search MongoDB. Parametri: `q` (min 2 chars, required), `kind`, `limit` (cap 20).
+```json
+{ "results": [CatalogProduct], "count": 5 }
 ```
 
-**Componente reutilizabile:**
-- `vendor/CategoryPicker/CategoryPicker.jsx` — selectorul de `kind` deja existent, folosit pentru a filtra catalogul
-- `vendor/ImageUploader/ImageUploader.jsx` — pre-populat cu imaginile din catalog la selecție
-- `vendor/VendorProductForm/CategoryFields.jsx` — câmpurile de specs, auto-completate la selecție
+### `POST /api/catalog/` — `protect + authorize("admin")`
+Body: `{ kind, brand, specs: {}, images: [], culoare: [], refPrice }`.
+Response: `201 CatalogProduct`.
 
-### Redux / RTK Query changes
+### `PUT /api/catalog/:id` — `protect + authorize("admin")`
+Body: parțial sau complet. Response: `CatalogProduct` actualizat sau `404`.
 
-| Type | Name | File | Description |
-|------|------|------|-------------|
-| RTK endpoint | `useSearchCatalogQuery` | `features/catalog/rtkCatalog.js` | GET /api/catalog cu debounce |
-| RTK endpoint | `useCreateCatalogEntryMutation` | `features/catalog/rtkCatalog.js` | admin only |
+### `DELETE /api/catalog/:id` — `protect + authorize("admin")`
+Response: `{ message: "Șters cu succes" }` sau `404`.
 
-> Nu e nevoie de Redux slice — rezultatele sunt UI state local în `CatalogSearch`.
+## Component Tree
 
-### Key types / shapes
+```
+Pages/Admin/AdminCatalog/AdminCatalog.jsx          [page, 12 linii]
+  Components/administrator/catalog/
+    CatalogAdmin/CatalogAdmin.jsx                  [organism, 107 linii]
+      CatalogEntryModal/CatalogEntryModal.jsx      [organism, 102 linii]
 
+Pages/Vendor/VendorCatalog/VendorCatalog.jsx       [page, 11 linii]
+  Components/vendor/catalog/
+    VendorCatalogPanel/VendorCatalogPanel.jsx      [organism, 67 linii]
+      VendorCatalogPanel/CatalogTable.jsx          [organism, 102 linii]
+        VendorCatalogPanel/CatalogRow.jsx          [organism, 56 linii]
+          VendorCatalogPanel/CatalogVariantTable.jsx [molecule, 68 linii]
+    CatalogSearch/CatalogSearch.jsx                [organism, 70 linii]
+      CatalogSearch/useCatalogSearch.js            [hook]
+    CatalogBrowserModal/CatalogBrowserModal.jsx    [organism, 68 linii] ⚠ nefolosit
+```
+
+### Hooks co-located
+| Hook | Locație | Face |
+|------|---------|------|
+| `useCatalogDraft` | VendorCatalogPanel/ | draft per entry (price/stock/publish state per culoare) |
+| `useCatalogSearch` | CatalogSearch/ | query state, RTK call, keyboard nav, select/reset |
+| `useVendorProductForm` | VendorProductForm/ | form state + submit |
+
+### Constants (utils/constants.js)
+| Constantă | Utilizare |
+|-----------|-----------|
+| `CATALOG_TREE` | kind → `[{ label, tip }]` pentru pills secundare |
+| `CATALOG_KINDS` | `["Electronics","Clothing","Furniture","HomeGarden","Books"]` |
+| `CATALOG_SPEC_FIELDS` | kind → câmpuri specs pentru CatalogEntryModal |
+| `COL_HEADERS` / `SPEC_COLS` | co-located în `catalogCols.js` — headere și accessori coloană tabel |
+| `COLOR_MAP` | culoare → hex pentru dot colorat în CatalogVariantTable |
+| `DEFAULT_STOCK` | `{ quantity: 0, availability: "In Stoc" }` |
+| `CLOTHING_SIZES` | array mărimi pentru size chips |
+
+## Key Types
+
+### CatalogProduct (Mongoose)
 ```js
-// CatalogEntry — shape returnat de API
 {
-  _id: string,
-  kind: "Electronics" | "Clothing" | "Furniture" | "HomeGarden" | "Books",
-  brand: string,
-  specs: {
-    // Electronics
-    model?: string, tip?: string, stocare?: string, RAM?: string,
-    procesor?: string, GPU?: string, display?: string, camera?: string,
-    baterie?: string, OS?: string, conectivitate?: string,
-    // Clothing
-    name?: string, material?: string, gender?: string,
-  },
-  images: string[],   // URL-uri imagini oficiale
+  kind:     String, enum: ["Electronics","Clothing","Furniture","HomeGarden","Books"]
+  brand:    String, required, trim
+  specs:    Mixed, default: {}
+  images:   [String], default: []
+  culoare:  [String], default: []
+  refPrice: Number, default: null
+  // timestamps: createdAt, updatedAt
 }
 ```
 
-### Edge cases to handle
-
-- [ ] Empty state — "Niciun produs găsit în catalog. Completează manual câmpurile de mai jos."
-- [ ] Loading state — spinner mic în dreapta input-ului (nu skeleton întreg)
-- [ ] Query < 2 chars — nu se face request, dropdown închis
-- [ ] Selecție anulată — buton X care resetează câmpurile la valorile inițiale (goale)
-- [ ] Mobile — dropdown apare deasupra/dedesubt în funcție de spațiu disponibil
+### Draft variant shape (useCatalogDraft)
+```js
+{
+  variants: {
+    [colorName]: { price: "", stock: DEFAULT_STOCK, publishing: false, published: false, error: null }
+  },
+  sizes: []  // doar Clothing
+}
+```

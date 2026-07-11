@@ -11,20 +11,22 @@ import ProductNotFound from "./ProductNotFound";
 import ProductHero from "./ProductHero";
 import ProductReviews from "./ProductReviews";
 import Section from "./Section";
+import SellerPicker from "../../vendor/shared/SellerPicker";
 import "./singleProduct.css";
 
 const SingleProducts = () => {
   const { id }   = useParams();
   const dispatch = useDispatch();
   const authUser = useSelector((s) => s.auth.user);
-  const [added, setAdded] = useState(false);
+  const [added, setAdded]               = useState(false);
+  const [selectedListing, setSelected]  = useState(null);
 
   const { navRef, sectionRefs, activeTab, scrollTo } = useScrollSpy(TAB_KEYS);
   const { data: pd, isLoading: pLoad } = useGetSingleProductQuery(id);
   const { data: rd, isLoading: rLoad } = useGetReviewsQuery(id);
 
   const handleCart = () => {
-    dispatch(addToCart({ data: pd.product }));
+    dispatch(addToCart({ data: selectedListing ?? pd.product }));
     setAdded(true);
     setTimeout(() => setAdded(false), 2200);
   };
@@ -51,7 +53,11 @@ const SingleProducts = () => {
       </nav>
 
       <ProductHero p={p} productName={productName} added={added}
-        onAddToCart={handleCart} onScrollToReviews={() => scrollTo("recenzii")} />
+        onAddToCart={handleCart} onScrollToReviews={() => scrollTo("recenzii")}
+        listing={selectedListing} />
+      {p.catalogRef && (
+        <SellerPicker catalogRef={p.catalogRef} onSellerChange={setSelected} />
+      )}
 
       <nav className="sp-tabs-bar" ref={navRef}>
         <div className="sp-tabs-inner">

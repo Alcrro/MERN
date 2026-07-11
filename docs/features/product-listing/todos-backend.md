@@ -12,22 +12,23 @@
 - [x] `StockSchema` embedded — `backend/models/product/stock/Stock.js`
 - [x] `RatingSchema` embedded — `backend/models/product/rating/Rating.js`
 - [x] Pre-save hook — auto-slug from `brand + model`, auto `stock.availability = "Stoc Epuizat"` when qty = 0
-- [x] 8 indexes (slug unique, brand, price, rating.average, stock.availability, kind, two compounds)
+- [x] 10 indexes (createdAt, price, rating.average, brand compounds, kind, vendor+listingStatus, listingStatus+createdAt, text)
 
 ---
 
 ## Phase 2 — Controller
 
 - [x] `getProducts` — `backend/controllers/products/products.js`
-- [x] 9 filter params: `search`, `sort`, `brand`, `rating`, `model`, `kind`, `tip`, `availability`, `stocare`, `ram`
-- [x] `search` — regex on `brand` + `model`
-- [x] `sort` maps to Mongoose sort objects (price_asc, price_desc, name, rating)
-- [x] `limit` capped at 100
-- [x] Returns `{ queryProducts, totalProducts, numberOfPages }`
-- [x] `getProduct` — find by `_id`
+- [x] 11 filter params: `search`, `sort`, `brand`, `rating`, `model`, `kind`, `tip`, `availability`, `stocare`, `ram`, `culoare`
+- [x] `search` — MongoDB `$text` search (requires text index on brand + description)
+- [x] `sort` — mapped to Mongoose sort strings (6 named sort options)
+- [x] `limit` capped at 100; `page` clamped to min 1
+- [x] `rating` param uses `parseFloat()` guard
+- [x] Returns `{ success, totalProductsNumberQuery, numberOfPages, currentPage, limit, queryProducts, totalProducts }`
+- [x] `totalProducts` — all approved products (unfiltered, used client-side for filter context)
+- [x] `getProduct` — find by `_id`, 404 via `ErrorResponse`
 - [x] `postProduct` — create product, `protect` + `authorize("admin")`
 - [x] `getProductBySlug` — find by `slug`, `GET /api/products/slug/:slug`
-- [x] `rating` param — `parseFloat()` guard added
 
 ---
 
@@ -35,19 +36,18 @@
 
 - [x] Routes registered in `backend/routes/products/products.js`
 - [x] `GET /api/products` — public
-- [x] `GET /api/products/:id` — public
-- [x] `POST /api/products` — `protect` + `authorize("admin")`
+- [x] `GET /api/product/:id` — public
+- [x] `POST /api/admin/product` — `protect` + `authorize("admin")`
 - [x] `GET /api/products/slug/:slug` — public
 
 ---
 
 ## Gaps found
 
-- [x] **`getProductBySlug`** — added `GET /api/products/slug/:slug` handler and route
-- [x] **`getProducts` — `rating` param** — fixed `Number()` → `parseFloat()` guard
-- [ ] **`postProduct`** — no input validation middleware; required fields missing → unformatted Mongoose error
-- [ ] **`postProduct`** — no duplicate check before insert; concurrent requests with same slug not handled
-- [ ] **No PUT/PATCH route** for updating product fields — no admin edit endpoint
-- [ ] **No DELETE route** for products — admin cannot remove via API
-- [ ] **`stock.quantity`** updates — no dedicated `PATCH /api/products/:id/stock` endpoint
-- [ ] **Rating update** — `rating.average` and `rating.count` must be updated from the review feature; verify that link exists
+- [ ] **`postProduct`** — no input validation middleware; required fields missing → raw Mongoose error exposed
+- [ ] **`postProduct`** — no duplicate slug guard; concurrent inserts with same brand+model not handled
+- [ ] **No PUT/PATCH route** — no admin endpoint to update product fields after creation
+- [ ] **No DELETE route** — admin cannot remove products via API
+- [ ] **`stock.quantity` updates** — no dedicated `PATCH /api/products/:id/stock` endpoint
+- [ ] **`getProducts` — `totalProducts`** — fetches ALL approved products on every paginated request; expensive at scale; should be a separate aggregate count
+- [ ] **Rating param** — `rating` accepts multi-value in query string but `parseFloat` only takes first value; if client sends `rating[]=3&rating[]=4`, only first is used

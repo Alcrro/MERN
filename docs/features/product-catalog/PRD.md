@@ -1,47 +1,43 @@
-# PRD: Product Catalog
+# PRD — Product Catalog
 
-> **Status:** `Shipped`
-> **Owner:** Alexandru Roventa
-> **Last updated:** 2026-07-11
-> **Related tech spec:** [tech-spec.md](./tech-spec.md)
-
----
+- **Date:** 2026-07-11
+- **Status:** Shipped
 
 ## Problem Statement
 
-**Current state:** Vendorii completează manual toate câmpurile când adaugă un produs nou (brand, model, specs, etc.). Nu există nicio sursă de adevăr pentru produsele cunoscute (ex: iPhone 15 Pro, Samsung Galaxy S24).
-
-**Pain point:** Același produs apare în DB cu date inconsistente (greșeli de scriere, specs lipsă, imagini de calitate proastă). Vendorii pierd timp completând specs pe care le știe toată lumea.
-
-**Why now:** Vendor dashboard-ul e funcțional. Pasul logic următor e să reducem fricțiunea la adăugarea unui produs și să creștem calitatea datelor din catalog.
-
----
+Platforma are nevoie de un catalog master de produse, independent de listingurile vânzătorilor, care să servească drept sursă de adevăr pentru specificații, imagini și prețuri de referință. Vânzătorii nu adaugă produse de la zero — le aleg din catalog și setează doar prețul și stocul propriu. Adminii gestionează catalogul; vânzătorii îl răsfoiesc și publică variante.
 
 ## User Stories
 
-| # | Role | Want to | So that |
-|---|------|---------|---------|
-| 1 | vendor | să caut un produs după nume/model și să îl selectez | câmpurile să se completeze automat cu specs corecte |
-| 2 | vendor | să văd imagini oficiale ale produsului din catalog | nu trebuie să uploadez manual imagini de bază |
-| 3 | admin | să adaug/editez produse în catalogul master | vendorii au întotdeauna date corecte și actuale |
-| 4 | vendor | să adaug un produs care nu există în catalog | pot vinde și produse nișă fără să fiu blocat |
-
----
+1. **Admin** poate lista toate intrările din catalog, filtrat pe categorie, paginate.
+2. **Admin** poate adăuga o intrare nouă cu kind, brand, specs specifice categoriei și imagini.
+3. **Admin** poate edita o intrare existentă din catalog.
+4. **Admin** poate șterge o intrare din catalog.
+5. **Vendor** poate răsfoi catalogul pe categorii (Electronics, Clothing, etc.) și sub-tipuri (Telefon, Laptop…).
+6. **Vendor** poate căuta în catalog după brand/model cu autocomplete debounced (min 2 caractere, full-text search MongoDB).
+7. **Vendor** poate expanda o intrare din catalog și seta preț + stoc per culoare disponibilă.
+8. **Vendor** poate publica câte o variantă de culoare separat, fiecare creând un listing cu `listingStatus: pending`.
+9. **Vendor** poate propune un produs inexistent în catalog via `?view=add` (VendorProductForm în același dashboard).
+10. **Oricine** poate apela `GET /api/catalog/all` și `GET /api/catalog/` fără autentificare.
 
 ## Acceptance Criteria
 
-- [x] `#1` — Câmpul de căutare din `VendorProductForm` returnează sugestii după minim 2 caractere
-- [x] `#1` — La selectarea unui produs din catalog, câmpurile brand, model, specs se completează automat
-- [x] `#1` — Vendorul poate modifica orice câmp auto-completat înainte de submit
-- [x] `#2` — Imaginile din catalog apar pre-selectate în `ImageUploader`; vendorul le poate șterge sau adăuga altele
-- [x] `#3` — Adminul are un endpoint protejat pentru a crea/edita/șterge intrări din catalog
-- [x] `#4` — Dacă nu selectează nimic din catalog, formularul funcționează exact ca înainte (completare manuală)
+- [x] `GET /api/catalog/all?kind=&brand=&tip=&page=&limit=` returnează `{ results, total, page, pages }`
+- [x] `GET /api/catalog/?q=&kind=&limit=` full-text search, returnează `{ results, count }`
+- [x] CRUD admin protejat cu `protect + authorize("admin")`
+- [x] Vendor vede categorii ca pills orizontale, sub-tipuri ca chips secundare
+- [x] Skeleton loading (8 rânduri animate shimmer) la fetch
+- [x] Rând expandabil cu tabel variante per culoare (preț, cantitate, disponibilitate)
+- [x] Publish per culoare → creează listing propriu via `POST /api/vendor/products`
+- [x] Culoarea publicată devine disabled cu ✓ Publicat
+- [x] `?view=add` pe ruta catalog deschide VendorProductForm în loc de catalog panel
+- [x] AdminCatalog redirecționează la `/` dacă userul nu e admin
 
----
+## Out of Scope / Gaps
 
-## Out of Scope
-
-- Import bulk din fișier CSV/Excel (iterație viitoare)
-- Sincronizare automată cu API-uri externe de produse
-- Rating/review pe produsele din catalog (nu pe listing-ul vendorului)
-- Catalog pentru categoriile Furniture, HomeGarden, Books (doar Electronics + Clothing în v1)
+- [ ] `culoare[]` și `refPrice` nu sunt editabile în `CatalogEntryModal` (doar prin seeder)
+- [ ] `CatalogBrowserModal` implementat dar neimportat nicăieri (component mort)
+- [ ] `createCatalogEntry` nu validează body explicit (doar Mongoose validation)
+- [ ] `searchCatalog` nu paginează — max 20 rezultate fără suport `page`
+- [ ] `CatalogAdmin` și `CatalogEntryModal` lipsă dark mode CSS
+- [ ] Nicio notificare/toast după publish reușit — doar cell disabled

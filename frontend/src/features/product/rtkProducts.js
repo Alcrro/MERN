@@ -6,7 +6,7 @@ export const productsApi = createApi({
     baseUrl: `${process.env.REACT_APP_API_URL || ""}/api/`,
     credentials: "include",
   }),
-  tagTypes: ["Products", "Reviews", "Categories"],
+  tagTypes: ["Products", "Reviews", "Categories", "Sellers"],
   endpoints: (builder) => ({
     /* ── Categories ── */
     getCategories: builder.query({
@@ -66,6 +66,12 @@ export const productsApi = createApi({
       invalidatesTags: [{ type: "Products" }],
     }),
 
+    /* ── Sellers ── */
+    getSellers: builder.query({
+      query: (catalogRef) => `products/sellers/${catalogRef}`,
+      providesTags: (result, error, catalogRef) => [{ type: "Sellers", id: catalogRef }],
+    }),
+
     /* ── Reviews ── */
     getReviews: builder.query({
       query: (productId) => `product/${productId}/reviews`,
@@ -102,6 +108,7 @@ export const {
   useGetAllProductsQuery,
   useGetProductsQuery,
   useGetSingleProductQuery,
+  useGetSellersQuery,
   useAddProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,

@@ -477,10 +477,15 @@ const seed = async () => {
   const catalog = await CatalogProduct.create(catalogData);
   console.log(`  ${catalog.length} catalog entries created (${catalog.filter((c) => c.kind === "Electronics").length} Electronics, ${catalog.filter((c) => c.kind === "Clothing").length} Clothing)`);
 
-  // 4. Create products
+  // 4. Create products (with catalogRef linked by brand + specs.model)
   console.log("\nCreating products...");
   const products = await Electronics.create(
-    productsData(vendor._id).map((p) => ({ ...p, listingStatus: "approved" }))
+    productsData(vendor._id).map((p) => {
+      const catalogEntry = catalog.find(
+        (c) => c.brand === p.brand && c.specs?.model === p.model
+      );
+      return { ...p, listingStatus: "approved", ...(catalogEntry && { catalogRef: catalogEntry._id }) };
+    })
   );
   console.log(`  ${products.length} products created`);
 
