@@ -1,6 +1,4 @@
 .prf-page {
-  max-width: 1100px;
-  margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
   display: flex;
   gap: 1.75rem;
@@ -109,8 +107,28 @@
 
 .prf-nav-icon { font-size: 1rem; width: 20px; text-align: center; }
 
-.prf-nav-link--vendor { border-top: 1px solid var(--border); color: #065f46; }
-html[data-theme="dark"] .prf-nav-link--vendor { color: #6ee7b7; }
+.prf-vendor-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: .88rem;
+  font-weight: 600;
+  color: #065f46;
+  transition: background .12s, border-color .12s;
+}
+
+.prf-vendor-btn:hover {
+  border-color: #059669;
+  background: #f0fdf4;
+}
+
+html[data-theme="dark"] .prf-vendor-btn { color: #6ee7b7; }
+html[data-theme="dark"] .prf-vendor-btn:hover { background: rgba(110,231,183,.07); border-color: #6ee7b7; }
+
 .prf-nav-link--apply { border-top: 1px solid var(--border); font-size: .83rem; color: var(--text-muted); }
 
 /* ── Content ──────────────────────────────────────────────── */
