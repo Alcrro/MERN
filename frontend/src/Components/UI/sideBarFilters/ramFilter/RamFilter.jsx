@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { useGetAllProductsQuery } from "../../../../features/product/rtkProducts";
 
-const RamFilter = ({ ram, setRam }) => {
+const RamFilter = ({ ram, setRam, contextProducts = [] }) => {
   const [open, setOpen] = useState(true);
-  const { data } = useGetAllProductsQuery();
-  const all = data?.totalProducts ?? [];
 
-  const options = [...new Set(all.map((p) => p.RAM).filter(Boolean))].sort(
+  const options = [...new Set(contextProducts.map((p) => p.RAM).filter(Boolean))].sort(
     (a, b) => parseFloat(a) - parseFloat(b)
   );
 
@@ -15,28 +12,34 @@ const RamFilter = ({ ram, setRam }) => {
       prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]
     );
 
-  if (options.length === 0) return null;
+  const visible = [
+    ...options,
+    ...ram.filter((r) => !options.includes(r)),
+  ];
+
+  if (visible.length === 0) return null;
 
   return (
-    <div className="sidebar-filter-brand">
-      <a href="#!" className="filter-head" onClick={(e) => { e.preventDefault(); setOpen((o) => !o); }}>
+    <div className="filter-v2-container">
+      <button type="button" className="filter-head" onClick={() => setOpen((o) => !o)}>
         <span>RAM</span>
-      </a>
+      </button>
       {open && (
         <div className="filter-body scrollable">
-          {options.map((val) => {
-            const count = all.filter((p) => p.RAM === val).length;
+          {visible.map((val) => {
+            const count = contextProducts.filter((p) => p.RAM === val).length;
             return (
-              <label key={val} className="filter-inner">
+              <div className="filter-inner" key={val}>
                 <input
                   type="checkbox"
+                  id={`ram-${val}`}
                   value={val}
                   checked={ram.includes(val)}
                   onChange={() => toggle(val)}
                 />
-                <span>{val}</span>
+                <label htmlFor={`ram-${val}`}>{val}</label>
                 <div className="star-brand-text"><span>({count})</span></div>
-              </label>
+              </div>
             );
           })}
         </div>

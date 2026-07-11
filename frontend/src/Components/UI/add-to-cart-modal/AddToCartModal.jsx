@@ -1,16 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
-import "./addToCartModal.css";
+import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromCart, addToCart, removeSingleCart } from "../../../features/product/addToCart/addToCartSlice";
+import { fmt } from "../../products/add-to-Cart/cartUtils";
+import panda from "../../../Assets/images/panda.png";
+import "./addToCartModal.css";
 
 const TrashIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
   </svg>
 );
-
-const fmt = (n) => Number(n).toLocaleString("ro-RO");
 
 const MODAL_W = 340;
 
@@ -22,7 +22,7 @@ const AddToCartModal = () => {
   const totalAmount = cart.cartTotalAmount;
 
   const wrapRef  = useRef(null);
-  const [align, setAlign] = useState("center"); // "center" | "left" | "right"
+  const [align, setAlign] = useState("center");
 
   useEffect(() => {
     const el = wrapRef.current?.closest(".cart-wrapper");
@@ -31,9 +31,9 @@ const AddToCartModal = () => {
       const rect   = el.getBoundingClientRect();
       const center = rect.left + rect.width / 2;
       const vw     = window.innerWidth;
-      if (center - MODAL_W / 2 < 8)       setAlign("right");
+      if (center - MODAL_W / 2 < 8)           setAlign("right");
       else if (center + MODAL_W / 2 > vw - 8) setAlign("left");
-      else                                 setAlign("center");
+      else                                     setAlign("center");
     };
     check();
     window.addEventListener("resize", check);
@@ -44,7 +44,6 @@ const AddToCartModal = () => {
     <div className={`crt-modal crt-modal--${align}`} ref={wrapRef}>
       <div className="crt-modal__inner">
 
-        {/* ── Header ── */}
         <div className="crt-modal__head">
           <span className="crt-modal__title">Coșul tău</span>
           {totalQty > 0 && (
@@ -52,7 +51,6 @@ const AddToCartModal = () => {
           )}
         </div>
 
-        {/* ── Items ── */}
         <div className="crt-modal__body">
           {items.length === 0 ? (
             <div className="crt-modal__empty">
@@ -70,33 +68,30 @@ const AddToCartModal = () => {
               return (
                 <div className="crt-modal__item" key={i}>
                   <Link to="/cart" className="crt-modal__img-wrap">
-                    <img src={require("../../../Assets/images/panda.png")} alt={name} />
+                    <img src={panda} alt={name} />
                   </Link>
-
                   <div className="crt-modal__info">
                     <Link to="/cart" className="crt-modal__name">{p.brand} {name}</Link>
-
                     <div className="crt-modal__specs">
                       {p.stocare  && <span>{p.stocare}</span>}
                       {p.RAM      && <span>{p.RAM} RAM</span>}
-                      {p.camera   && <span>📷 {p.camera.split("+")[0].trim()}</span>}
-                      {p.display  && <span>🖥 {p.display.split(" ")[0]}</span>}
-                      {p.baterie  && <span>🔋 {p.baterie}</span>}
+                      {p.camera   && <span>{p.camera.split("+")[0].trim()} MP</span>}
+                      {p.display  && <span>{p.display.split(" ")[0]}</span>}
+                      {p.baterie  && <span>{p.baterie}</span>}
                       {p.culoare  && <span>{p.culoare}</span>}
                       {p.material && <span>{p.material}</span>}
                     </div>
-
                     <div className="crt-modal__price-row">
                       <div className="crt-modal__qty">
-                        <button onClick={() => dispatch(removeSingleCart(item))} aria-label="Scade">−</button>
+                        <button type="button" onClick={() => dispatch(removeSingleCart(item))} aria-label="Scade">−</button>
                         <span>{item.itemQuantity}</span>
-                        <button onClick={() => dispatch(addToCart(item))} aria-label="Adauga">+</button>
+                        <button type="button" onClick={() => dispatch(addToCart(item))} aria-label="Adaugă">+</button>
                       </div>
                       <span className="crt-modal__item-price">{fmt(item.itemAmountPrice)} RON</span>
                     </div>
                   </div>
-
                   <button
+                    type="button"
                     className="crt-modal__remove"
                     onClick={() => dispatch(removeFromCart(item))}
                     aria-label="Șterge"
@@ -109,7 +104,6 @@ const AddToCartModal = () => {
           )}
         </div>
 
-        {/* ── Footer ── */}
         {items.length > 0 && (
           <div className="crt-modal__foot">
             <div className="crt-modal__total">
@@ -124,7 +118,6 @@ const AddToCartModal = () => {
             </Link>
           </div>
         )}
-
       </div>
     </div>
   );

@@ -4,49 +4,45 @@ import RatingSideBarFilter from "../../UI/sideBarFilters/ratingFilter/RatingSide
 import AvailabilityFilter from "../../UI/sideBarFilters/availabilityFilter/AvailabilityFilter";
 import StorageFilter from "../../UI/sideBarFilters/storageFilter/StorageFilter";
 import RamFilter from "../../UI/sideBarFilters/ramFilter/RamFilter";
+import ColorFilter from "../../UI/sideBarFilters/colorFilter/ColorFilter";
 
 const FilterContent = ({ filters, hideBrand = false }) => {
   const {
     singleProductData, model, setModel, brand, setBrand,
     setPage, setLimit, checked, setChecked, setSort, rating, setRating,
     availability, setAvailability, stocare, setStocare, ram, setRam,
+    culoare, setCuloare,
+    availabilityContext, stocareContext, ramContext, culoareContext, ratingContext,
   } = filters;
 
   return (
     <>
-      <div className="filters-v2-container">
-        <AllCategories
-          data={singleProductData}
-          model={model}
-          setModel={setModel}
-          brand={brand}
-          setBrand={setBrand}
-          setPage={setPage}
-          setLimit={setLimit}
-          checked={checked}
-          setChecked={setChecked}
-          setSort={setSort}
-          rating={rating}
-          setRating={setRating}
-          hideBrand={hideBrand}
-        />
-      </div>
-      <AvailabilityFilter availability={availability} setAvailability={setAvailability} />
-      <StorageFilter stocare={stocare} setStocare={setStocare} />
-      <RamFilter ram={ram} setRam={setRam} />
-      <div className="container-brand-filter">
-        <div className="brand-filter-body">
-          <div className="sidebar-filter-rating-container">
-            <RatingSideBarFilter
-              rating={rating}
-              setRating={setRating}
-              setLimit={setLimit}
-              brand={brand}
-              queryProduct={singleProductData?.queryProducts}
-            />
-          </div>
-        </div>
-      </div>
+      <AvailabilityFilter
+        availability={availability} setAvailability={setAvailability}
+        contextProducts={availabilityContext}
+      />
+      <AllCategories
+        data={singleProductData}
+        model={model} setModel={setModel}
+        brand={brand} setBrand={setBrand}
+        setPage={setPage} setLimit={setLimit}
+        checked={checked} setChecked={setChecked}
+        setSort={setSort} rating={rating} setRating={setRating}
+        hideBrand={hideBrand}
+      />
+      <StorageFilter
+        stocare={stocare} setStocare={setStocare}
+        contextProducts={stocareContext}
+      />
+      <RamFilter
+        ram={ram} setRam={setRam}
+        contextProducts={ramContext}
+      />
+      <ColorFilter
+        culoare={culoare} setCuloare={setCuloare}
+        contextProducts={culoareContext}
+      />
+      <RatingSideBarFilter rating={rating} setRating={setRating} contextProducts={ratingContext} />
     </>
   );
 };

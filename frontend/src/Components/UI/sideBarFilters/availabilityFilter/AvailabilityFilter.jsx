@@ -1,40 +1,41 @@
 import { useState } from "react";
-import { useGetAllProductsQuery } from "../../../../features/product/rtkProducts";
 
 const OPTIONS = ["Nou", "In Stoc", "Promotii", "Resigilat", "Precomanda"];
 
-const AvailabilityFilter = ({ availability, setAvailability }) => {
+const AvailabilityFilter = ({ availability, setAvailability, contextProducts = [] }) => {
   const [open, setOpen] = useState(true);
-  const { data } = useGetAllProductsQuery();
-  const all = data?.totalProducts ?? [];
+
+  const counts = Object.fromEntries(
+    OPTIONS.map((opt) => [opt, contextProducts.filter((p) => p.stock?.availability === opt).length])
+  );
 
   const toggle = (val) =>
     setAvailability((prev) =>
       prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]
     );
 
-  const counts = Object.fromEntries(
-    OPTIONS.map((opt) => [opt, all.filter((p) => p.stock?.availability === opt).length])
-  );
+  const visible = OPTIONS.filter((opt) => counts[opt] > 0 || availability.includes(opt));
+  if (visible.length === 0) return null;
 
   return (
-    <div className="sidebar-filter-brand">
-      <a href="#!" className="filter-head" onClick={(e) => { e.preventDefault(); setOpen((o) => !o); }}>
+    <div className="filter-v2-container">
+      <button type="button" className="filter-head" onClick={() => setOpen((o) => !o)}>
         <span>Stare</span>
-      </a>
+      </button>
       {open && (
         <div className="filter-body">
-          {OPTIONS.filter((opt) => counts[opt] > 0).map((opt) => (
-            <label key={opt} className="filter-inner">
+          {visible.map((opt) => (
+            <div className="filter-inner" key={opt}>
               <input
                 type="checkbox"
+                id={`avail-${opt}`}
                 value={opt}
                 checked={availability.includes(opt)}
                 onChange={() => toggle(opt)}
               />
-              <span>{opt}</span>
+              <label htmlFor={`avail-${opt}`}>{opt}</label>
               <div className="star-brand-text"><span>({counts[opt]})</span></div>
-            </label>
+            </div>
           ))}
         </div>
       )}

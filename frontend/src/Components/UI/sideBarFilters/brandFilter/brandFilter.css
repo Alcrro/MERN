@@ -1,4 +1,0 @@
-/* hide brand body when not active (toggle via JS) */
-.sidebar-filter-brand-body:not(.active) {
-  display: none;
-}

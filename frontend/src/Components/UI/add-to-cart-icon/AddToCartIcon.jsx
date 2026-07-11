@@ -1,10 +1,8 @@
-import React from "react";
 import "./addToCartIcon.css";
 import { useSelector } from "react-redux";
 
 const AddToCartIcon = () => {
   const itemQ = useSelector((state) => state.addToCart);
-  // console.log(itemQ);
 
   return (
     <div className="add-to-cart-icon">

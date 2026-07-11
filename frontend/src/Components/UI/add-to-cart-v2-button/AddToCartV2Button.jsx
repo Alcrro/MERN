@@ -1,23 +1,17 @@
-/* eslint-disable */
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import "../add-to-cart-v2-button/addToCartV2button.css";
-
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../../features/product/addToCart/addToCartSlice";
+import "./addToCartV2button.css";
 
-const AddToCartV2Button = (props) => {
-  // console.log(props);
-
+const AddToCartV2Button = ({ data }) => {
   const dispatch = useDispatch();
-
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
-  };
-
   return (
     <div className="add-to-cart-v2-button-inner">
-      <button className="btn add-to-cart-v2-button" onClick={() => handleAddToCart(props)}>
-        Add to Cart
+      <button
+        type="button"
+        className="btn add-to-cart-v2-button"
+        onClick={() => dispatch(addToCart({ data }))}
+      >
+        Adaugă în coș
       </button>
     </div>
   );

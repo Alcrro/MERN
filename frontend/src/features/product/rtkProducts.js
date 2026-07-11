@@ -21,7 +21,7 @@ export const productsApi = createApi({
       providesTags: [{ type: "Products" }],
     }),
     getProducts: builder.query({
-      query: ({ limit, page, sort, brand, rating, model, availability = [], stocare = [], ram = [] }) => {
+      query: ({ limit, page, sort, brand, rating, model, availability = [], stocare = [], ram = [], culoare = [] }) => {
         const q = [
           `sort=${sort}`,
           `limit=${limit}`,
@@ -32,6 +32,7 @@ export const productsApi = createApi({
           ...availability.map((a) => `availability=${encodeURIComponent(a)}`),
           ...stocare.map((s) => `stocare=${encodeURIComponent(s)}`),
           ...ram.map((r) => `ram=${encodeURIComponent(r)}`),
+          ...culoare.map((c) => `culoare=${encodeURIComponent(c)}`),
         ].join("&");
         return `products?${q}`;
       },

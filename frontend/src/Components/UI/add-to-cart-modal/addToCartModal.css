@@ -316,3 +316,53 @@
   background: var(--primary-light);
   border-color: var(--primary);
 }
+
+/* ── Dark mode ─────────────────────────────────────────────── */
+html[data-theme="dark"] .crt-modal__inner {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .crt-modal__head {
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .crt-modal__item {
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .crt-modal__item:hover {
+  background: var(--bg-page);
+}
+
+html[data-theme="dark"] .crt-modal__name {
+  color: var(--text-dark);
+}
+
+html[data-theme="dark"] .crt-modal__specs span {
+  background: var(--bg-page);
+  border-color: var(--border);
+  color: var(--text-light);
+}
+
+html[data-theme="dark"] .crt-modal__qty button {
+  color: var(--text-medium);
+}
+
+html[data-theme="dark"] .crt-modal__qty button:hover {
+  background: var(--bg-page);
+}
+
+html[data-theme="dark"] .crt-modal__remove:hover {
+  background: rgba(239, 68, 68, .14);
+  color: #f87171;
+}
+
+html[data-theme="dark"] .crt-modal__foot {
+  border-color: var(--border);
+  background: var(--bg-card);
+}
+
+html[data-theme="dark"] .crt-modal__total-val {
+  color: var(--primary);
+}

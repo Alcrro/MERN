@@ -1,6 +1,4 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import { useGetAllProductsQuery } from "../../../../features/product/rtkProducts";
+import { useState } from "react";
 import "./sideBarFiltersRating.css";
 import "../../singleCardRating/starRating.css";
 
@@ -12,56 +10,48 @@ const rateObject = [
   { id: 1, style: 20 },
 ];
 
-const SideBarFilters = ({ rating, setRating }) => {
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("active");
+const SideBarFilters = ({ rating, setRating, contextProducts = [] }) => {
+  const [open, setOpen] = useState(true);
 
-  const { data: allProductsData } = useGetAllProductsQuery();
-
-  const handleOpen = () => {
-    setOpen(!open);
-    setActive(open ? "active" : "");
-  };
-
-  const checkInput = (e) => {
-    const val = e.target.value;
-    const arr = Array.isArray(rating) ? [...rating] : [];
-    if (e.target.checked) {
-      setRating([...arr, val]);
-    } else {
-      setRating(arr.filter((r) => r !== val));
-    }
+  const toggle = (val, checked) => {
+    setRating((prev) =>
+      checked ? [...prev, val] : prev.filter((r) => r !== val)
+    );
   };
 
   return (
-    <div className="sidebar-filter-rating">
-      <a href="#" className="filter-head" onClick={handleOpen}>
+    <div className="filter-v2-container">
+      <button type="button" className="filter-head" onClick={() => setOpen((o) => !o)}>
         <span>Rating</span>
-      </a>
-      <div className={`filter-body scrollable ${active}`}>
-        {rateObject.map((rate) => {
-          const count = allProductsData?.totalProducts.filter(
-            (item) => Math.floor(item.rating?.average || 0) >= rate.id
-          ).length ?? 0;
-          const isChecked = Array.isArray(rating) && rating.includes(String(rate.id));
-          return (
-            <label key={rate.id} className="filter-inner">
-              <input
-                type="checkbox"
-                name="stars"
-                value={rate.id}
-                checked={isChecked}
-                onChange={checkInput}
-              />
-              <div className="first-star-rating star-rating-read">
-                <div className="star-rating-inner" style={{ width: `${rate.style}%` }} />
+      </button>
+      {open && (
+        <div className="filter-body scrollable">
+          {rateObject.map((rate) => {
+            const count = contextProducts.filter(
+              (item) => (item.rating?.average || 0) >= rate.id
+            ).length;
+            const isChecked = Array.isArray(rating) && rating.includes(String(rate.id));
+            return (
+              <div key={rate.id} className="filter-inner">
+                <input
+                  type="checkbox"
+                  id={`rating-${rate.id}`}
+                  name="stars"
+                  value={rate.id}
+                  checked={isChecked}
+                  onChange={(e) => toggle(String(rate.id), e.target.checked)}
+                />
+                <label htmlFor={`rating-${rate.id}`}>
+                  <div className="first-star-rating star-rating-read">
+                    <div className="star-rating-inner" style={{ width: `${rate.style}%` }} />
+                  </div>
+                </label>
+                <div className="star-brand-text"><span>({count})</span></div>
               </div>
-              <span className="rating-filter-and-up">& up</span>
-              <div className="star-brand-text"><span>({count})</span></div>
-            </label>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

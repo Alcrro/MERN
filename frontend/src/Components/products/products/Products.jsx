@@ -2,50 +2,17 @@ import { useState } from "react";
 import "../../products/products.css";
 import { useProductFilters } from "./useProductFilters";
 import { useSeo } from "../../../hooks/useSeo";
-import ListingPanel from "../../UI/filtersAndProduct/ListingPanel";
-import Pagination from "../../UI/pagination/Pagination";
-import Cards from "../cards/Cards";
+import { buildProductSeo } from "../../../utils/seoHelpers";
 import FilterContent from "./FilterContent";
 import MobileFilterSheet from "./MobileFilterSheet";
-
-const buildSeo = (brand, model) => {
-  const hasBrand = brand.length > 0;
-  const hasModel = model.length > 0;
-
-  if (hasBrand && hasModel) {
-    const brandStr = brand.join(", ");
-    const modelStr = model.join(", ");
-    return {
-      title: `${brandStr} ${modelStr}`,
-      description: `Cumpără ${modelStr} de la ${brandStr} la prețuri competitive. Produse verificate, livrare rapidă în România.`,
-    };
-  }
-  if (hasBrand) {
-    const brandStr = brand.join(", ");
-    return {
-      title: `Telefoane ${brandStr}`,
-      description: `Descoperă telefoane ${brandStr} la prețuri imbatabile. Produse verificate, livrare rapidă în toată România.`,
-    };
-  }
-  return {
-    title: "Telefoane și Accesorii",
-    description: "Cumpără telefoane și accesorii premium la prețuri competitive. Produse verificate, livrare rapidă în toată România.",
-  };
-};
+import ProductGrid from "./ProductGrid";
 
 const Products = () => {
   const filters = useProductFilters();
   const [filterOpen, setFilterOpen] = useState(false);
+  const { singleProductData, activeFilterCount, brand, model } = filters;
 
-  const {
-    singleProductData, displayAllProducts, activeFilterCount,
-    limit, setLimit, setPage, sort, setSort,
-    brand, setBrand, model, setModel, checked, setChecked,
-    pagesArray, pagesFilterArray, cardViewGridClass, cardViewListClass,
-  } = filters;
-
-  const { title, description } = buildSeo(brand, model);
-  useSeo({ title, description, path: "/products" });
+  useSeo(buildProductSeo(brand, model, "/products"));
 
   return (
     <>
@@ -63,41 +30,7 @@ const Products = () => {
           <FilterContent filters={filters} />
         </div>
         <div id="card-grid" className="js-products-container card-collection">
-          <div className="main-container-body">
-            <ListingPanel
-              limit={limit}
-              setLimit={setLimit}
-              queryProduct={singleProductData?.queryProducts}
-              brand={brand}
-              setBrand={setBrand}
-              model={model}
-              setModel={setModel}
-              checked={checked}
-              setChecked={setChecked}
-              sort={sort}
-              setSort={setSort}
-              displayAllProducts={displayAllProducts}
-              onOpenFilters={() => setFilterOpen(true)}
-              activeFilterCount={activeFilterCount}
-            />
-            <div className="page-container">
-              <div className="products-container-v2">
-                <div className="cards-container-outer">
-                  <div className={`card-collection ${cardViewGridClass || cardViewListClass}`}>
-                    {singleProductData?.queryProducts?.map((item, index) => (
-                      <Cards products={item} key={index} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Pagination
-              pagesArray={pagesArray}
-              limit={limit}
-              setPage={setPage}
-              pagesFilterArray={pagesFilterArray}
-            />
-          </div>
+          <ProductGrid filters={filters} onOpenFilters={() => setFilterOpen(true)} />
         </div>
       </div>
     </>
