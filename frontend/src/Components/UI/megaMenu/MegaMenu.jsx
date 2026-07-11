@@ -12,12 +12,11 @@ import MegaMenuDetails from "../megaMenuDetails/MegaMenuDetails";
 const MegaMenu = () => {
   const [active, setActive] = useState(false);
   const [value, setValue] = useState([]);
-  console.log(value);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getMenuDepartment());
   }, []);
-
-  const dispatch = useDispatch();
   const location = useLocation();
   const categories = useSelector(getAllCategories);
 

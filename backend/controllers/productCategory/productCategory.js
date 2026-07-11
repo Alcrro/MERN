@@ -63,7 +63,6 @@ exports.postCategory = asyncHandler(async (req, res, next) => {
     reviewsCat,
   });
 
-  console.log(test);
   res.status(201).json({
     success: true,
     category: test,

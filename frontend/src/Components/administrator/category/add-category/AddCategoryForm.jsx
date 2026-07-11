@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postAddProductCategory } from "../../../../features/productCategory/postAddProductCategorySlice";
 
@@ -10,9 +9,7 @@ const AddCategoryForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const category = { categoryName, categoryDescription };
-    console.log(category);
-    dispatch(postAddProductCategory(category));
+    dispatch(postAddProductCategory({ categoryName, categoryDescription }));
   };
 
   return (
