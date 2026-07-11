@@ -45,6 +45,21 @@ const RegisterSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    vendorStatus: {
+      type: String,
+      enum: ["none", "pending", "approved", "rejected"],
+      default: "none",
+    },
+    shopName: {
+      type: String,
+      maxlength: [100, "Shop name cannot exceed 100 characters"],
+      default: null,
+    },
+    shopDescription: {
+      type: String,
+      maxlength: [500, "Shop description cannot exceed 500 characters"],
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -55,6 +70,7 @@ const RegisterSchema = new mongoose.Schema(
 
 RegisterSchema.index({ email: 1 }, { unique: true });
 RegisterSchema.index({ role: 1 });
+RegisterSchema.index({ vendorStatus: 1 });
 
 RegisterSchema.virtual("isAdmin").get(function () {
   return this.role === ROLES.ADMIN;

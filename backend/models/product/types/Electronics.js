@@ -18,6 +18,7 @@ const ElectronicsSchema = new mongoose.Schema({
   baterie: { type: String },
   OS: { type: String },
   conectivitate: { type: String },  // Wi-Fi 6, Bluetooth 5.3, USB-C, etc.
+  culoare:       { type: [String], default: [] },
 });
 
 ElectronicsSchema.index({ model: 1 });

@@ -9,6 +9,7 @@ const Product = require("./models/product/Product");
 const Electronics = require("./models/product/types/Electronics");
 const Review = require("./models/review/Review");
 const Category = require("./models/category/Category");
+const CatalogProduct = require("./models/catalog/CatalogProduct");
 const { AVAILABILITY } = require("./models/product/stock/Stock");
 
 const connectDB = async () => {
@@ -20,7 +21,8 @@ const connectDB = async () => {
 
 const usersData = [
   { name: "Admin Boss",   email: "admin@alcrro.ro",   password: "Parola123", role: "admin" },
-  { name: "Vendor Alex",  email: "vendor@alcrro.ro",  password: "Parola123", role: "vendor" },
+  { name: "Vendor Alex",  email: "vendor@alcrro.ro",  password: "Parola123", role: "vendor",
+    vendorStatus: "approved", shopName: "AlcrroTech", shopDescription: "Telefoane și electronice de top" },
   { name: "Ion Popescu",  email: "ion@gmail.com",     password: "Parola123", role: "client" },
   { name: "Maria Ionescu",email: "maria@gmail.com",   password: "Parola123", role: "client" },
   { name: "Andrei Popa",  email: "andrei@gmail.com",  password: "Parola123", role: "client" },
@@ -34,6 +36,7 @@ const productsData = (vendorId) => [
     model: "Galaxy S24 Ultra", stocare: "256GB",
     RAM: "12GB", procesor: "Snapdragon 8 Gen 3", display: "6.8\" Dynamic AMOLED 2X 120Hz",
     camera: "200MP + 12MP + 10MP + 10MP", baterie: "5000mAh", OS: "Android 14",
+    culoare: ["Negru", "Gri", "Violet", "Galben", "Titan"],
     price: 4999,
     description: "Cel mai puternic Samsung din 2024. Display Dynamic AMOLED 2X de 6.8 inch, Snapdragon 8 Gen 3, camera de 200MP si S Pen inclus.",
     stock: { quantity: 12, availability: AVAILABILITY.IN_STOCK },
@@ -44,6 +47,7 @@ const productsData = (vendorId) => [
     model: "Galaxy S24", stocare: "128GB",
     RAM: "8GB", procesor: "Snapdragon 8 Gen 3", display: "6.2\" Dynamic AMOLED 2X 120Hz",
     camera: "50MP + 12MP + 10MP", baterie: "4000mAh", OS: "Android 14",
+    culoare: ["Negru", "Gri", "Violet", "Galben"],
     price: 3499,
     description: "Samsung Galaxy S24 cu Snapdragon 8 Gen 3, display de 6.2 inch si camera tripla de 50MP. Design compact si performanta de top.",
     stock: { quantity: 25, availability: AVAILABILITY.IN_STOCK },
@@ -54,6 +58,7 @@ const productsData = (vendorId) => [
     model: "Galaxy A55", stocare: "128GB",
     RAM: "8GB", procesor: "Exynos 1480", display: "6.6\" Super AMOLED 120Hz",
     camera: "50MP + 12MP + 5MP", baterie: "5000mAh", OS: "Android 14",
+    culoare: ["Negru", "Albastru", "Roz", "Auriu"],
     price: 1899,
     description: "Samsung Galaxy A55 cu Exynos 1480, display Super AMOLED de 6.6 inch si camera de 50MP cu OIS. Rezistent la apa IP67.",
     stock: { quantity: 40, availability: AVAILABILITY.PROMOTII },
@@ -64,6 +69,7 @@ const productsData = (vendorId) => [
     model: "Galaxy Z Flip 5", stocare: "256GB",
     RAM: "8GB", procesor: "Snapdragon 8 Gen 2", display: "6.7\" Flex AMOLED 120Hz",
     camera: "12MP + 12MP", baterie: "3700mAh", OS: "Android 14",
+    culoare: ["Negru", "Roz", "Auriu", "Gri", "Albastru"],
     price: 3899,
     description: "Telefonul pliabil de la Samsung cu ecran Flex AMOLED de 6.7 inch, carcasa din Armor Aluminum si cover display de 3.4 inch.",
     stock: { quantity: 8, availability: AVAILABILITY.IN_STOCK },
@@ -75,6 +81,7 @@ const productsData = (vendorId) => [
     RAM: "8GB", procesor: "Apple A17 Pro", display: "6.7\" Super Retina XDR OLED 120Hz",
     camera: "48MP + 12MP + 12MP", baterie: "4422mAh", OS: "iOS 17",
     conectivitate: "Wi-Fi 6E, Bluetooth 5.3, USB-C 3.0",
+    culoare: ["Negru", "Alb", "Albastru", "Titan"],
     price: 6799,
     description: "iPhone 15 Pro Max cu chip A17 Pro, titaniu de clasa aerospatiala, camera de 48MP cu zoom optic 5x si Action Button.",
     stock: { quantity: 15, availability: AVAILABILITY.IN_STOCK },
@@ -86,6 +93,7 @@ const productsData = (vendorId) => [
     RAM: "6GB", procesor: "Apple A16 Bionic", display: "6.1\" Super Retina XDR OLED 60Hz",
     camera: "48MP + 12MP", baterie: "3349mAh", OS: "iOS 17",
     conectivitate: "Wi-Fi 6, Bluetooth 5.3, USB-C",
+    culoare: ["Negru", "Albastru", "Verde", "Galben", "Roz"],
     price: 4299,
     description: "iPhone 15 cu chip A16 Bionic, Dynamic Island, camera principala de 48MP si USB-C. Cel mai accesibil iPhone din generatia 2023.",
     stock: { quantity: 30, availability: AVAILABILITY.IN_STOCK },
@@ -96,6 +104,7 @@ const productsData = (vendorId) => [
     model: "iPhone 14", stocare: "128GB",
     RAM: "6GB", procesor: "Apple A15 Bionic", display: "6.1\" Super Retina XDR OLED 60Hz",
     camera: "12MP + 12MP", baterie: "3279mAh", OS: "iOS 17",
+    culoare: ["Negru", "Albastru", "Violet", "Galben", "Roz", "Alb"],
     price: 3299,
     description: "iPhone 14 resigilat in stare excelenta. Chip A15 Bionic, camera duala de 12MP si display Super Retina XDR de 6.1 inch.",
     stock: { quantity: 5, availability: AVAILABILITY.RESIGILAT },
@@ -106,6 +115,7 @@ const productsData = (vendorId) => [
     model: "14", stocare: "256GB",
     RAM: "12GB", procesor: "Snapdragon 8 Gen 3", display: "6.36\" AMOLED 120Hz",
     camera: "50MP Leica + 50MP + 50MP", baterie: "4610mAh", OS: "Android 14 / HyperOS",
+    culoare: ["Negru", "Alb", "Verde"],
     price: 3799,
     description: "Xiaomi 14 cu Snapdragon 8 Gen 3, camera Leica cu senzor de 50MP si display AMOLED de 6.36 inch cu rata de refresh de 120Hz.",
     stock: { quantity: 18, availability: AVAILABILITY.NOU },
@@ -116,6 +126,7 @@ const productsData = (vendorId) => [
     model: "Redmi Note 13 Pro", stocare: "256GB",
     RAM: "8GB", procesor: "Snapdragon 7s Gen 2", display: "6.67\" AMOLED 120Hz",
     camera: "200MP + 8MP + 2MP", baterie: "5100mAh", OS: "Android 13 / MIUI 14",
+    culoare: ["Negru", "Alb", "Verde", "Roz"],
     price: 1399,
     description: "Xiaomi Redmi Note 13 Pro cu Snapdragon 7s Gen 2, camera de 200MP si display AMOLED de 6.67 inch cu 120Hz. Cel mai bun raport calitate-pret.",
     stock: { quantity: 55, availability: AVAILABILITY.PROMOTII },
@@ -126,6 +137,7 @@ const productsData = (vendorId) => [
     model: "Poco X6 Pro", stocare: "256GB",
     RAM: "12GB", procesor: "Dimensity 8300-Ultra", display: "6.67\" Flow AMOLED 144Hz",
     camera: "64MP + 8MP + 2MP", baterie: "5000mAh", OS: "Android 14 / HyperOS",
+    culoare: ["Negru", "Gri", "Galben"],
     price: 1699,
     description: "Xiaomi Poco X6 Pro cu Dimensity 8300-Ultra, display Flow AMOLED de 6.67 inch si camera tripla de 64MP. Gaming phone la pret accesibil.",
     stock: { quantity: 22, availability: AVAILABILITY.IN_STOCK },
@@ -137,6 +149,7 @@ const productsData = (vendorId) => [
     RAM: "12GB", procesor: "Google Tensor G3", display: "6.7\" LTPO OLED 120Hz",
     camera: "50MP + 48MP + 48MP", baterie: "5050mAh", OS: "Android 14",
     conectivitate: "Wi-Fi 7, Bluetooth 5.3, USB-C 3.2",
+    culoare: ["Negru", "Gri", "Albastru"],
     price: 3999,
     description: "Google Pixel 8 Pro cu chip Tensor G3, camera cu zoom optic 5x si 7 ani garantati de update-uri Android. Cel mai bun software foto de pe piata.",
     stock: { quantity: 10, availability: AVAILABILITY.IN_STOCK },
@@ -147,6 +160,7 @@ const productsData = (vendorId) => [
     model: "Pixel 8a", stocare: "128GB",
     RAM: "8GB", procesor: "Google Tensor G3", display: "6.1\" OLED 120Hz",
     camera: "64MP + 13MP", baterie: "4492mAh", OS: "Android 14",
+    culoare: ["Negru", "Albastru", "Verde", "Roz"],
     price: 2399,
     description: "Google Pixel 8a cu Tensor G3, camera de 64MP si 7 ani de actualizari garantate. Design compact cu display OLED de 6.1 inch.",
     stock: { quantity: 20, availability: AVAILABILITY.NOU },
@@ -157,6 +171,7 @@ const productsData = (vendorId) => [
     model: "12", stocare: "256GB",
     RAM: "12GB", procesor: "Snapdragon 8 Gen 3", display: "6.82\" AMOLED 2K 120Hz",
     camera: "50MP Hasselblad + 48MP + 64MP", baterie: "5400mAh", OS: "Android 14 / OxygenOS 14",
+    culoare: ["Negru", "Verde"],
     price: 3599,
     description: "OnePlus 12 cu Snapdragon 8 Gen 3, camera Hasselblad de 50MP cu zoom optic 3x si incarcare rapida de 100W. Display AMOLED 2K la 120Hz.",
     stock: { quantity: 14, availability: AVAILABILITY.IN_STOCK },
@@ -167,6 +182,7 @@ const productsData = (vendorId) => [
     model: "Nord CE 4", stocare: "256GB",
     RAM: "8GB", procesor: "Snapdragon 7s Gen 2", display: "6.7\" AMOLED 120Hz",
     camera: "50MP + 8MP", baterie: "5500mAh", OS: "Android 14 / OxygenOS 14",
+    culoare: ["Negru", "Gri", "Verde"],
     price: 1599,
     description: "OnePlus Nord CE 4 cu Snapdragon 7s Gen 2, incarcare rapida de 100W si display AMOLED de 6.7 inch cu 120Hz. Autonomie excelenta.",
     stock: { quantity: 35, availability: AVAILABILITY.IN_STOCK },
@@ -177,11 +193,51 @@ const productsData = (vendorId) => [
     model: "Edge 50 Pro", stocare: "256GB",
     RAM: "12GB", procesor: "Snapdragon 7 Gen 3", display: "6.7\" pOLED 144Hz",
     camera: "50MP + 13MP + 10MP", baterie: "4500mAh", OS: "Android 14",
+    culoare: ["Negru", "Gri", "Roz"],
     price: 2099,
     description: "Motorola Edge 50 Pro cu Snapdragon 7 Gen 3, camera de 50MP cu OIS, display pOLED de 6.7 inch si incarcare rapida de 125W.",
     stock: { quantity: 0, availability: AVAILABILITY.OUT_OF_STOCK },
     user: vendorId,
   },
+];
+
+// ─── Catalog ─────────────────────────────────────────────────────────────────
+
+const catalogData = [
+  // Electronics — Phones
+  { kind: "Electronics", brand: "Samsung", culoare: ["Negru", "Gri", "Violet", "Galben", "Titan"],       refPrice: 6299, specs: { model: "Galaxy S24 Ultra",      tip: "Telefon", stocare: "256GB", RAM: "12GB", procesor: "Snapdragon 8 Gen 3",     display: "6.8\" Dynamic AMOLED 2X 120Hz", camera: "200MP",        baterie: "5000mAh", OS: "Android 14" },              images: [] },
+  { kind: "Electronics", brand: "Samsung", culoare: ["Negru", "Gri", "Violet", "Galben"],                refPrice: 3999, specs: { model: "Galaxy S24",            tip: "Telefon", stocare: "128GB", RAM: "8GB",  procesor: "Snapdragon 8 Gen 3",     display: "6.2\" Dynamic AMOLED 2X 120Hz", camera: "50MP",         baterie: "4000mAh", OS: "Android 14" },              images: [] },
+  { kind: "Electronics", brand: "Samsung", culoare: ["Negru", "Albastru", "Roz", "Auriu"],               refPrice: 2299, specs: { model: "Galaxy A55",            tip: "Telefon", stocare: "128GB", RAM: "8GB",  procesor: "Exynos 1480",            display: "6.6\" Super AMOLED 120Hz",      camera: "50MP",         baterie: "5000mAh", OS: "Android 14" },              images: [] },
+  { kind: "Electronics", brand: "Samsung", culoare: ["Negru", "Roz", "Auriu", "Gri", "Albastru"],        refPrice: 4999, specs: { model: "Galaxy Z Flip 5",       tip: "Telefon", stocare: "256GB", RAM: "8GB",  procesor: "Snapdragon 8 Gen 2",     display: "6.7\" Flex AMOLED 120Hz",       camera: "12MP",         baterie: "3700mAh", OS: "Android 14" },              images: [] },
+  { kind: "Electronics", brand: "Apple",   culoare: ["Negru", "Alb", "Albastru", "Titan"],               refPrice: 7499, specs: { model: "iPhone 15 Pro Max",     tip: "Telefon", stocare: "256GB", RAM: "8GB",  procesor: "Apple A17 Pro",          display: "6.7\" Super Retina XDR OLED 120Hz", camera: "48MP",   baterie: "4422mAh", OS: "iOS 17" },                  images: [] },
+  { kind: "Electronics", brand: "Apple",   culoare: ["Negru", "Alb", "Albastru", "Titan"],               refPrice: 6299, specs: { model: "iPhone 15 Pro",         tip: "Telefon", stocare: "128GB", RAM: "8GB",  procesor: "Apple A17 Pro",          display: "6.1\" Super Retina XDR OLED 120Hz", camera: "48MP",   baterie: "3274mAh", OS: "iOS 17" },                  images: [] },
+  { kind: "Electronics", brand: "Apple",   culoare: ["Negru", "Alb", "Roz", "Galben", "Verde", "Albastru"], refPrice: 4499, specs: { model: "iPhone 15",          tip: "Telefon", stocare: "128GB", RAM: "6GB",  procesor: "Apple A16 Bionic",       display: "6.1\" Super Retina XDR OLED 60Hz",  camera: "48MP",   baterie: "3349mAh", OS: "iOS 17" },                  images: [] },
+  { kind: "Electronics", brand: "Apple",   culoare: ["Negru", "Alb", "Roz", "Galben", "Violet", "Albastru"], refPrice: 3499, specs: { model: "iPhone 14",        tip: "Telefon", stocare: "128GB", RAM: "6GB",  procesor: "Apple A15 Bionic",       display: "6.1\" Super Retina XDR OLED 60Hz",  camera: "12MP",   baterie: "3279mAh", OS: "iOS 16" },                  images: [] },
+  { kind: "Electronics", brand: "Xiaomi",  culoare: ["Negru", "Alb", "Verde"],                           refPrice: 4299, specs: { model: "14",                   tip: "Telefon", stocare: "256GB", RAM: "12GB", procesor: "Snapdragon 8 Gen 3",     display: "6.36\" AMOLED 120Hz",           camera: "50MP Leica",   baterie: "4610mAh", OS: "Android 14 / HyperOS" },    images: [] },
+  { kind: "Electronics", brand: "Xiaomi",  culoare: ["Negru", "Alb", "Verde", "Roz"],                    refPrice: 1899, specs: { model: "Redmi Note 13 Pro",    tip: "Telefon", stocare: "256GB", RAM: "8GB",  procesor: "Snapdragon 7s Gen 2",    display: "6.67\" AMOLED 120Hz",           camera: "200MP",        baterie: "5100mAh", OS: "Android 13 / MIUI 14" },   images: [] },
+  { kind: "Electronics", brand: "Xiaomi",  culoare: ["Negru", "Gri", "Galben"],                          refPrice: 1699, specs: { model: "Poco X6 Pro",          tip: "Telefon", stocare: "256GB", RAM: "12GB", procesor: "Dimensity 8300-Ultra",   display: "6.67\" Flow AMOLED 144Hz",      camera: "64MP",         baterie: "5000mAh", OS: "Android 14 / HyperOS" },    images: [] },
+  { kind: "Electronics", brand: "Google",  culoare: ["Negru", "Alb", "Roz"],                             refPrice: 4499, specs: { model: "Pixel 8 Pro",          tip: "Telefon", stocare: "128GB", RAM: "12GB", procesor: "Google Tensor G3",       display: "6.7\" LTPO OLED 120Hz",         camera: "50MP",         baterie: "5050mAh", OS: "Android 14" },              images: [] },
+  { kind: "Electronics", brand: "Google",  culoare: ["Negru", "Alb", "Albastru", "Verde"],               refPrice: 2799, specs: { model: "Pixel 8a",             tip: "Telefon", stocare: "128GB", RAM: "8GB",  procesor: "Google Tensor G3",       display: "6.1\" OLED 120Hz",              camera: "64MP",         baterie: "4492mAh", OS: "Android 14" },              images: [] },
+  { kind: "Electronics", brand: "OnePlus", culoare: ["Negru", "Verde"],                                   refPrice: 4799, specs: { model: "12",                   tip: "Telefon", stocare: "256GB", RAM: "12GB", procesor: "Snapdragon 8 Gen 3",     display: "6.82\" AMOLED 2K 120Hz",        camera: "50MP Hasselblad", baterie: "5400mAh", OS: "Android 14 / OxygenOS 14" }, images: [] },
+  { kind: "Electronics", brand: "OnePlus", culoare: ["Negru", "Gri", "Verde"],                            refPrice: 1999, specs: { model: "Nord CE 4",            tip: "Telefon", stocare: "256GB", RAM: "8GB",  procesor: "Snapdragon 7s Gen 2",    display: "6.7\" AMOLED 120Hz",            camera: "50MP",         baterie: "5500mAh", OS: "Android 14 / OxygenOS 14" }, images: [] },
+  { kind: "Electronics", brand: "Motorola",culoare: ["Negru", "Albastru"],                                refPrice: 2499, specs: { model: "Edge 50 Pro",          tip: "Telefon", stocare: "256GB", RAM: "12GB", procesor: "Snapdragon 7 Gen 3",     display: "6.7\" pOLED 144Hz",             camera: "50MP",         baterie: "4500mAh", OS: "Android 14" },              images: [] },
+  // Electronics — Laptops
+  { kind: "Electronics", brand: "Apple",   culoare: ["Argintiu", "Negru"],                                refPrice: 9999, specs: { model: "MacBook Pro 14 M3",    tip: "Laptop",  stocare: "512GB SSD", RAM: "18GB", procesor: "Apple M3 Pro",       display: "14.2\" Liquid Retina XDR",      camera: "12MP",         baterie: "70Wh",    OS: "macOS Sonoma" },            images: [] },
+  { kind: "Electronics", brand: "Apple",   culoare: ["Argintiu", "Gri"],                                  refPrice: 6499, specs: { model: "MacBook Air 13 M3",    tip: "Laptop",  stocare: "256GB SSD", RAM: "8GB",  procesor: "Apple M3",           display: "13.6\" Liquid Retina",          camera: "12MP",         baterie: "52.6Wh",  OS: "macOS Sonoma" },            images: [] },
+  { kind: "Electronics", brand: "Lenovo",  culoare: ["Negru"],                                            refPrice: 8999, specs: { model: "ThinkPad X1 Carbon Gen 12", tip: "Laptop", stocare: "512GB SSD", RAM: "16GB", procesor: "Intel Core Ultra 7 165U", display: "14\" IPS 2.8K OLED", camera: "5MP IR", baterie: "57Wh", OS: "Windows 11 Pro" }, images: [] },
+  { kind: "Electronics", brand: "Dell",    culoare: ["Argintiu", "Negru"],                                refPrice: 7999, specs: { model: "XPS 15 9530",          tip: "Laptop",  stocare: "512GB SSD", RAM: "16GB", procesor: "Intel Core i7-13700H", display: "15.6\" OLED 3.5K 120Hz",       camera: "2MP IR",       baterie: "86Wh",    OS: "Windows 11 Home" },         images: [] },
+  { kind: "Electronics", brand: "ASUS",    culoare: ["Negru", "Gri"],                                     refPrice: 8499, specs: { model: "ROG Zephyrus G14 2024", tip: "Laptop", stocare: "1TB SSD",   RAM: "32GB", procesor: "AMD Ryzen 9 8945HS", display: "14\" OLED 2.8K 120Hz",          camera: "1080p IR",     baterie: "73Wh",    OS: "Windows 11 Home" },         images: [] },
+  // Clothing
+  { kind: "Clothing", brand: "Nike",    culoare: ["Negru", "Alb", "Roșu", "Albastru", "Gri"],            refPrice: 699,  specs: { name: "Air Max 270",          tip: "Incaltaminte", gen: "Unisex",  material: "Mesh + TPU",               talpa: "Air Max",  inchidere: "Siret" },           images: [] },
+  { kind: "Clothing", brand: "Nike",    culoare: ["Negru", "Gri", "Albastru", "Verde"],                   refPrice: 499,  specs: { name: "Tech Fleece Hoodie",   tip: "Hanorac",      gen: "Barbati", material: "65% bumbac / 35% poliester", fit: "Slim",       inchidere: "Fermoar complet" }, images: [] },
+  { kind: "Clothing", brand: "Adidas",  culoare: ["Negru", "Alb", "Gri", "Albastru"],                    refPrice: 749,  specs: { name: "Ultraboost 22",        tip: "Incaltaminte", gen: "Unisex",  material: "Primeknit+",               talpa: "Boost",    inchidere: "Siret" },           images: [] },
+  { kind: "Clothing", brand: "Adidas",  culoare: ["Negru", "Albastru", "Verde"],                          refPrice: 349,  specs: { name: "Tiro 21 Track Jacket", tip: "Jacheta",      gen: "Barbati", material: "100% reciclat poliester",   fit: "Regular",    inchidere: "Fermoar complet" }, images: [] },
+  { kind: "Clothing", brand: "Zara",    culoare: ["Alb", "Bej", "Albastru", "Verde"],                     refPrice: 199,  specs: { name: "Linen Blend Shirt",    tip: "Camasa",       gen: "Barbati", material: "55% in / 45% bumbac",      fit: "Regular",    inchidere: "Nasturi" },         images: [] },
+  { kind: "Clothing", brand: "Zara",    culoare: ["Negru", "Bej", "Maro"],                                refPrice: 179,  specs: { name: "Wide Leg Trousers",    tip: "Pantalon",     gen: "Femei",   material: "Poliester",                fit: "Wide leg",   inchidere: "Fermoar lateral" }, images: [] },
+  { kind: "Clothing", brand: "H&M",     culoare: ["Bej", "Negru", "Maro", "Gri"],                        refPrice: 149,  specs: { name: "Slim Fit Chinos",      tip: "Pantalon",     gen: "Barbati", material: "98% bumbac / 2% elastan",  fit: "Slim",       inchidere: "Fermoar + nasture" }, images: [] },
+  { kind: "Clothing", brand: "H&M",     culoare: ["Alb", "Negru", "Gri", "Albastru", "Verde", "Roșu"],   refPrice: 79,   specs: { name: "Oversized Cotton Tee", tip: "Tricou",       gen: "Unisex",  material: "100% bumbac organic",      fit: "Oversized",  inchidere: null },              images: [] },
+  { kind: "Clothing", brand: "Puma",    culoare: ["Negru", "Alb", "Gri", "Albastru"],                    refPrice: 449,  specs: { name: "Suede Classic XXI",    tip: "Incaltaminte", gen: "Unisex",  material: "Suede",                    talpa: "Cauciuc",  inchidere: "Siret" },           images: [] },
+  { kind: "Clothing", brand: "Levi's",  culoare: ["Albastru", "Negru", "Gri"],                            refPrice: 299,  specs: { name: "511 Slim Fit Jeans",   tip: "Blugi",        gen: "Barbati", material: "99% bumbac / 1% elastan",  fit: "Slim",       inchidere: "Fermoar + nasture" }, images: [] },
 ];
 
 // ─── Categories ──────────────────────────────────────────────────────────────
@@ -396,6 +452,7 @@ const seed = async () => {
     Product.deleteMany({}),
     Review.deleteMany({}),
     Category.deleteMany({}),
+    CatalogProduct.deleteMany({}),
   ]);
 
   // 1. Create users (schema pre-save hashes passwords)
@@ -415,12 +472,19 @@ const seed = async () => {
   await Category.create(categoriesData);
   console.log(`  ${categoriesData.length} categories created`);
 
-  // 3. Create products
+  // 3. Create catalog entries
+  console.log("\nCreating catalog entries...");
+  const catalog = await CatalogProduct.create(catalogData);
+  console.log(`  ${catalog.length} catalog entries created (${catalog.filter((c) => c.kind === "Electronics").length} Electronics, ${catalog.filter((c) => c.kind === "Clothing").length} Clothing)`);
+
+  // 4. Create products
   console.log("\nCreating products...");
-  const products = await Electronics.create(productsData(vendor._id));
+  const products = await Electronics.create(
+    productsData(vendor._id).map((p) => ({ ...p, listingStatus: "approved" }))
+  );
   console.log(`  ${products.length} products created`);
 
-  // 3. Create reviews (sequential per product to let calcAverageRating settle)
+  // 5. Create reviews (sequential per product to let calcAverageRating settle)
   console.log("\nCreating reviews...");
   let totalReviews = 0;
 
@@ -441,7 +505,7 @@ const seed = async () => {
 
   console.log(`  ${totalReviews} reviews created`);
 
-  // 4. Show final product ratings
+  // 6. Show final product ratings
   console.log("\nFinal product ratings:");
   const finalProducts = await Product.find().select("brand model rating stock.availability").sort("brand");
   finalProducts.forEach((p) => {

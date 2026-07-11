@@ -26,6 +26,24 @@ const ProductSchema = new mongoose.Schema(
       ref: "Register",
       required: true,
     },
+    vendor: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Register",
+      default: null,
+    },
+    images: {
+      type: [String],
+      default: [],
+    },
+    listingStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+    },
+    rejectionReason: {
+      type: String,
+      default: null,
+    },
     rating: RatingSchema,
     stock: StockSchema,
   },
@@ -76,6 +94,10 @@ ProductSchema.index({ brand: 1, "rating.average": -1 });
 
 // find({ kind }) — filter by product type
 ProductSchema.index({ kind: 1 });
+
+// vendor's listings + admin approval queue
+ProductSchema.index({ vendor: 1, listingStatus: 1 });
+ProductSchema.index({ listingStatus: 1, createdAt: -1 });
 
 // text search pe brand + description
 ProductSchema.index(
