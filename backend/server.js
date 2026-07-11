@@ -33,6 +33,10 @@ server.use("/api/product/:productId/stock", require("./routes/stock/stock"));
 server.use("/api/admin/product/:productId/stock", require("./routes/stock/stock"));
 server.use("/api/orders", require("./routes/order/order"));
 server.use("/api/addresses", require("./routes/address/address"));
+server.use("/api", require("./routes/vendor/vendor"));
+server.use("/api/admin", require("./routes/admin/admin"));
+server.use("/api/catalog", require("./routes/catalog/catalog"));
+server.use("/api/upload", require("./routes/upload/upload"));
 server.use(notFoundMiddleware);
 
 server.use(errorHandler);
