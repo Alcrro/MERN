@@ -1,0 +1,16 @@
+.lsb {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.lsb--pending  { background: #fef3c7; color: #92400e; }
+.lsb--approved { background: #d1fae5; color: #065f46; }
+.lsb--rejected { background: #fee2e2; color: #991b1b; cursor: help; }
+
+html[data-theme="dark"] .lsb--pending  { background: #451a03; color: #fde68a; }
+html[data-theme="dark"] .lsb--approved { background: #052e16; color: #6ee7b7; }
+html[data-theme="dark"] .lsb--rejected { background: #450a0a; color: #fca5a5; }

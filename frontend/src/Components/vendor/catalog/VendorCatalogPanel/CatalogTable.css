@@ -1,0 +1,166 @@
+.vcp__table-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.vcp__table-head {
+  flex-shrink: 0;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.vcp__table-head-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+.vcp__table-search-wrap {
+  position: relative;
+  max-width: 280px;
+  width: 100%;
+}
+
+.vcp__table-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.vcp__table-search {
+  padding-left: 2.1rem !important;
+  font-size: 0.84rem !important;
+  height: 36px;
+  width: 100%;
+}
+
+.vcp__msg {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* ── TABLE ─────────────────────────────────────────────── */
+
+.vcp__table-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.vcp__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.vcp__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg-card);
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.vcp__th-toggle { width: 40px; }
+.vcp__th-spec   { display: none; }
+@media (min-width: 640px) { .vcp__th-spec { display: table-cell; } }
+
+.vcp__td-spec { display: none; font-size: 0.8rem; color: var(--text-muted); }
+@media (min-width: 640px) { .vcp__td-spec { display: table-cell; } }
+
+/* ── SKELETON ──────────────────────────────────────────── */
+
+@keyframes vcp-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.vcp__skel {
+  display: block;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--border) 25%, var(--bg-hover, rgba(255,255,255,0.06)) 50%, var(--border) 75%);
+  background-size: 800px 100%;
+  animation: vcp-shimmer 1.4s infinite linear;
+}
+
+.vcp__skel--sm    { width: 16px; height: 10px; margin: auto; }
+.vcp__skel--brand { width: 60%;  height: 11px; margin-bottom: 6px; }
+.vcp__skel--model { width: 80%;  height: 9px;  opacity: .6; }
+.vcp__skel--spec  { width: 70%;  height: 10px; }
+
+.vcp__tr--skeleton { pointer-events: none; }
+
+/* ── PAGINATION ────────────────────────────────────────── */
+
+.vcp__pager {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--bg-card);
+}
+
+.vcp__pager button {
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--text);
+  transition: border-color 0.12s;
+}
+
+.vcp__pager button:hover    { border-color: var(--primary); color: var(--primary); }
+.vcp__pager button:disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
+/* ── DARK MODE ─────────────────────────────────────────── */
+
+html[data-theme="dark"] .vcp__table thead th { background: var(--bg-card); }
+html[data-theme="dark"] .vcp__table-head     { background: var(--bg-card); }
+html[data-theme="dark"] .vcp__pager          { background: var(--bg-card); }
+
+/* ── MOBILE ────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .vcp__table-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .vcp__table-search-wrap { max-width: 100%; }
+  .vcp__table-search      { width: 100%; }
+  .vcp__table-scroll      { overflow-x: auto; }
+  .vcp__table             { min-width: 360px; }
+  .vcp__pager             { padding: 0.5rem 1rem; }
+}

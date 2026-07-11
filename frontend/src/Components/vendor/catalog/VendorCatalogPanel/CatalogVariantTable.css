@@ -1,0 +1,98 @@
+.vcp__color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.vcp__ref-price {
+  margin-left: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── PUBLISH BUTTON ────────────────────────────────────── */
+
+.vcp__publish-btn {
+  padding: 0.45rem 1.1rem;
+  border: none;
+  border-radius: 7px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+.vcp__publish-btn:disabled             { opacity: 0.55; cursor: not-allowed; }
+.vcp__publish-btn:hover:not(:disabled) { opacity: 0.88; }
+
+/* ── VARIANT TABLE ─────────────────────────────────────── */
+
+.vcp__variant-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.vcp__variant-table th {
+  padding: 0.35rem 0.75rem;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  background: transparent;
+  position: static;
+}
+
+.vcp__variant-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.vcp__variant-table tr:last-child td { border-bottom: none; }
+
+.vcp__variant-table td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+.vcp__vinput {
+  width: 100%;
+  min-width: 80px;
+  max-width: 140px;
+  font-size: 0.83rem !important;
+  height: 32px;
+  padding: 0 0.5rem !important;
+}
+
+.vcp__vrow--done td { opacity: 0.55; }
+
+.vcp__vrow-ok {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--success, #22c55e);
+  white-space: nowrap;
+}
+
+.vcp__row-error {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--danger, #ef4444);
+  margin-top: 0.2rem;
+}

@@ -1,0 +1,49 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetVendorProductsQuery } from "../../../../features/vendor/rtkVendor";
+import { VENDOR_STATUS_TABS } from "../../../../utils/constants";
+import VendorProductRow from "../VendorProductRow";
+import "./VendorProductsPanel.css";
+
+const VendorProductsPanel = () => {
+  const [status, setStatus] = useState(undefined);
+  const navigate = useNavigate();
+  const { data, isLoading } = useGetVendorProductsQuery({ status });
+  const products = data?.products ?? [];
+
+  return (
+    <div className="vpp">
+      <div className="vpp__header">
+        <h1 className="vpp__title">Produsele mele</h1>
+      </div>
+
+      <div className="vpp__tabs">
+        {VENDOR_STATUS_TABS.map(({ key, label }) => (
+          <button
+            key={label}
+            type="button"
+            className={`vpp__tab${status === key ? " vpp__tab--active" : ""}`}
+            onClick={() => setStatus(key)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="vpp__list">
+        {isLoading && <p className="vpp__empty">Se încarcă…</p>}
+        {!isLoading && products.length === 0 && (
+          <div className="vpp__empty-state">
+            <p>Nu ai niciun produs listat încă.</p>
+            <button type="button" className="vpp__add" onClick={() => navigate("/vendor/dashboard/catalog")}>
+              Mergi la Catalog produse
+            </button>
+          </div>
+        )}
+        {products.map((p) => <VendorProductRow key={p._id} product={p} />)}
+      </div>
+    </div>
+  );
+};
+
+export default VendorProductsPanel;

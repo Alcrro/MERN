@@ -1,0 +1,6 @@
+.vap { display: flex; flex-direction: column; gap: 2rem; }
+.vap__loading { color: var(--text-muted); }
+.vap__title { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); }
+.vap__section { display: flex; flex-direction: column; gap: 0.75rem; }
+.vap__label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+.vap__row { display: flex; flex-wrap: wrap; gap: 1rem; }

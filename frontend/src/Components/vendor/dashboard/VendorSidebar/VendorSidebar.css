@@ -1,0 +1,41 @@
+.vsidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+}
+
+.vsidebar__title {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-muted);
+  padding: 0.4rem 0.5rem 0.6rem;
+}
+
+.vsidebar__link {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: .88rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: background .12s;
+}
+
+.vsidebar__link:hover { background: var(--bg-page); }
+.vsidebar__link--active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .vsidebar { flex-direction: row; overflow-x: auto; flex-wrap: nowrap; padding: 0.5rem; }
+  .vsidebar__title { display: none; }
+  .vsidebar__link { white-space: nowrap; padding: 0.45rem 0.75rem; font-size: .82rem; }
+}

@@ -1,0 +1,47 @@
+.vop { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.vop__title { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); }
+
+.vop__empty { color: var(--text-muted); font-size: .9rem; line-height: 1.6; }
+
+.vop__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.vop__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+
+.vop__table th {
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border);
+}
+
+.vop__table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dark);
+}
+
+.vop__table tr:last-child td { border-bottom: none; }
+.vop__table tr:hover td { background: var(--bg-page); }
+
+.vop__id { font-family: monospace; font-size: .82rem; color: var(--text-muted); }
+.vop__price { font-weight: 700; }
+.vop__status { font-weight: 600; }
+
+@media (max-width: 768px) {
+  .vop__table { font-size: .8rem; }
+  .vop__table th, .vop__table td { padding: 0.5rem 0.6rem; }
+}

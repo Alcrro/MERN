@@ -1,0 +1,109 @@
+.vcp {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ── TOP FILTERS ───────────────────────────────────────── */
+
+.vcp__filters {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.vcp__filters-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vcp__kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.vcp__propose-btn {
+  flex-shrink: 0;
+  padding: 0.38rem 0.9rem;
+  border: 1px dashed var(--border);
+  border-radius: 7px;
+  background: transparent;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.12s, color 0.12s;
+}
+
+.vcp__propose-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.vcp__kind {
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.vcp__kind:hover { border-color: var(--primary); color: var(--primary); }
+
+.vcp__kind--on {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.vcp__tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.vcp__tip {
+  padding: 0.22rem 0.7rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.vcp__tip:hover { border-color: var(--primary); color: var(--primary); }
+
+.vcp__tip--on {
+  background: var(--primary-faint, rgba(59,130,246,0.1));
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ── MOBILE ────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .vcp__filters { padding: 0.75rem 1rem 0.75rem; }
+  .vcp__kinds   { gap: 0.3rem; }
+  .vcp__kind    { font-size: 0.8rem; padding: 0.28rem 0.7rem; }
+  .vcp__tips    { gap: 0.25rem; }
+  .vcp__tip     { font-size: 0.75rem; padding: 0.2rem 0.55rem; }
+}

@@ -1,0 +1,43 @@
+.voverview { display: flex; flex-direction: column; gap: 2rem; }
+
+.voverview__loading { padding: 2rem; color: var(--text-muted); }
+
+.voverview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.voverview__title { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); }
+
+.voverview__cta {
+  padding: 0.55rem 1.25rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .12s;
+}
+
+.voverview__cta:hover { opacity: .88; }
+
+.voverview__section { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.voverview__section-label {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-muted);
+}
+
+.voverview__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

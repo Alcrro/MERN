@@ -1,0 +1,35 @@
+.cf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.cf-full { grid-column: 1 / -1; }
+
+.cf-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cf-chip {
+  padding: 0.3rem 0.7rem;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-card);
+  font-size: .82rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: border-color .1s, background .1s;
+}
+
+.cf-chip--on {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .cf-grid { grid-template-columns: 1fr; }
+}
