@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../addToCardSlice";
+import { addToCart } from "../addToCart/addToCartSlice";
 import { selectProductById } from "./productSlice";
 
 const FetchProducts = () => {

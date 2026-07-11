@@ -6,6 +6,9 @@ const METHODS = [
 const CheckoutStepPayment = ({ value, onChange }) => (
   <div className="ck-step">
     <h3 className="ck-step__title">Metoda de plată</h3>
+    <p className="ck-step__demo-note">
+      Demo — nicio plată reală nu este procesată.
+    </p>
     {METHODS.map((m) => (
       <label key={m.value} className={`ck-method${value === m.value ? " ck-method--active" : ""}`}>
         <input type="radio" name="payment" value={m.value}

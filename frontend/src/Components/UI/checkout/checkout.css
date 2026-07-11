@@ -196,6 +196,17 @@
   margin-top: 0.25rem;
 }
 
+/* ── Demo notice ───────────────────────────────────────────── */
+.ck-step__demo-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  margin-bottom: 0.25rem;
+}
+
 /* ── Payment method ────────────────────────────────────────── */
 .ck-method {
   display: flex;

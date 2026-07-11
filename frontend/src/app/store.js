@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import productReducer from "../features/product/fetchProducts/productSlice";
-import postProductReducer from "../features/product/postProductSlice";
 import postAddProductCategoryReducer from "../features/productCategory/postAddProductCategorySlice";
 import { productsApi } from "../features/product/rtkProducts";
 import { ordersApi } from "../features/order/rtkOrders";
@@ -10,7 +9,6 @@ import { vendorApi } from "../features/vendor/rtkVendor";
 import { uploadApi } from "../features/upload/rtkUpload";
 import { adminApi } from "../features/admin/rtkAdmin";
 import { catalogApi } from "../features/catalog/rtkCatalog";
-import addToCardSliceReducer from "../features/product/addToCardSlice";
 import addToCartReducer from "../features/product/addToCart/addToCartSlice";
 import cardsViewSlice from "../features/buttons/buttonsSlice";
 import hoverLinkReducer from "../features/cartModal/cartModalSlice";
@@ -21,8 +19,6 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     products: productReducer,
-    product: postProductReducer,
-    addToCard: addToCardSliceReducer,
     addToCart: addToCartReducer,
     cardsView: cardsViewSlice,
     hoverLink: hoverLinkReducer,
