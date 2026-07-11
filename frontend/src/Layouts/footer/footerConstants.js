@@ -1,4 +1,4 @@
-export const YEAR = new Date().getFullYear();
+export const YEAR = `2023–${new Date().getFullYear()}`;
 
 export const PRODUCT_LINKS = [
   { label: "Toate produsele", to: "/products" },

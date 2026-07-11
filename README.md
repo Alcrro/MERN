@@ -148,8 +148,15 @@ npm run seed       # Seed database with demo data
 npm run test:backend  # Run backend unit tests
 ```
 
-## Project Notes
+## Project History
 
-This project was originally built in 2023 and refactored in 2026. The refactor introduced: atomic design component structure, RTK Query for all server state, multi-vendor architecture, vendor dashboard, and a complete CSS rewrite using custom properties and BEM-like naming.
+**2023 — Initial build:** Authentication, product catalog, shopping cart, checkout, orders, user profile, admin panel.
+
+**2026 — Full refactor:**
+- Atomic design component structure (atoms → molecules → organisms → pages)
+- RTK Query replacing Redux Thunk for all server state
+- Multi-vendor marketplace: vendor apply/approval flow, vendor dashboard (6 sections), seller picker, business profile
+- Complete CSS rewrite with CSS custom properties, BEM-like naming, dark mode
+- Mongoose discriminator pattern for product variants (Electronics, Clothing, etc.)
 
 Payment processing is in demo mode — orders are created but no real payment gateway is integrated.
