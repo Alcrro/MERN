@@ -1,5 +1,10 @@
 # AlcrrO Shop — MERN Multi-Vendor E-commerce
 
+**Live demo:** [mern-lemon-sigma.vercel.app](https://mern-lemon-sigma.vercel.app)  
+**API:** [alcrro.onrender.com](https://alcrro.onrender.com)
+
+> Note: Backend runs on Render free tier — first request may take ~30s to cold-start.
+
 A full-stack e-commerce marketplace with multi-vendor support, role-based access control, and a modern React frontend.
 
 ## Features
