@@ -1,4 +1,4 @@
-import { NavLink, Navigate, Outlet } from "react-router-dom";
+import { NavLink, Navigate, Outlet, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ROLE_LABEL } from "../../utils/constants";
 import { NAV, avatarColor } from "../../Components/profile/profileConstants";
@@ -36,6 +36,18 @@ const Profile = () => {
               {label}
             </NavLink>
           ))}
+          {user.role === "vendor" && (
+            <Link to="/vendor/dashboard" className="prf-nav-link prf-nav-link--vendor">
+              <span className="prf-nav-icon">🏪</span>
+              Dashboard Vânzător
+            </Link>
+          )}
+          {user.role !== "vendor" && user.vendorStatus !== "pending" && (
+            <Link to="/vendor/apply" className="prf-nav-link prf-nav-link--apply">
+              <span className="prf-nav-icon">➕</span>
+              Devino vânzător
+            </Link>
+          )}
         </nav>
       </aside>
 

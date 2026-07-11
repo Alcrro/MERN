@@ -42,9 +42,6 @@ const UserMenu = ({ user, onLogout }) => {
               {user.role === "admin" && (
                 <li><a href="/admin/adauga-categorii" onClick={close}>Categorii</a></li>
               )}
-              {(user.role === "admin" || user.role === "vendor") && (
-                <li><Link to="/add/product" onClick={close}>Adaugă produs</Link></li>
-              )}
             </ul>
             <div className="dropdown-divider" />
             <button className="dropdown-logout" onClick={() => { onLogout(); close(); }}>

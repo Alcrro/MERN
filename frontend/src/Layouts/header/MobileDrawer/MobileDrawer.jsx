@@ -89,9 +89,6 @@ const MobileDrawer = ({ open, onClose, user, onLogout, categories }) => {
               <Link to="/profile"        className="mob-nav-link" onClick={close}>👤 Profilul meu</Link>
               <Link to="/profile/orders" className="mob-nav-link" onClick={close}>📦 Comenzile mele</Link>
               <Link to="/favorites"      className="mob-nav-link" onClick={close}>❤️ Favorite</Link>
-              {(user.role === "admin" || user.role === "vendor") && (
-                <Link to="/add/product"  className="mob-nav-link" onClick={close}>➕ Adaugă produs</Link>
-              )}
               <button className="mob-logout-btn" onClick={() => { onLogout(); close(); }}>
                 <LogoutIcon /> Deconectare
               </button>

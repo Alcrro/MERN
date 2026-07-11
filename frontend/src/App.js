@@ -8,7 +8,6 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Header from "./Layouts/header/Header";
 import ProductsList from "./Components/products/products/Products";
-import AddProductForm from "./Components/products/add-card-item/addProductForm";
 import AddCategory from "./Components/administrator/category/AddCategory";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import SingleProducts from "./Components/products/singleProducts/SingleProducts";
@@ -27,6 +26,15 @@ import ProfileSettings from "./Components/profile/ProfileSettings";
 import Favorites from "./Pages/Favorites/Favorites";
 import BrandPage from "./Pages/Brand/BrandPage";
 import Footer from "./Layouts/footer/Footer";
+import VendorApply from "./Pages/Vendor/VendorApply/VendorApply";
+import VendorDashboard from "./Pages/Vendor/VendorDashboard/VendorDashboard";
+import VendorOverview from "./Components/vendor/dashboard/VendorOverview";
+import VendorProductsPanel from "./Components/vendor/products/VendorProductsPanel";
+import VendorProductForm from "./Components/vendor/products/VendorProductForm";
+import VendorOrdersPanel from "./Components/vendor/dashboard/VendorOrdersPanel";
+import VendorAnalyticsPanel from "./Components/vendor/dashboard/VendorAnalyticsPanel";
+import VendorCatalog from "./Pages/Vendor/VendorCatalog/VendorCatalog";
+import AdminCatalog from "./Pages/Admin/AdminCatalog/AdminCatalog";
 
 const App = () => {
   return (
@@ -58,8 +66,18 @@ const App = () => {
               <Route path="address"  element={<ProfileAddress />} />
               <Route path="settings" element={<ProfileSettings />} />
             </Route>
-            <Route exact path="/add/product" element={<AddProductForm />} />
             <Route exact path="admin/adauga-categorii" element={<AddCategory />} />
+            <Route path="admin/catalog" element={<AdminCatalog />} />
+          </Route>
+
+          <Route path="/vendor/apply" element={<VendorApply />} />
+          <Route path="/vendor/dashboard" element={<VendorDashboard />}>
+            <Route index element={<VendorOverview />} />
+            <Route path="products" element={<VendorProductsPanel />} />
+            <Route path="products/:id/edit" element={<VendorProductForm isEdit={true} />} />
+            <Route path="orders" element={<VendorOrdersPanel />} />
+            <Route path="analytics" element={<VendorAnalyticsPanel />} />
+            <Route path="catalog" element={<VendorCatalog />} />
           </Route>
 
           <Route path="/favorites" element={<Favorites />} />
