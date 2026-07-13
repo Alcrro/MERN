@@ -1,0 +1,124 @@
+.vb {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vb__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vb__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.vb__add-btn {
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 5px 12px;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.vb__add-btn:hover { background: var(--primary); color: #fff; }
+
+/* ── Variant card ─────────────────────────────── */
+.vb__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-page);
+}
+
+.vb__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vb__card-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.vb__del {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #dc2626;
+  background: transparent;
+  border: 1px solid #dc2626;
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.vb__del:hover { background: #dc2626; color: #fff; }
+
+/* ── Attributes ───────────────────────────────── */
+.vb__attrs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vb__attr-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 6px;
+  align-items: center;
+}
+
+.vb__attr-key, .vb__attr-val { margin: 0; }
+
+.vb__rm-attr {
+  font-size: 0.75rem;
+  font-family: inherit;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 7px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.vb__rm-attr:hover { color: #dc2626; border-color: #dc2626; }
+
+.vb__add-attr {
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.vb__add-attr:hover { color: var(--primary); border-color: var(--primary); }
+
+/* ── Dark mode ────────────────────────────────── */
+html[data-theme="dark"] .vb__card { background: rgba(255,255,255,.03); }
+
+/* ── Mobile ───────────────────────────────────── */
+@media (max-width: 480px) {
+  .vb__attr-row { grid-template-columns: 1fr 1fr auto; }
+}

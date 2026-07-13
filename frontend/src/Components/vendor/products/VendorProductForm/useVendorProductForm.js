@@ -5,15 +5,16 @@ import {
   useUpdateVendorProductMutation,
   useGetVendorProductsQuery,
 } from "../../../../features/vendor/rtkVendor";
-import { DEFAULT_STOCK } from "../../../../utils/constants";
+
+const DEFAULT_VARIANT = { attributes: {}, price: 0, stock: { quantity: 0, availability: "In Stoc" }, images: [] };
 
 const useVendorProductForm = (isEdit) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [kind,      setKind]      = useState("Electronics");
-  const [form,      setForm]      = useState({ brand: "", price: "", description: "" });
-  const [stock,     setStock]     = useState(DEFAULT_STOCK);
+  const [form,      setForm]      = useState({ brand: "", description: "" });
+  const [variants,  setVariants]  = useState([{ ...DEFAULT_VARIANT }]);
   const [images,    setImages]    = useState([]);
   const [catFields, setCatFields] = useState({});
   const [warned,    setWarned]    = useState(false);
@@ -29,10 +30,10 @@ const useVendorProductForm = (isEdit) => {
     if (!isEdit || !productsData) return;
     const product = productsData.products?.find((p) => p._id === id);
     if (!product) return;
-    const { brand, price, description, kind: k, images: imgs, stock: s, ...rest } = product;
+    const { brand, description, kind: k, images: imgs, variants: v, ...rest } = product;
     setKind(k || "Electronics");
-    setForm({ brand: brand || "", price: price || "", description: description || "" });
-    setStock(s || DEFAULT_STOCK);
+    setForm({ brand: brand || "", description: description || "" });
+    setVariants(v?.length ? v : [{ ...DEFAULT_VARIANT }]);
     setImages(imgs || []);
     setCatFields(rest);
   }, [isEdit, id, productsData]);
@@ -59,15 +60,15 @@ const useVendorProductForm = (isEdit) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isEdit && !warned) { setWarned(true); return; }
-    const payload = { kind, ...form, price: Number(form.price), stock, images, ...catFields };
+    const payload = { kind, ...form, variants, images, ...catFields };
     const res = isEdit ? await update({ id, ...payload }) : await create(payload);
     if (!res.error) navigate("/vendor/dashboard/products");
   };
 
   return {
-    kind, form, stock, images, catFields, warned,
+    kind, form, variants, images, catFields, warned,
     isLoading, error,
-    setStock, setImages, setCatFields,
+    setVariants, setImages, setCatFields,
     handleChange, handleKindChange, handleCatalogSelect, handleSubmit,
   };
 };
