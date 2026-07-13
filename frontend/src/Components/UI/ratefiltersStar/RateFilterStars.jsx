@@ -6,16 +6,16 @@ import { useGetAllProductsQuery } from "../../features/product/rtkProducts";
 const RateFilterStars = () => {
 	const { data: allProductsData } = useGetAllProductsQuery();
 
-	let rateArray = [];
+	const rateArray = [];
 	allProductsData?.totalProducts.map((item) => rateArray.push(item.rating));
-	let uniqueRatesArray = rateArray.filter(
+	const uniqueRatesArray = rateArray.filter(
 		(item, index) => rateArray.indexOf(item) === index,
 	);
 
 	// show stars based on rating
 	function showStars(rating) {
-		let array = [1, 2, 3, 4, 5];
-		let number = rating + 0.5;
+		const array = [1, 2, 3, 4, 5];
+		const number = rating + 0.5;
 
 		return (
 			<>

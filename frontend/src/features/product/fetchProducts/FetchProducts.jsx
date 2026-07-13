@@ -7,7 +7,7 @@ const FetchProducts = () => {
   const [brand, setBrand] = useState([]);
   const products = useSelector((state) => state.products.products);
 
-  let arrayBrands = products?.totalProducts?.map((item) => item.brand);
+  const arrayBrands = products?.totalProducts?.map((item) => item.brand);
 
   const uniqueBrands = Array.from(new Set(arrayBrands));
 
@@ -17,7 +17,7 @@ const FetchProducts = () => {
     dispatch(getAllProducts());
   }, []);
 
-  let checkedBrand = [];
+  const checkedBrand = [];
   const inputChange = (e) => {
     if (e.target.checked) {
       setBrand(e.target.value);
