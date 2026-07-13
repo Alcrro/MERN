@@ -47,7 +47,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
   }
   if (availability) {
     const avArr = Array.isArray(availability) ? availability : [availability];
-    queryObject["stock.availability"] = { $in: avArr };
+    queryObject["variants.stock.availability"] = { $in: avArr };
   }
   if (stocare) {
     const stocareArr = Array.isArray(stocare) ? stocare : [stocare];
@@ -63,23 +63,22 @@ exports.getProducts = asyncHandler(async (req, res) => {
   }
 
   const sortMap = {
-    "Price: Low to High":   { price: 1 },
-    "Price: High to Low":   { price: -1 },
-    "Newest":               { createdAt: -1 },
-    "Oldest":               { createdAt: 1 },
-    "Rating: Low to High":  { "rating.average": 1 },
-    "Rating: High to Low":  { "rating.average": -1 },
-    "-rating":              { "rating.average": -1 },
-    "price":                { price: 1 },
+    "Price: Low to High":  { minPrice: 1 },
+    "Price: High to Low":  { minPrice: -1 },
+    "Newest":              { createdAt: -1 },
+    "Oldest":              { createdAt: 1 },
+    "Rating: Low to High": { "rating.average": 1 },
+    "Rating: High to Low": { "rating.average": -1 },
+    "-rating":             { "rating.average": -1 },
+    "price":               { minPrice: 1 },
   };
   const sortObj = sortMap[sort] || { createdAt: -1 };
 
   // Group by catalogRef so multiple vendors selling the same product → 1 card.
-  // Products without catalogRef each form their own group (keyed by their own _id).
-  // Pre-sort by price ASC so $first always picks the cheapest listing per group.
+  // Pre-sort by minPrice ASC so $first always picks the cheapest listing per group.
   const basePipeline = [
     { $match: queryObject },
-    { $sort: { price: 1 } },
+    { $sort: { minPrice: 1 } },
     { $group: {
       _id: { $ifNull: ["$catalogRef", "$_id"] },
       doc: { $first: "$$ROOT" },
@@ -170,15 +169,15 @@ exports.getSellers = asyncHandler(async (req, res, next) => {
   const sellers = await Products.find({
     catalogRef,
     listingStatus: "approved",
+    vendor: { $ne: null },
     $or: [
       { publishStatus: "published" },
       { publishStatus: { $exists: false } },
-      { vendor: null },
     ],
   })
-    .sort({ price: 1 })
-    .populate("vendor", "shopName vendorProfile")
-    .select("price stock vendor images listingStatus rating");
+    .sort({ minPrice: 1 })
+    .populate("vendor", "shopName vendorProfile vendorRating")
+    .select("minPrice variants vendor images listingStatus rating");
 
   res.status(200).json({ success: true, sellers, count: sellers.length });
 });
@@ -196,16 +195,20 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
     stock,
     availability,
     culoare,
+    variants,
   } = req.body;
+
+  const resolvedVariants = variants?.length
+    ? variants
+    : [{ attributes: {}, price: Number(price) || 0, stock: { quantity: stock ?? 0, availability: availability ?? "In Stoc" }, images: [] }];
 
   const product = await Products.create({
     brand: productBrand,
     model: productModel,
     memorieInterna: productMemorieInterna,
-    price: price,
+    variants: resolvedVariants,
     description: description,
     rating: { average: 0, count: 0 },
-    stock: { quantity: stock ?? 0, availability: availability ?? "In Stoc" },
     user: req.user.id,
     sku: generateSku(productBrand, "", productModel || ""),
     ...(culoare && { culoare }),
@@ -217,4 +220,3 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
     message: "Product created successfully",
   });
 });
-

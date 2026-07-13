@@ -210,9 +210,8 @@ async function run() {
 
       await Product.create({
         ...base,
-        price: entry.price,
         culoare: entry.culoare,
-        stock: { quantity: entry.qty, availability: entry.avail },
+        variants: [{ attributes: {}, price: entry.price, stock: { quantity: entry.qty, availability: entry.avail }, images: base.images || [] }],
         vendor: vendorId,
         user: vendorId,
         listingStatus: "approved",

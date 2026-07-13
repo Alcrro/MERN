@@ -15,6 +15,38 @@ const CatalogProduct = require("./models/catalog/CatalogProduct");
 const { AVAILABILITY } = require("./models/product/stock/Stock");
 const { generateSku } = require("./utils/skuGenerator");
 
+const STORAGE_NEXT = { "64GB": "128GB", "128GB": "256GB", "256GB": "512GB", "512GB": "1TB" };
+const STORAGE_DELTA = 500;
+
+const toVariants = (p) => {
+  if (p.variants?.length) return p;
+  const { price, stock, culoare, stocare, ...rest } = p;
+  const colors   = Array.isArray(culoare) && culoare.length ? culoare : [null];
+  const storages = stocare
+    ? [{ s: stocare, d: 0 }, { s: STORAGE_NEXT[stocare], d: STORAGE_DELTA }].filter((x) => x.s)
+    : [{ s: null, d: 0 }];
+
+  const basePrice = Number(price) || 0;
+  const totalV    = colors.length * storages.length;
+  const qtyEach   = Math.max(1, Math.round((stock?.quantity ?? 0) / totalV));
+
+  const variants = [];
+  for (const { s, d } of storages) {
+    for (const color of colors) {
+      const attrs = {};
+      if (color) attrs["Culoare"]  = color;
+      if (s)     attrs["Stocare"]  = s;
+      variants.push({
+        attributes: attrs,
+        price: basePrice + d,
+        stock: { quantity: qtyEach, availability: stock?.availability || "In Stoc" },
+        images: rest.images || [],
+      });
+    }
+  }
+  return { ...rest, variants };
+};
+
 const connectDB = async () => {
   await mongoose.connect(process.env.MONGO_URI);
   console.log("MongoDB connected");
@@ -1293,13 +1325,13 @@ const seed = async () => {
   const electronics = await Electronics.create(
     allElecData.map((p) => {
       const catalogEntry = findElecCatalog(p.brand, p.model);
-      return {
+      return toVariants({
         ...p,
         listingStatus: "approved",
         publishStatus: "published",
         sku: generateSku(p.brand, city, p.model || ""),
         ...(catalogEntry && { catalogRef: catalogEntry._id }),
-      };
+      });
     })
   );
   console.log(`  ${electronics.length} electronics created`);
@@ -1309,13 +1341,13 @@ const seed = async () => {
   const home = await HomeGarden.create(
     homeData(vendor._id).map((p) => {
       const catalogEntry = findOtherCatalog(p.brand, p.name);
-      return {
+      return toVariants({
         ...p,
         listingStatus: "approved",
         publishStatus: "published",
         sku: generateSku(p.brand, city, p.name || ""),
         ...(catalogEntry && { catalogRef: catalogEntry._id }),
-      };
+      });
     })
   );
   console.log(`  ${home.length} home products created`);
@@ -1325,13 +1357,13 @@ const seed = async () => {
   const furniture = await Furniture.create(
     furnitureData(vendor._id).map((p) => {
       const catalogEntry = findOtherCatalog(p.brand, p.name);
-      return {
+      return toVariants({
         ...p,
         listingStatus: "approved",
         publishStatus: "published",
         sku: generateSku(p.brand, city, p.name || ""),
         ...(catalogEntry && { catalogRef: catalogEntry._id }),
-      };
+      });
     })
   );
   console.log(`  ${furniture.length} furniture created`);
