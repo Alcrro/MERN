@@ -1,8 +1,8 @@
-import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromCart, addToCart, removeSingleCart } from "../../../features/product/addToCart/addToCartSlice";
 import { fmt } from "../../products/add-to-Cart/cartUtils";
+import useModalAlign from "./useModalAlign";
 import panda from "../../../Assets/images/panda.png";
 import "./addToCartModal.css";
 
@@ -21,24 +21,7 @@ const AddToCartModal = () => {
   const totalQty    = cart.cartTotalQuantity;
   const totalAmount = cart.cartTotalAmount;
 
-  const wrapRef  = useRef(null);
-  const [align, setAlign] = useState("center");
-
-  useEffect(() => {
-    const el = wrapRef.current?.closest(".cart-wrapper");
-    if (!el) return;
-    const check = () => {
-      const rect   = el.getBoundingClientRect();
-      const center = rect.left + rect.width / 2;
-      const vw     = window.innerWidth;
-      if (center - MODAL_W / 2 < 8)           setAlign("right");
-      else if (center + MODAL_W / 2 > vw - 8) setAlign("left");
-      else                                     setAlign("center");
-    };
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+  const { ref: wrapRef, align } = useModalAlign(MODAL_W);
 
   return (
     <div className={`crt-modal crt-modal--${align}`} ref={wrapRef}>
