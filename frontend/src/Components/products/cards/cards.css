@@ -229,6 +229,31 @@ html[data-theme="dark"] .card-fav-btn--active {
 
 .card-v2-add-to-cart { flex-shrink: 0; }
 
+/* ─── Color swatches ────────────────────────────────────── */
+.card-colors {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.card-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,.15);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.card-colors-more {
+  font-size: .62rem;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+html[data-theme="dark"] .card-color-dot { border-color: rgba(255,255,255,.2); }
+
 /* ─── Sellers count badge ───────────────────────────────── */
 .card__sellers-badge {
   font-size: .6rem;

@@ -1,0 +1,122 @@
+.vp {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.vp__group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.vp__group:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.vp__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 68px;
+  flex-shrink: 0;
+}
+
+.vp__selected-val {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+/* ── Color swatches ─────────────────────────────── */
+.vp__swatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vp__swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.13s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.vp__swatch:hover:not(:disabled) {
+  transform: scale(1.12);
+}
+
+.vp__swatch--on {
+  outline-color: var(--primary);
+}
+
+.vp__swatch--disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.vp__swatch--light {
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+/* ── Dark mode swatch borders ───────────────────── */
+html[data-theme="dark"] .vp__swatch:not(.vp__swatch--light) {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Chip buttons ───────────────────────────────── */
+.vp__chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vp__chip {
+  padding: 6px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: border-color 0.13s, color 0.13s, background 0.13s;
+}
+
+.vp__chip:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.vp__chip--on {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.vp__chip--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Dark mode ──────────────────────────────────── */
+html[data-theme="dark"] .vp__chip {
+  background: var(--bg-card);
+}
+
+html[data-theme="dark"] .vp__chip--on {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* ── Mobile ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .vp__chips { gap: 6px; }
+  .vp__chip { padding: 5px 12px; font-size: 0.78rem; }
+}
