@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./SellerRow.css";
 
 const AVAIL_MOD = {
@@ -10,11 +11,13 @@ const AVAIL_MOD = {
 };
 
 const SellerRow = ({ seller, selected, onSelect }) => {
-  const price = seller.price?.toLocaleString("ro-RO");
-  const avail = seller.stock?.availability;
+  const firstVariant = seller.variants?.[0];
+  const price = (seller.minPrice ?? firstVariant?.price)?.toLocaleString("ro-RO");
+  const avail = firstVariant?.stock?.availability;
   const shop  = seller.vendor?.shopName ?? "Vânzător";
-  const vp    = seller.vendor?.vendorProfile;
-  const tip   = vp?.tipEntitate;
+  const vp      = seller.vendor?.vendorProfile;
+  const tip     = vp?.tipEntitate;
+  const vRating = seller.vendor?.vendorRating;
   const city  = vp?.orasDepozit;
   const retur = vp?.returZile;
   const min   = vp?.zileLivrare?.min;
@@ -31,8 +34,21 @@ const SellerRow = ({ seller, selected, onSelect }) => {
       <span className={`seller-row__radio${selected ? " seller-row__radio--on" : ""}`} aria-hidden="true" />
 
       <div className="seller-row__identity">
-        <span className="seller-row__shop">{shop}</span>
+        {seller.vendor?._id ? (
+          <Link
+            to={`/vendor/${seller.vendor._id}`}
+            className="seller-row__shop seller-row__shop--link"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {shop}
+          </Link>
+        ) : (
+          <span className="seller-row__shop">{shop}</span>
+        )}
         {tip && <span className="seller-row__tip">{tip}</span>}
+        {vRating?.count > 0 && (
+          <span className="seller-row__vrating">★ {vRating.average.toFixed(1)}</span>
+        )}
       </div>
 
       <div className="seller-row__meta">

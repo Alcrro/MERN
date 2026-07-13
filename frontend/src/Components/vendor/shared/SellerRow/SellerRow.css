@@ -47,6 +47,31 @@
   white-space: nowrap;
 }
 
+.seller-row__shop--link {
+  text-decoration: none;
+  transition: color .12s;
+}
+
+.seller-row__shop--link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.seller-row__vrating {
+  font-size: .7rem;
+  font-weight: 600;
+  color: #b45309;
+  background: #fef3c7;
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .seller-row__vrating {
+  background: #3a2a00;
+  color: #fbbf24;
+}
+
 .seller-row__tip {
   font-size: .63rem;
   font-weight: 700;

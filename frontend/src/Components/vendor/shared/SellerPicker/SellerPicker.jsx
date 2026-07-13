@@ -35,7 +35,7 @@ const SellerPicker = ({ catalogRef, onSellerChange }) => {
   if (isError)      return <p className="seller-picker__error">Eroare la încărcarea vânzătorilor.</p>;
   if (sellers.length === 0) return <p className="seller-picker__empty">Momentan niciun vânzător disponibil.</p>;
 
-  const selPrice = selected?.price?.toLocaleString("ro-RO");
+  const selPrice = (selected?.minPrice ?? selected?.variants?.[0]?.price)?.toLocaleString("ro-RO");
 
   return (
     <div className="seller-picker">
