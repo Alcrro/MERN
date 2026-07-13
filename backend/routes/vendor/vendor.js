@@ -11,9 +11,21 @@ const {
   getVendorOrders,
   getVendorAnalytics,
 } = require("../../controllers/vendor/vendor");
+const {
+  getPublicVendor,
+  getPublicVendorProducts,
+  getVendorReviews,
+  addVendorReview,
+} = require("../../controllers/vendor/publicVendor");
 const { protect, authorize } = require("../../middleware/auth/auth");
 
 const router = express.Router();
+
+// Public vendor profile routes — must be before protect middleware
+router.get("/vendor/public/:vendorId", getPublicVendor);
+router.get("/vendor/public/:vendorId/products", getPublicVendorProducts);
+router.get("/vendor/public/:vendorId/reviews", getVendorReviews);
+router.post("/vendor/public/:vendorId/reviews", protect, addVendorReview);
 
 router.post("/vendor/apply", protect, applyAsVendor);
 

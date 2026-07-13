@@ -1,0 +1,60 @@
+.vpp__title {
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: var(--text-dark);
+}
+
+.vpp__msg {
+	color: var(--text-muted);
+	font-size: 0.9rem;
+	padding: 24px 0;
+	grid-column: 1 / -1;
+}
+
+.vpp__msg--err {
+	color: var(--danger, #dc3545);
+}
+
+.vpp__pagination {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	margin-top: 28px;
+}
+
+.vpp__page-btn {
+	width: 36px;
+	height: 36px;
+	border-radius: 6px;
+	border: 1px solid var(--border);
+	background: var(--bg-card);
+	color: var(--text-body);
+	font-size: 0.875rem;
+	cursor: pointer;
+	transition:
+		background 0.15s,
+		color 0.15s;
+}
+
+.vpp__page-btn:hover {
+	background: var(--primary-subtle, #e8f0fe);
+	color: var(--primary);
+}
+
+.vpp__page-btn--active {
+	background: var(--primary);
+	color: #fff;
+	border-color: var(--primary);
+}
+
+/* dark mode */
+html[data-theme="dark"] .vpp__page-btn:hover {
+	background: var(--primary-subtle, #1a2a4a);
+}
+
+/* forțează 1 coloană la mobile — override cascade față de cards.css */
+@media (max-width: 500px) {
+	.vpp .card-collection.card-v2-grid {
+		grid-template-columns: 1fr;
+	}
+}

@@ -75,6 +75,10 @@ const RegisterSchema = new mongoose.Schema(
       default: null,
     },
     vendorProfile: { type: VendorProfileSchema, default: () => ({}) },
+    vendorRating: {
+      average: { type: Number, default: 0 },
+      count:   { type: Number, default: 0 },
+    },
   },
   {
     timestamps: true,

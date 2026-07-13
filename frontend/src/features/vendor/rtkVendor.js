@@ -6,7 +6,7 @@ export const vendorApi = createApi({
     baseUrl: `${process.env.REACT_APP_API_URL || ""}/api/`,
     credentials: "include",
   }),
-  tagTypes: ["VendorProducts", "VendorOrders", "VendorAnalytics", "VendorMe"],
+  tagTypes: ["VendorProducts", "VendorOrders", "VendorAnalytics", "VendorMe", "VendorPublic", "VendorReviews"],
   endpoints: (builder) => ({
     applyAsVendor: builder.mutation({
       query: (body) => ({ url: "vendor/apply", method: "POST", body }),
@@ -51,6 +51,32 @@ export const vendorApi = createApi({
       query: () => "vendor/analytics",
       providesTags: ["VendorAnalytics"],
     }),
+
+    // Public vendor profile
+    getPublicVendor: builder.query({
+      query: (vendorId) => `vendor/public/${vendorId}`,
+      providesTags: (result, error, vendorId) => [{ type: "VendorPublic", id: vendorId }],
+    }),
+    getPublicVendorProducts: builder.query({
+      query: ({ vendorId, page = 1, limit = 12 }) =>
+        `vendor/public/${vendorId}/products?page=${page}&limit=${limit}`,
+      providesTags: (result, error, { vendorId }) => [{ type: "VendorPublic", id: `${vendorId}-products` }],
+    }),
+    getVendorReviews: builder.query({
+      query: (vendorId) => `vendor/public/${vendorId}/reviews`,
+      providesTags: (result, error, vendorId) => [{ type: "VendorReviews", id: vendorId }],
+    }),
+    addVendorReview: builder.mutation({
+      query: ({ vendorId, value, comment }) => ({
+        url: `vendor/public/${vendorId}/reviews`,
+        method: "POST",
+        body: { value, comment },
+      }),
+      invalidatesTags: (result, error, { vendorId }) => [
+        { type: "VendorReviews", id: vendorId },
+        { type: "VendorPublic", id: vendorId },
+      ],
+    }),
   }),
 });
 
@@ -65,4 +91,8 @@ export const {
   usePublishVendorProductMutation,
   useGetVendorOrdersQuery,
   useGetVendorAnalyticsQuery,
+  useGetPublicVendorQuery,
+  useGetPublicVendorProductsQuery,
+  useGetVendorReviewsQuery,
+  useAddVendorReviewMutation,
 } = vendorApi;

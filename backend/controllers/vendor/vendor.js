@@ -152,6 +152,18 @@ exports.createVendorProduct = asyncHandler(async (req, res) => {
     throw new Error(`Invalid product kind. Must be one of: ${VALID_KINDS.join(", ")}`);
   }
 
+  // Bridge: old form sends price + stock; new form sends variants array
+  if (!fields.variants?.length && fields.price != null) {
+    fields.variants = [{
+      attributes: {},
+      price: Number(fields.price),
+      stock: fields.stock || { quantity: 0, availability: "In Stoc" },
+      images: fields.images || [],
+    }];
+  }
+  delete fields.price;
+  delete fields.stock;
+
   const Model = KIND_MODEL[kind];
   const city  = req.user.vendorProfile?.orasDepozit || "";
   const model = fields.model || fields.name || fields.title || "";
@@ -183,6 +195,18 @@ exports.updateVendorProduct = asyncHandler(async (req, res) => {
   }
 
   const { kind, user, vendor, ...updates } = req.body;
+
+  // Bridge: old form sends price + stock; new form sends variants array
+  if (!updates.variants?.length && updates.price != null) {
+    updates.variants = [{
+      attributes: {},
+      price: Number(updates.price),
+      stock: updates.stock || { quantity: 0, availability: "In Stoc" },
+      images: updates.images || [],
+    }];
+  }
+  delete updates.price;
+  delete updates.stock;
 
   Object.assign(product, updates, { listingStatus: "pending", publishStatus: "draft", rejectionReason: null });
   await product.save();

@@ -1,0 +1,163 @@
+.vr {
+  margin-bottom: 48px;
+}
+
+.vr__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 20px;
+}
+
+.vr__loading,
+.vr__empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 16px 0;
+}
+
+/* review list */
+.vr__list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.vr__item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.vr__item-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.vr__item-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-dark);
+}
+
+.vr__item-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.vr__item-comment {
+  font-size: 0.875rem;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* form */
+.vr__form-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+
+.vr__form-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 18px;
+}
+
+.vr__auth-msg,
+.vr__already {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.vr__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.vr__form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vr__label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.vr__textarea {
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  color: var(--text-body);
+  background: var(--bg-page);
+  font-family: inherit;
+  min-height: 80px;
+  transition: border-color 0.15s;
+}
+
+.vr__textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.vr__err {
+  font-size: 0.82rem;
+  color: var(--danger, #dc3545);
+  margin: 0;
+}
+
+.vr__submit {
+  align-self: flex-start;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.vr__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.vr__submit:not(:disabled):hover {
+  opacity: 0.88;
+}
+
+/* dark mode */
+html[data-theme="dark"] .vr__textarea {
+  background: var(--bg-input, #1e1e1e);
+  color: var(--text-body);
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .vr__form-wrap {
+    padding: 18px 16px;
+  }
+
+  .vr__item-date {
+    margin-left: 0;
+    width: 100%;
+  }
+}

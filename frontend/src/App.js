@@ -39,6 +39,7 @@ import AdminListings from "./Pages/Admin/AdminListings/AdminListings";
 import AdminCatalogPanel from "./Components/administrator/catalog/CatalogAdmin";
 import AdminVendors from "./Pages/Admin/AdminVendors/AdminVendors";
 import AdminCategories from "./Pages/Admin/AdminCategories/AdminCategories";
+import VendorPage from "./Pages/VendorPage/VendorPage";
 
 const App = () => {
   return (
@@ -92,6 +93,7 @@ const App = () => {
             <Route path="profile" element={<VendorProfilePanel />} />
           </Route>
 
+          <Route path="/vendor/:vendorId" element={<VendorPage />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route exact path="/about" element={<About />} />
           <Route path="*" element={<NoMatch />} />
