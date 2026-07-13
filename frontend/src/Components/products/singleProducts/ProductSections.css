@@ -31,11 +31,71 @@
 }
 
 /* ── description ─────────────────────────────────────────── */
-.sp-desc {
-	font-size: 0.88rem;
-	color: var(--text-medium);
-	line-height: 1.75;
+.sp-desc-body {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	padding-bottom: 8px;
+}
+
+.sp-desc-lead {
+	font-size: 1.12rem;
+	font-weight: 500;
+	color: var(--text-dark);
+	line-height: 1.8;
 	margin: 0;
+	position: relative;
+	padding-left: 20px;
+}
+
+.sp-desc-lead::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 6px;
+	bottom: 6px;
+	width: 3px;
+	background: linear-gradient(to bottom, var(--primary), #818cf8);
+	border-radius: 2px;
+}
+
+.sp-desc-para {
+	font-size: 0.95rem;
+	color: var(--text-medium);
+	line-height: 1.8;
+	margin: 0;
+}
+
+/* ── promises strip ──────────────────────────────────────── */
+.sp-desc-promises {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1px;
+	margin-top: 24px;
+	background: var(--border-light);
+	border: 1px solid var(--border-light);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.sp-dp-item {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 18px 16px;
+	background: var(--bg-page);
+}
+
+.sp-dp-icon { font-size: 1.6rem; line-height: 1; }
+
+.sp-dp-text {
+	font-size: 0.8rem;
+	color: var(--text-medium);
+	line-height: 1.55;
+}
+
+@media (max-width: 600px) {
+	.sp-desc-promises { grid-template-columns: 1fr; }
 }
 
 /* ── specs grid ──────────────────────────────────────────── */
