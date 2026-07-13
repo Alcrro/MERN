@@ -2,6 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const morgan = require("morgan");
+const compression = require("compression");
 const notFoundMiddleware = require("./middleware/middlewareRoutes/not-found");
 const cors = require("cors");
 const errorHandler = require("./middleware/error/error");
@@ -15,6 +18,11 @@ connectDB();
 const server = express();
 
 server.use(helmet());
+server.use(compression());
+
+if (process.env.NODE_ENV === "development") {
+  server.use(morgan("dev"));
+}
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -23,9 +31,10 @@ const limiter = rateLimit({
 });
 server.use("/api/auth", limiter);
 
-server.use(express.json());
+server.use(express.json({ limit: "10kb" }));
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
+server.use(mongoSanitize());
 server.use(cors({
   origin: process.env.CLIENT_URL || "http://localhost:3000",
   credentials: true,
