@@ -1,5 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const notFoundMiddleware = require("./middleware/middlewareRoutes/not-found");
 const cors = require("cors");
 const errorHandler = require("./middleware/error/error");
@@ -11,6 +13,16 @@ dotenv.config();
 connectDB();
 
 const server = express();
+
+server.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { success: false, message: "Too many requests, please try again later." },
+});
+server.use("/api/auth", limiter);
+
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
