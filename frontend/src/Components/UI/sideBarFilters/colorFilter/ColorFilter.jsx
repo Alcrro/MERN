@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { COLOR_MAP } from "../../../../utils/constants";
 import "./ColorFilter.css";
+import { useFilters } from "../../../products/products/FilterContext";
 
 const LIGHT_COLORS = new Set(["Alb", "Argintiu", "Bej", "Galben"]);
 
@@ -10,7 +11,8 @@ const CheckIcon = ({ light }) => (
   </svg>
 );
 
-const ColorFilter = ({ culoare, setCuloare, contextProducts = [] }) => {
+const ColorFilter = () => {
+  const { culoare, setCuloare, culoareContext: contextProducts = [] } = useFilters();
   const [open, setOpen] = useState(true);
 
   const options = [...new Set(contextProducts.flatMap((p) => p.culoare ?? []).filter(Boolean))].sort();

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useFilters } from "../../../products/products/FilterContext";
 
-const StorageFilter = ({ stocare, setStocare, contextProducts = [] }) => {
+const StorageFilter = () => {
+  const { stocare, setStocare, stocareContext: contextProducts = [] } = useFilters();
   const [open, setOpen] = useState(true);
 
   const toGB = (s) => (s?.toUpperCase().includes("TB") ? parseFloat(s) * 1024 : parseFloat(s));

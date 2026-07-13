@@ -1,18 +1,10 @@
-import React from "react";
 import BrandCategory from "../brandCategory/BrandCategory";
 import ModelCategory from "../modelCategory/ModelCategory";
+import { useFilters } from "../../../products/products/FilterContext";
 
-const AllCategories = ({
-  brandContext = [],
-  modelContext = [],
-  model,
-  setModel,
-  brand,
-  setBrand,
-  setPage,
-  setRating,
-  hideBrand = false,
-}) => (
+const AllCategories = ({ hideBrand = false }) => {
+  const { brand, setBrand, model, setModel, brandContext = [], modelContext = [], setPage, setRating } = useFilters();
+  return (
   <>
     {!hideBrand && (
       <BrandCategory
@@ -32,6 +24,7 @@ const AllCategories = ({
       setRating={setRating}
     />
   </>
-);
+  );
+};
 
 export default AllCategories;

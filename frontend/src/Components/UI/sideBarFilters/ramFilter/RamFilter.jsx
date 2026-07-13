@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useFilters } from "../../../products/products/FilterContext";
 
-const RamFilter = ({ ram, setRam, contextProducts = [] }) => {
+const RamFilter = () => {
+  const { ram, setRam, ramContext: contextProducts = [] } = useFilters();
   const [open, setOpen] = useState(true);
 
   const options = [...new Set(contextProducts.map((p) => p.RAM).filter(Boolean))].sort(

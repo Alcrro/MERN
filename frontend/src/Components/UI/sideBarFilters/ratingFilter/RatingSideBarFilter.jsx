@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./sideBarFiltersRating.css";
 import "../../singleCardRating/starRating.css";
+import { useFilters } from "../../../products/products/FilterContext";
 
 const rateObject = [
   { id: 5, style: 100 },
@@ -10,7 +11,8 @@ const rateObject = [
   { id: 1, style: 20 },
 ];
 
-const SideBarFilters = ({ rating, setRating, contextProducts = [] }) => {
+const SideBarFilters = () => {
+  const { rating, setRating, ratingContext: contextProducts = [] } = useFilters();
   const [open, setOpen] = useState(true);
 
   const toggle = (val, checked) => {

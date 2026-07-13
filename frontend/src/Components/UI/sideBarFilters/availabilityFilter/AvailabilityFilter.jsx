@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useFilters } from "../../../products/products/FilterContext";
 
 const OPTIONS = ["Nou", "In Stoc", "Promotii", "Resigilat", "Precomanda"];
 
-const AvailabilityFilter = ({ availability, setAvailability, contextProducts = [] }) => {
+const AvailabilityFilter = () => {
+  const { availability, setAvailability, availabilityContext: contextProducts = [] } = useFilters();
   const [open, setOpen] = useState(true);
 
   const counts = Object.fromEntries(
