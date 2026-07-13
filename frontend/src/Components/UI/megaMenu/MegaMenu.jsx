@@ -20,11 +20,8 @@ const MegaMenu = () => {
   const location = useLocation();
   const categories = useSelector(getAllCategories);
 
-  // console.log(categories);
-
   const handleClick = (item) => {
     dispatch(getMenuDepartment(item));
-    // console.log(item.category);
     setValue(item.category);
   };
 

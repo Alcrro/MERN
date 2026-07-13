@@ -10,7 +10,6 @@ const FetchProducts = () => {
   let arrayBrands = products?.totalProducts?.map((item) => item.brand);
 
   const uniqueBrands = Array.from(new Set(arrayBrands));
-  // console.log(uniqueBrands);
 
   const dispatch = useDispatch();
 
