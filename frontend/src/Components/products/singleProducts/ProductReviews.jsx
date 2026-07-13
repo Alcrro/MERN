@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { Link } from "react-router-dom";
 import { useAddReviewMutation, useDeleteReviewMutation } from "../../../features/product/rtkProducts";
 import Stars from "./Stars";
@@ -7,11 +7,22 @@ import { avatarColor, fmtDate } from "./singleProductUtils";
 import { TrashSmIcon, LoginIcon, DoneIcon } from "./singleProductIcons";
 import "./ProductReviews.css";
 
+const initialForm = { starValue: 0, comment: "", formErr: "", submitting: false };
+
+const formReducer = (state, action) => {
+  switch (action.type) {
+    case "SET_STAR":    return { ...state, starValue: action.payload, formErr: "" };
+    case "SET_COMMENT": return { ...state, comment: action.payload };
+    case "SET_ERR":     return { ...state, formErr: action.payload };
+    case "SUBMIT":      return { ...state, submitting: true, formErr: "" };
+    case "DONE":        return { ...state, submitting: false };
+    case "RESET":       return initialForm;
+    default:            return state;
+  }
+};
+
 const ProductReviews = ({ reviews, isLoading, authUser, productId, avg, rcount }) => {
-  const [starValue,  setStarValue]  = useState(0);
-  const [comment,    setComment]    = useState("");
-  const [formErr,    setFormErr]    = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [form, dispatch] = useReducer(formReducer, initialForm);
 
   const [addReview]    = useAddReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
@@ -26,15 +37,17 @@ const ProductReviews = ({ reviews, isLoading, authUser, productId, avg, rcount }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!starValue)      { setFormErr("Selectează un rating."); return; }
-    if (!comment.trim()) { setFormErr("Scrie un comentariu."); return; }
-    setFormErr(""); setSubmitting(true);
+    if (!form.starValue)      { dispatch({ type: "SET_ERR", payload: "Selectează un rating." }); return; }
+    if (!form.comment.trim()) { dispatch({ type: "SET_ERR", payload: "Scrie un comentariu." }); return; }
+    dispatch({ type: "SUBMIT" });
     try {
-      await addReview({ productId, value: starValue, comment: comment.trim() }).unwrap();
-      setStarValue(0); setComment("");
+      await addReview({ productId, value: form.starValue, comment: form.comment.trim() }).unwrap();
+      dispatch({ type: "RESET" });
     } catch (err) {
-      setFormErr(err?.data?.error || "Eroare. Încearcă din nou.");
-    } finally { setSubmitting(false); }
+      dispatch({ type: "SET_ERR", payload: err?.data?.error || "Eroare. Încearcă din nou." });
+    } finally {
+      dispatch({ type: "DONE" });
+    }
   };
 
   const handleDelete = async (reviewId) => {
@@ -77,17 +90,23 @@ const ProductReviews = ({ reviews, isLoading, authUser, productId, avg, rcount }
         <div className="sp-rev-form-wrap">
           <h3 className="sp-rev-form-title">Adaugă recenzia ta</h3>
           <form className="sp-rev-form" onSubmit={handleSubmit}>
-            <div className="sp-fg"><label className="sp-fl">Rating</label><StarPicker value={starValue} onChange={setStarValue} /></div>
+            <div className="sp-fg">
+              <label className="sp-fl">Rating</label>
+              <StarPicker value={form.starValue} onChange={(v) => dispatch({ type: "SET_STAR", payload: v })} />
+            </div>
             <div className="sp-fg">
               <label className="sp-fl" htmlFor="rev-txt">Comentariu</label>
-              <textarea id="rev-txt" className="sp-ta" rows={4} maxLength={500}
+              <textarea
+                id="rev-txt" className="sp-ta" rows={4} maxLength={500}
                 placeholder="Descrie experiența ta cu acest produs..."
-                value={comment} onChange={(e) => setComment(e.target.value)} />
-              <span className="sp-char">{comment.length}/500</span>
+                value={form.comment}
+                onChange={(e) => dispatch({ type: "SET_COMMENT", payload: e.target.value })}
+              />
+              <span className="sp-char">{form.comment.length}/500</span>
             </div>
-            {formErr && <p className="sp-ferr">{formErr}</p>}
-            <button type="submit" className="sp-btn-primary sp-submit" disabled={submitting}>
-              {submitting ? "Se trimite…" : "Trimite recenzia"}
+            {form.formErr && <p className="sp-ferr">{form.formErr}</p>}
+            <button type="submit" className="sp-btn-primary sp-submit" disabled={form.submitting}>
+              {form.submitting ? "Se trimite…" : "Trimite recenzia"}
             </button>
           </form>
         </div>
