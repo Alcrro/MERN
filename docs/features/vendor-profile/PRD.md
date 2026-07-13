@@ -1,8 +1,8 @@
 # PRD: Vendor Profile
 
-> **Status:** `Draft`
+> **Status:** `Shipped`
 > **Owner:** Alexandru Roventa
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Related tech spec:** [tech-spec.md](./tech-spec.md)
 > **Depends on:** `vendor-dashboard` (shopName/shopDescription deja existente)
 
@@ -37,16 +37,16 @@
 
 ## Acceptance Criteria
 
-- [ ] `#1` — `PUT /api/vendor/profile` acceptă `cui`, `denumireFirma`, `tipEntitate`; salvează în `vendorProfile` pe user
-- [ ] `#1` — CUI validat: 2–10 cifre (format RO)
-- [ ] `#2` — `zileLivrare: { min, max }` — ambele required când se completează, `min <= max`
-- [ ] `#2` — `orasDepozit` — string liber, max 100 caractere
-- [ ] `#3` — `returZile` — număr pozitiv, default 30
-- [ ] `#4` — `email` și `telefon` — opționale, validate format
-- [ ] `#5` — `GET /api/products/sellers/:catalogRef` populează `vendorProfile` (orasDepozit, zileLivrare, tipEntitate)
-- [ ] `#5` — `SellerRow` afișează: `{orasDepozit} · {min}-{max} zile · retur {returZile} zile`
-- [ ] `#6` — Pagina `/vendor/dashboard/profile` cu formular complet, loading + error state
-- [ ] `#7` — `GET /api/admin/vendors` returnează lista vendorilor cu `vendorProfile.cui` + `denumireFirma`
+- [x] `#1` — `PUT /api/vendor/profile` acceptă `cui`, `denumireFirma`, `tipEntitate`; salvează în `vendorProfile` pe user
+- [x] `#1` — CUI validat: 2–10 cifre (format RO)
+- [x] `#2` — `zileLivrare: { min, max }` — `min <= max` validat în controller
+- [x] `#2` — `orasDepozit` — string liber, max 100 caractere
+- [x] `#3` — `returZile` — număr pozitiv, default 30
+- [ ] `#4` — `email` și `telefon` — opționale, fără validare format server-side (doar model-level regex pe `phone` cont, nu pe `vendorProfile.telefon`/`emailContact`)
+- [x] `#5` — `GET /api/products/sellers/:catalogRef` populează `vendorProfile` (orasDepozit, zileLivrare, tipEntitate)
+- [x] `#5` — `SellerRow` afișează: orasDepozit, zile livrare, retur (cu iconițe emoji)
+- [x] `#6` — Pagina `/vendor/dashboard/profile` cu formular complet, loading + error + success state
+- [x] `#7` — `GET /api/admin/vendors` returnează lista vendorilor cu `vendorProfile.cui` + `denumireFirma`
 
 ---
 

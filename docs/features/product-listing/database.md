@@ -21,7 +21,10 @@
 | `vendor` | ObjectId | ref: Register, default: null | Vendor who owns the listing |
 | `images` | [String] | default: [] | Array of image URLs |
 | `listingStatus` | String | enum: pending/approved/rejected, default: `"approved"` | Admin-managed for vendor listings |
+| `publishStatus` | String | enum: draft/published, default: `"draft"` | Vendor publică manual după aprobare |
 | `rejectionReason` | String | default: null | Set by admin when rejected |
+| `sku` | String | unique, sparse | Auto-generat via `generateSku()` la creare |
+| `catalogRef` | ObjectId | ref: CatalogProduct, default: null | Leagă listarea de produsul master din catalog |
 | `rating` | RatingSchema | embedded | |
 | `stock` | StockSchema | embedded | |
 | `kind` | String | discriminatorKey | Set by Mongoose: `"Electronics"`, `"Clothing"`, etc. |
@@ -96,3 +99,6 @@
 | `{ vendor: 1, listingStatus: 1 }` | compound | Vendor dashboard listing queries |
 | `{ listingStatus: 1, createdAt: -1 }` | compound | Admin approval queue |
 | `{ brand: "text", description: "text" }` | weights: brand×3 | Full-text search (`$search`) |
+| `{ catalogRef: 1, listingStatus: 1, price: 1 }` | compound | Seller picker + aggregate dedup |
+| `{ sku: 1 }` | unique, sparse | SKU public URL lookup |
+| `{ vendor: 1, catalogRef: 1 }` | partial unique (publishStatus=published, catalogRef≠null) | Un singur listing publicat per vendor per catalog entry |

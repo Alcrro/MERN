@@ -2,6 +2,16 @@ import { useGetVendorOrdersQuery } from "../../../../features/vendor/rtkVendor";
 import { ORDER_STATUS_COLORS } from "../../../../utils/constants";
 import "./VendorOrdersPanel.css";
 
+const VendorOrderRowSkeleton = () => (
+  <tr className="vop__skel-row">
+    <td><div className="skel vop__skel-cell vop__skel-cell--id" /></td>
+    <td><div className="skel vop__skel-cell vop__skel-cell--date" /></td>
+    <td><div className="skel vop__skel-cell vop__skel-cell--client" /></td>
+    <td><div className="skel vop__skel-cell vop__skel-cell--price" /></td>
+    <td><div className="skel vop__skel-cell vop__skel-cell--badge" /></td>
+  </tr>
+);
+
 const VendorOrdersPanel = () => {
   const { data, isLoading } = useGetVendorOrdersQuery();
   const orders = data?.orders ?? [];
@@ -9,7 +19,24 @@ const VendorOrdersPanel = () => {
   return (
     <div className="vop">
       <h1 className="vop__title">Comenzi</h1>
-      {isLoading && <p className="vop__empty">Se încarcă…</p>}
+      {isLoading && (
+        <div className="vop__table-wrap">
+          <table className="vop__table">
+            <thead>
+              <tr>
+                <th>ID Comandă</th>
+                <th>Data</th>
+                <th>Client</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[0, 1, 2].map((i) => <VendorOrderRowSkeleton key={i} />)}
+            </tbody>
+          </table>
+        </div>
+      )}
       {!isLoading && orders.length === 0 && (
         <p className="vop__empty">Nu ai comenzi încă. Produsele tale trebuie să fie aprobate înainte ca clienții să le poată cumpăra.</p>
       )}

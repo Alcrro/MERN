@@ -8,7 +8,7 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Header from "./Layouts/header/Header";
 import ProductsList from "./Components/products/products/Products";
-import AddCategory from "./Components/administrator/category/AddCategory";
+import ProductsDiscover from "./Pages/ProductsDiscover/ProductsDiscover";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import SingleProducts from "./Components/products/singleProducts/SingleProducts";
 import NoMatch from "./Pages/NoMatch/NoMatch";
@@ -24,7 +24,6 @@ import ProfileOrders from "./Components/profile/ProfileOrders";
 import ProfileAddress from "./Components/profile/ProfileAddress";
 import ProfileSettings from "./Components/profile/ProfileSettings";
 import Favorites from "./Pages/Favorites/Favorites";
-import BrandPage from "./Pages/Brand/BrandPage";
 import Footer from "./Layouts/footer/Footer";
 import VendorApply from "./Pages/Vendor/VendorApply/VendorApply";
 import VendorDashboard from "./Pages/Vendor/VendorDashboard/VendorDashboard";
@@ -35,7 +34,12 @@ import VendorOrdersPanel from "./Components/vendor/dashboard/VendorOrdersPanel";
 import VendorAnalyticsPanel from "./Components/vendor/dashboard/VendorAnalyticsPanel";
 import VendorCatalog from "./Pages/Vendor/VendorCatalog/VendorCatalog";
 import VendorProfilePanel from "./Components/vendor/dashboard/VendorProfilePanel";
-import AdminCatalog from "./Pages/Admin/AdminCatalog/AdminCatalog";
+import AdminDashboard from "./Pages/Admin/AdminDashboard/AdminDashboard";
+import AdminOverview from "./Pages/Admin/AdminDashboard/AdminOverview";
+import AdminListings from "./Pages/Admin/AdminListings/AdminListings";
+import AdminCatalogPanel from "./Components/administrator/catalog/CatalogAdmin";
+import AdminVendors from "./Pages/Admin/AdminVendors/AdminVendors";
+import AdminCategories from "./Pages/Admin/AdminCategories/AdminCategories";
 
 const App = () => {
   return (
@@ -50,10 +54,12 @@ const App = () => {
           <Route exact path="/" element={<Home />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
-          <Route exact path="products" element={<ProductsList />} />
-          <Route path="products/:brand" element={<BrandPage />} />
+          <Route path="products" element={<ProductsDiscover />} />
+          <Route path="products/:categorySlug" element={<ProductsList />} />
+          <Route path="products/:categorySlug/:tipSlug" element={<ProductsList />} />
           <Route exact path="cards" element={<Cards />} />
           <Route exact path="product">
+            <Route path=":slug/:sku" element={<SingleProducts />} />
             <Route path=":id" element={<SingleProducts />} />
           </Route>
           <Route path="/cart" element={<AddToCart />} />
@@ -67,8 +73,13 @@ const App = () => {
               <Route path="address"  element={<ProfileAddress />} />
               <Route path="settings" element={<ProfileSettings />} />
             </Route>
-            <Route exact path="admin/adauga-categorii" element={<AddCategory />} />
-            <Route path="admin/catalog" element={<AdminCatalog />} />
+            <Route path="admin/dashboard" element={<AdminDashboard />}>
+              <Route index element={<AdminOverview />} />
+              <Route path="listings"   element={<AdminListings />} />
+              <Route path="catalog"    element={<AdminCatalogPanel />} />
+              <Route path="vendors"    element={<AdminVendors />} />
+              <Route path="categories" element={<AdminCategories />} />
+            </Route>
           </Route>
 
           <Route path="/vendor/apply" element={<VendorApply />} />

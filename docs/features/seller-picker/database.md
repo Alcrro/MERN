@@ -1,6 +1,6 @@
 # Database: Seller Picker
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Affects collections:** `Product` (câmp nou), `CatalogProduct` (din feature product-catalog, referit)
 
 ---
@@ -38,6 +38,19 @@ catalogRef: {
 // backend/models/product/Product.js
 // Suportă aggregation-ul din GET /api/products + GET /api/products/sellers/:catalogRef
 ProductSchema.index({ catalogRef: 1, listingStatus: 1, price: 1 });
+
+// Un singur listing publicat per vendor per catalog entry
+ProductSchema.index(
+  { vendor: 1, catalogRef: 1 },
+  {
+    unique: true,
+    sparse: true,
+    partialFilterExpression: {
+      publishStatus: "published",
+      catalogRef: { $ne: null },
+    },
+  }
+);
 ```
 
 **Why:** Query-ul de grupare face `{ catalogRef: { $ne: null }, listingStatus: "approved" }` + sort după `price`. Indexul compus acoperă filtrul + sort-ul fără collection scan.

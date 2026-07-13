@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Section.css";
 
 const Section = ({ id, sectionRef, collapsedH = 160, children }) => {
   const [expanded, setExpanded] = useState(false);

@@ -3,7 +3,8 @@ import BrandCategory from "../brandCategory/BrandCategory";
 import ModelCategory from "../modelCategory/ModelCategory";
 
 const AllCategories = ({
-  data,
+  brandContext = [],
+  modelContext = [],
   model,
   setModel,
   brand,
@@ -15,16 +16,15 @@ const AllCategories = ({
   <>
     {!hideBrand && (
       <BrandCategory
-        data={data}
+        contextProducts={brandContext}
         brand={brand}
         setBrand={setBrand}
-        model={model}
         setPage={setPage}
         setRating={setRating}
       />
     )}
     <ModelCategory
-      data={data}
+      contextProducts={modelContext}
       model={model}
       setModel={setModel}
       brand={brand}

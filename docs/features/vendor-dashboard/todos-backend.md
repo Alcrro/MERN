@@ -6,16 +6,28 @@
 
 ## Faza 1 — Vendor products CRUD
 - [x] `GET /api/vendor/products` — filtrare `vendor: req.user._id`, opțional `listingStatus`
+- [x] `GET /api/vendor/products` — filtrare compusă pe `publishStatus` ("published" / "draft")
 - [x] `GET /api/vendor/products` — paginare cu `page`/`limit` (cap 50)
 - [x] `POST /api/vendor/products` — validare `kind` din VALID_KINDS, `listingStatus: "pending"` automat
+- [x] `POST /api/vendor/products` — generare `sku` via `generateSku(brand, orasDepozit, model)`
 - [x] `POST /api/vendor/products` — dispatch pe discriminator corect (Electronics, Clothing, etc.)
 - [x] `PUT /api/vendor/products/:id` — ownership check (vendor === req.user._id)
-- [x] `PUT /api/vendor/products/:id` — reset `listingStatus: "pending"`, `rejectionReason: null`
+- [x] `PUT /api/vendor/products/:id` — reset `listingStatus: "pending"`, `publishStatus: "draft"`, `rejectionReason: null`
 - [x] `DELETE /api/vendor/products/:id` — ownership check + 404 handling
+- [x] `PUT /api/vendor/products/:id/publish` — ownership check, `listingStatus === "approved"` guard
+- [x] `PUT /api/vendor/products/:id/publish` — validare completitudine (imagine, descriere, preț, stoc)
+- [x] `PUT /api/vendor/products/:id/publish` — guard duplicat catalogRef per vendor (409)
+- [x] Setează `publishStatus: "published"` și salvează
+
+## Faza 1 — Profile
+- [x] `PUT /api/vendor/profile` — actualizează subdocument `vendorProfile` cu patch parțial
+- [x] Validare CUI (2–10 cifre), tipEntitate (enum), zileLivrare (min ≤ max)
+- [x] Returnează `{ success, vendorProfile }` după salvare
 
 ## Faza 1 — Orders + Analytics
 - [x] `GET /api/vendor/orders` — filtrare comenzi după produsele vânzătorului, populate user
-- [x] `GET /api/vendor/analytics` — aggregate statusCounts + orderItems (units + revenue)
+- [x] `GET /api/vendor/analytics` — aggregate statusCounts + publishCounts + orderItems (units + revenue)
+- [x] `GET /api/vendor/analytics` — returnează `publishedListings` (câte produse sunt live)
 - [x] `GET /api/vendor/me` — returnează profilul fără parolă
 
 ## Faza 1 — Routes + Auth
@@ -24,9 +36,8 @@
 - [x] Înregistrat în `server.js`
 
 ## Gaps found
-- [ ] `applyAsVendor` — nicio validare lungime `shopName` (există pe model dar nu în controller)
+- [ ] `applyAsVendor` — nicio validare lungime `shopName` în controller (există pe model)
 - [ ] `getVendorOrders` — fără paginare; returnează toate comenzile odată (poate fi lent)
 - [ ] Nu există endpoint `POST /api/admin/vendor/:id/approve` — aprobarea vendor se face manual în DB
 - [ ] `createVendorProduct` — nu validează că `price` > 0 sau că `stock` e valid
-- [ ] `updateVendorProduct` — nu verifică dacă produsul e `approved` înainte de a permite editarea (vendor poate edita produse respinse direct)
 - [ ] Nicio rate limiting pe `POST /api/vendor/apply` (poate fi spam)

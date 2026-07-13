@@ -2,14 +2,14 @@
 
 > **Status:** `Shipped`
 > **Owner:** Alexandru Roventa
-> **Last updated:** 2026-07-10
+> **Last updated:** 2026-07-13
 > **Related tech spec:** [tech-spec.md](./tech-spec.md)
 
 ---
 
 ## Problem Statement
 
-**Current state:** Clients can browse a paginated list of products at `/products`, filter by brand, model, rating, availability, storage, and RAM, sort by price/name/rating, switch between grid and list card views, and search by keyword. All filter state lives in URL query params so results are shareable and survive page refresh.
+**Current state:** Clients can browse a paginated list of products at `/products/:categorySlug/:tipSlug`, filter by brand, model, rating, availability, storage, and RAM, sort by price/name/rating, switch between grid and list card views. Sort and availability sync to URL query params; other filters are component-local state.
 
 **Scope:** Frontend-driven filtering — every filter is passed as a query param to the backend; no client-side filtering. The backend `getProducts` controller handles all 9 filter params and returns paginated results.
 
@@ -57,8 +57,5 @@
 - Saved / pinned filters
 - Compare products side-by-side
 - Infinite scroll — pagination only
-- Dead filter components — `BrandFilter.jsx`, `ModelFilter.jsx`, `SideBarTree.jsx`, `Pages/Products/Products.jsx`, `BrandFilterPanel.jsx` are unused
-- `useProductFilters.js` violates one-hook-one-action rule — not yet split
-- `Products.jsx` (page) is 107 lines — over the 60-line page limit, not yet refactored
-- `href="#!"` in all sidebar filter atoms — should be `type="button"` with click handler
-- `/* eslint-disable */` in `RatingSideBarFilter.jsx`
+- Search input în sidebar — backend-ul suportă `search=` dar nu există input UI conectat
+- Filter state URL-sync complet — doar sort + availability sunt în URL; brand/model/stocare/RAM/culoare nu sunt shareabile

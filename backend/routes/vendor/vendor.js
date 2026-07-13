@@ -7,6 +7,7 @@ const {
   createVendorProduct,
   updateVendorProduct,
   deleteVendorProduct,
+  publishVendorProduct,
   getVendorOrders,
   getVendorAnalytics,
 } = require("../../controllers/vendor/vendor");
@@ -20,6 +21,7 @@ router.use("/vendor", protect, authorize("vendor"));
 router.get("/vendor/me", getVendorMe);
 router.put("/vendor/profile", updateVendorProfile);
 router.route("/vendor/products").get(getVendorProducts).post(createVendorProduct);
+router.put("/vendor/products/:id/publish", publishVendorProduct);
 router.route("/vendor/products/:id").put(updateVendorProduct).delete(deleteVendorProduct);
 router.get("/vendor/orders", getVendorOrders);
 router.get("/vendor/analytics", getVendorAnalytics);

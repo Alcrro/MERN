@@ -1,0 +1,112 @@
+.admin-vendors { display: flex; flex-direction: column; gap: 1rem; }
+
+.admin-vendors__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.admin-vendors__loading,
+.admin-vendors__empty { color: var(--text-muted); font-size: 0.9rem; padding: 1.5rem 0; }
+
+.admin-vendors__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.admin-vendors__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.admin-vendors__table th {
+  background: var(--bg-card);
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.admin-vendors__table td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.admin-vendors__table tr:last-child td { border-bottom: none; }
+.admin-vendors__table tr:hover td { background: var(--bg-hover, rgba(0,0,0,0.03)); }
+
+.admin-vendors__name { display: block; font-weight: 600; }
+.admin-vendors__sub { display: block; font-size: 0.78rem; color: var(--text-muted); }
+.admin-vendors__email { font-size: 0.85rem; color: var(--text-muted); }
+
+.admin-vendors__badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.admin-vendors__badge--approved { background: #dcfce7; color: #166534; }
+.admin-vendors__badge--pending  { background: #fef9c3; color: #854d0e; }
+.admin-vendors__badge--rejected { background: #fee2e2; color: #991b1b; }
+
+.admin-vendors__actions { display: flex; gap: 0.5rem; white-space: nowrap; }
+
+.admin-vendors__btn {
+  padding: 0.3rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: filter .15s;
+}
+
+.admin-vendors__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.admin-vendors__btn--approve { background: #dcfce7; color: #166534; }
+.admin-vendors__btn--approve:hover:not(:disabled) { filter: brightness(0.95); }
+.admin-vendors__btn--reject  { background: #fee2e2; color: #991b1b; }
+.admin-vendors__btn--reject:hover:not(:disabled) { filter: brightness(0.95); }
+
+/* ── skeleton ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skel {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover, rgba(0,0,0,0.06)) 50%, var(--bg-card) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+
+.admin-vendors__skel-cell { height: 16px; display: block; }
+.admin-vendors__skel-cell--name { width: 120px; }
+.admin-vendors__skel-cell--sub { width: 80px; height: 12px; }
+.admin-vendors__skel-cell--email { width: 150px; }
+.admin-vendors__skel-cell--badge { width: 72px; height: 22px; border-radius: 12px; }
+.admin-vendors__skel-cell--btn { width: 62px; height: 28px; border-radius: 6px; }
+
+.admin-vendors__skel-btns { display: flex; gap: 0.5rem; }
+
+/* ── dark mode ─────────────────────────────────────────── */
+html[data-theme="dark"] .admin-vendors__badge--approved { background: rgba(34,197,94,.15); color: #86efac; }
+html[data-theme="dark"] .admin-vendors__badge--pending  { background: rgba(234,179,8,.15); color: #fde047; }
+html[data-theme="dark"] .admin-vendors__badge--rejected { background: rgba(239,68,68,.15); color: #fca5a5; }
+html[data-theme="dark"] .admin-vendors__btn--approve    { background: rgba(34,197,94,.15); color: #86efac; }
+html[data-theme="dark"] .admin-vendors__btn--reject     { background: rgba(239,68,68,.15); color: #fca5a5; }
+
+/* ── mobile ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .admin-vendors__table th:nth-child(2),
+  .admin-vendors__table td:nth-child(2) { display: none; }
+}

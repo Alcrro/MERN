@@ -1,7 +1,7 @@
 # Tech Spec: Vendor Profile
 
-> **Status:** `Draft`
-> **Last updated:** 2026-07-11
+> **Status:** `Shipped`
+> **Last updated:** 2026-07-13
 
 ---
 
@@ -182,14 +182,14 @@ Tag nou: `"VendorMe"` — deja există; invalidare automată după update.
 ## Constants
 
 ```js
-// utils/constants.js — adaugă:
+// utils/constants.js — implementat cu label-uri scurte:
 export const TIP_ENTITATE_OPTIONS = [
-  { value: "SRL", label: "SRL — Societate cu Răspundere Limitată" },
-  { value: "PFA", label: "PFA — Persoană Fizică Autorizată" },
-  { value: "SA",  label: "SA — Societate pe Acțiuni" },
-  { value: "RA",  label: "RA — Regie Autonomă" },
-  { value: "II",  label: "II — Întreprindere Individuală" },
-  { value: "ONG", label: "ONG — Organizație Non-Guvernamentală" },
+  { value: "SRL", label: "SRL" },
+  { value: "PFA", label: "PFA" },
+  { value: "SA",  label: "SA" },
+  { value: "RA",  label: "RA" },
+  { value: "II",  label: "II" },
+  { value: "ONG", label: "ONG" },
 ];
 
 // VENDOR_LINKS — adaugă intrarea pentru profil:

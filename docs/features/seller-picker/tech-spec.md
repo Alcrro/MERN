@@ -93,7 +93,16 @@ Când un produs are `catalogRef`, răspunsul include câmpuri suplimentare:
       "_id": "listing_id",
       "price": 4299,
       "stock": { "quantity": 12, "availability": "In Stoc" },
-      "vendor": { "_id": "...", "shopName": "TechVendor SRL" },
+      "vendor": {
+        "_id": "...",
+        "shopName": "TechVendor SRL",
+        "vendorProfile": {
+          "tipEntitate": "SRL",
+          "orasDepozit": "Cluj-Napoca",
+          "zileLivrare": { "min": 1, "max": 3 },
+          "returZile": 30
+        }
+      },
       "images": ["..."],
       "listingStatus": "approved"
     }
@@ -113,16 +122,17 @@ Când un produs are `catalogRef`, răspunsul include câmpuri suplimentare:
 ### Frontend — component tree
 
 ```
-pages/SingleProducts/SingleProducts.jsx       ← MODIFY — adaugă SellerPicker dacă catalogRef există
-  products/singleProducts/ProductHero.jsx     ← MODIFY — primește selectedListing în loc de product direct
-  vendor/SellerPicker/SellerPicker.jsx        ← NEW organism (≤ 150 linii)
-    SellerPicker.css                          ← NEW
-    index.js                                  ← NEW
-  vendor/SellerRow/SellerRow.jsx              ← NEW molecule (≤ 80 linii)
-    SellerRow.css                             ← NEW
-    index.js                                  ← NEW
+pages/SingleProducts/SingleProducts.jsx       ← MODIFIED
+  products/singleProducts/ProductHero.jsx     ← MODIFIED — primește selectedListing în loc de product direct
+  products/singleProducts/VendorInfoBar.jsx   ← NOU — fallback dacă catalogRef=null dar există vendor
+  vendor/shared/SellerPicker/SellerPicker.jsx ← NOU organism (~80 linii, toggle collapsible)
+    SellerPicker.css                          ← NOU
+    index.js                                  ← NOU
+  vendor/shared/SellerRow/SellerRow.jsx       ← NOU molecule (date vendorProfile)
+    SellerRow.css                             ← NOU
+    index.js                                  ← NOU
 
-products/cards/Cards.jsx                      ← MODIFY — afișează sellersCount badge
+products/cards/Cards.jsx                      ← MODIFIED — sellersCount badge
 products/products/ProductGrid.jsx             ← NEATINS (primește deja date din RTK)
 ```
 
@@ -162,8 +172,8 @@ products/products/ProductGrid.jsx             ← NEATINS (primește deja date d
 
 ### Edge cases to handle
 
-- [ ] `catalogRef` null — `SellerPicker` nu se randează, pagina funcționează ca înainte
-- [ ] Un singur seller — `SellerPicker` se randează fără header "Alege vendorul", direct cu seller-ul pre-selectat
+- [x] `catalogRef` null — `SellerPicker` nu se randează; `VendorInfoBar` apare dacă există vendor
+- [x] Un singur seller — `SellerPicker` pre-selectat automat
 - [ ] Seller selectat iese din stoc între timp — eroare la addToCart gestionată de RTK
-- [ ] Loading sellers — skeleton de 2-3 rânduri în `SellerPicker`
-- [ ] Mobile — `SellerPicker` stacked vertical, scroll intern dacă > 5 sellers
+- [x] Loading sellers — skeleton de 3 rânduri în `SellerPicker`
+- [x] Mobile — `SellerPicker` scroll intern (`max-height` + `overflow-y: auto`)

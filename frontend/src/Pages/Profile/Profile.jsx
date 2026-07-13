@@ -25,6 +25,13 @@ const Profile = () => {
           </div>
         </div>
 
+        {user.role === "admin" && (
+          <Link to="/admin/dashboard" className="prf-vendor-btn">
+            <span className="prf-nav-icon">⚙️</span>
+            Dashboard Admin
+          </Link>
+        )}
+
         {user.role === "vendor" && (
           <Link to="/vendor/dashboard" className="prf-vendor-btn">
             <span className="prf-nav-icon">🏪</span>

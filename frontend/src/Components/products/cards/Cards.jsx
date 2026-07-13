@@ -21,9 +21,9 @@ const Cards = ({ products: data }) => {
     <div className="card-item">
       <div className="card-v2">
         <div className="card-v2-wrapper">
-          <Link to={`/product/${data._id}`} className="card-v2-link">
+          <Link to={data.sku ? `/product/${data.slug}/${data.sku}` : `/product/${data._id}`} className="card-v2-link">
             <div className="card-v2-thumb-inner">
-              <img src={panda} alt={`${data.brand} ${data.model}`} />
+              <img src={data.images?.[0] || panda} alt={`${data.brand} ${data.model}`} />
               {avail && <span className={`card-avail-badge ${availClass}`}>{avail}</span>}
               <button
                 className={`card-fav-btn${isFav ? " card-fav-btn--active" : ""}`}

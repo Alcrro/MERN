@@ -21,6 +21,15 @@
 - [x] `DELETE /api/catalog/:id` — `protect + authorize("admin")`
 - [x] Înregistrat în `server.js` la `/api/catalog`
 
+## Faza 2 — Admin: listing review
+
+- [x] `getPendingListings` — `Product.find({ listingStatus: "pending" })` cu populate vendor + catalogRef, paginare, duplicate check (hasDuplicate)
+- [x] `updateListingStatus` — approve/reject cu `reason` opțional; setează `product.listingStatus = "approved"/"rejected"`
+- [x] `GET /api/admin/products/pending` — `protect + authorize("admin")`
+- [x] `PUT /api/admin/products/:id/status` — `protect + authorize("admin")`
+
+---
+
 ## Gaps found
 - [ ] `createCatalogEntry` — fără validare explicită a body-ului (no express-validator); se bazează doar pe Mongoose required
 - [ ] `searchCatalog` — fără paginare (`page`/`limit` parțial implementat, dar nu în răspuns)

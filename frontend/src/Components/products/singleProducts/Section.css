@@ -1,0 +1,60 @@
+.sp-section {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	margin-bottom: 12px;
+	overflow: hidden;
+}
+
+.sp-section-body {
+	max-height: var(--ch, 160px);
+	overflow: hidden;
+	position: relative;
+	padding: 24px 28px 0;
+	transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sp-section-body[data-expanded="true"] {
+	max-height: 4000px;
+}
+
+.sp-section-fade {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 72px;
+	background: linear-gradient(to bottom, transparent, var(--bg-card));
+	pointer-events: none;
+}
+
+.sp-expand-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 12px 24px;
+	background: none;
+	border: none;
+	border-top: 1px solid var(--border-light);
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--primary);
+	font-family: inherit;
+	cursor: pointer;
+	transition: background 0.13s;
+	letter-spacing: 0.01em;
+}
+
+.sp-expand-btn:hover {
+	background: var(--bg-page);
+}
+
+@media (max-width: 480px) {
+	.sp-section-body {
+		padding: 16px 16px 0;
+	}
+	.sp-expand-btn {
+		padding: 12px 16px;
+	}
+}

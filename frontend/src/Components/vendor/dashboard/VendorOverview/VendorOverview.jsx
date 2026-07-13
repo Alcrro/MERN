@@ -3,11 +3,37 @@ import { useGetVendorAnalyticsQuery } from "../../../../features/vendor/rtkVendo
 import StatCard from "../../shared/StatCard";
 import "./VendorOverview.css";
 
+const VoverviewCardSkeleton = () => (
+  <div className="voverview__skel-card">
+    <div className="skel voverview__skel-label" />
+    <div className="skel voverview__skel-value" />
+  </div>
+);
+
 const VendorOverview = () => {
   const { data, isLoading } = useGetVendorAnalyticsQuery();
   const navigate = useNavigate();
 
-  if (isLoading) return <div className="voverview__loading">Se încarcă…</div>;
+  if (isLoading) return (
+    <div className="voverview">
+      <div className="voverview__header">
+        <div className="skel voverview__skel-title" />
+        <div className="skel voverview__skel-cta" />
+      </div>
+      <section className="voverview__section">
+        <div className="skel voverview__skel-section-label" />
+        <div className="voverview__cards">
+          {[0, 1, 2, 3].map((i) => <VoverviewCardSkeleton key={i} />)}
+        </div>
+      </section>
+      <section className="voverview__section">
+        <div className="skel voverview__skel-section-label" />
+        <div className="voverview__cards">
+          {[0, 1].map((i) => <VoverviewCardSkeleton key={i} />)}
+        </div>
+      </section>
+    </div>
+  );
 
   const stats = data || {};
 

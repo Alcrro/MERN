@@ -1,7 +1,7 @@
 # Tech Spec — Product Catalog
 
 - **Status:** Shipped
-- **Last updated:** 2026-07-11
+- **Last updated:** 2026-07-13
 
 ## Data flow
 
@@ -34,6 +34,12 @@ VendorProductForm → CatalogSearch
 ```
 /admin/catalog
   → AdminCatalog (redirect dacă !admin)
+      → PendingListingsAdmin
+          useGetAdminPendingListingsQuery({ page, limit:20 })
+            GET /api/admin/products/pending
+          useApproveListingMutation → PUT /api/admin/products/:id/status
+          [badge ⚠ Duplicat publicat / ✓ Unic / Fără ref catalog]
+      ── <hr> ──
       → CatalogAdmin
           useListCatalogQuery({ kind, page, limit:20 })
             GET /api/catalog/all
@@ -72,12 +78,26 @@ Body: parțial sau complet. Response: `CatalogProduct` actualizat sau `404`.
 ### `DELETE /api/catalog/:id` — `protect + authorize("admin")`
 Response: `{ message: "Șters cu succes" }` sau `404`.
 
+## API Contracts (admin listing review)
+
+### `GET /api/admin/products/pending` — `protect + authorize("admin")`
+Params: `page`, `limit` (cap 50).
+Response: `{ success: true, products: [Product populated vendor + catalogRef], count, numberOfPages }`
+Fiecare produs include `hasDuplicate: Boolean` (există alt listing publicat cu același vendor + catalogRef).
+
+### `PUT /api/admin/products/:id/status` — `protect + authorize("admin")`
+Body: `{ action: "approve"|"reject", reason?: string }`
+Response: `{ success: true, product }`
+
+---
+
 ## Component Tree
 
 ```
-Pages/Admin/AdminCatalog/AdminCatalog.jsx          [page, 12 linii]
+Pages/Admin/AdminCatalog/AdminCatalog.jsx          [page, 20 linii]
   Components/administrator/catalog/
-    CatalogAdmin/CatalogAdmin.jsx                  [organism, 107 linii]
+    PendingListingsAdmin/PendingListingsAdmin.jsx   [organism, ~142 linii]
+    CatalogAdmin/CatalogAdmin.jsx                  [organism, ~137 linii]
       CatalogEntryModal/CatalogEntryModal.jsx      [organism, 102 linii]
 
 Pages/Vendor/VendorCatalog/VendorCatalog.jsx       [page, 11 linii]
@@ -97,6 +117,12 @@ Pages/Vendor/VendorCatalog/VendorCatalog.jsx       [page, 11 linii]
 | `useCatalogDraft` | VendorCatalogPanel/ | draft per entry (price/stock/publish state per culoare) |
 | `useCatalogSearch` | CatalogSearch/ | query state, RTK call, keyboard nav, select/reset |
 | `useVendorProductForm` | VendorProductForm/ | form state + submit |
+
+### RTK endpoints admin
+| Endpoint | Fișier | Route |
+|----------|--------|-------|
+| `useGetAdminPendingListingsQuery` | `features/admin/rtkAdmin.js` | GET /api/admin/products/pending |
+| `useApproveListingMutation` | `features/admin/rtkAdmin.js` | PUT /api/admin/products/:id/status |
 
 ### Constants (utils/constants.js)
 | Constantă | Utilizare |

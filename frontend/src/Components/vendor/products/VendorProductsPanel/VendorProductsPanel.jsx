@@ -5,6 +5,21 @@ import { VENDOR_STATUS_TABS } from "../../../../utils/constants";
 import VendorProductRow from "../VendorProductRow";
 import "./VendorProductsPanel.css";
 
+const VendorProductRowSkeleton = () => (
+  <div className="vpp__skel-row">
+    <div className="skel vpp__skel-img" />
+    <div className="vpp__skel-body">
+      <div className="skel vpp__skel-line vpp__skel-line--wide" />
+      <div className="skel vpp__skel-line vpp__skel-line--narrow" />
+    </div>
+    <div className="skel vpp__skel-price" />
+    <div className="vpp__skel-actions">
+      <div className="skel vpp__skel-btn" />
+      <div className="skel vpp__skel-btn" />
+    </div>
+  </div>
+);
+
 const VendorProductsPanel = () => {
   const [status, setStatus] = useState(undefined);
   const navigate = useNavigate();
@@ -31,7 +46,7 @@ const VendorProductsPanel = () => {
       </div>
 
       <div className="vpp__list">
-        {isLoading && <p className="vpp__empty">Se încarcă…</p>}
+        {isLoading && [0, 1, 2].map((i) => <VendorProductRowSkeleton key={i} />)}
         {!isLoading && products.length === 0 && (
           <div className="vpp__empty-state">
             <p>Nu ai niciun produs listat încă.</p>

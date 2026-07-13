@@ -2,7 +2,7 @@
 
 > **Status:** `Shipped`
 > **Owner:** Alexandru Roventa
-> **Last updated:** 2026-07-10
+> **Last updated:** 2026-07-13
 > **Related tech spec:** [tech-spec.md](./tech-spec.md)
 
 ---
@@ -29,6 +29,7 @@
 | 6 | client | know how close I am to free shipping (threshold: 500 RON) | I can add more items to avoid shipping costs |
 | 7 | client | preview cart items in a header dropdown without leaving the page | I can quickly check what I have without navigating away |
 | 8 | client | have my cart survive page refresh | I don't lose items when I reload |
+| 9 | client | finalize cumpărătura prin 3 pași (adresă → plată → confirmare) | pot plasa o comandă cu livrare și metodă de plată
 
 ---
 
@@ -44,15 +45,19 @@
 - [x] `#6` — ShipBar shows % progress to 500 RON threshold and remaining amount needed
 - [x] `#7` — Header modal (AddToCartModal) reads live cart state and allows qty change + remove
 - [x] `#8` — Cart state persists to localStorage under key `"alcrro-cart"` on every mutation
+- [x] `#9` — Checkout redirecționează utilizatorul neautentificat la `/auth/login`
+- [x] `#9` — Pasul adresă permite selectarea unei adrese existente sau adăugarea uneia inline
+- [x] `#9` — Pasul plată permite alegerea Card sau Ramburs
+- [x] `#9` — Pasul confirmare afișează sumar comandă și submitează la `POST /api/orders`
+- [x] `#9` — La succes, coșul se golește și `CheckoutSuccess` afișează referința comenzii + total
 
 ---
 
 ## Out of Scope
 
-- Checkout page — `Checkout.jsx` is a "Coming Soon" stub, not implemented
 - Server-side cart — no backend persistence, no user-cart association
 - Coupon / promo codes
 - Saved-for-later
-- Real product images — all items currently show a hardcoded placeholder (`panda.png`)
-- Dead code cleanup — `Add-to-cart-button.jsx` and `AddToCartV2Button.jsx` are unused
-- Dark mode for `AddToCartModal` — CSS has no `html[data-theme="dark"]` overrides
+- Real product images în `CartItem` — hardcoded placeholder (`panda.png`); `AddToCartModal` deja fix-uit
+- Dead code cleanup — `Add-to-cart-button.jsx` rămasă neștearsă
+- Plată reală — Checkout e demo-only (Card/Ramburs); niciun payment processor integrat

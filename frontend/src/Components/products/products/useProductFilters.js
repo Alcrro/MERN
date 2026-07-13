@@ -3,12 +3,13 @@ import { useProductsData } from "../../../features/product/useProductsData";
 
 export const useProductFilters = ({ initialBrand = [] } = {}) => {
   const filterState = useFilterState({ initialBrand });
-  const { limit, page, sort, brand, rating, model, availability, stocare, ram, culoare } = filterState;
+  const { kind, tip, limit, page, sort, brand, rating, model, availability, stocare, ram, culoare } = filterState;
 
   const {
     singleProductData, displayAllProducts, pagesArray, isFetching, isLoading,
-    culoareContext, availabilityContext, stocareContext, ramContext,
-  } = useProductsData({ limit, page, sort, brand, rating, model, availability, stocare, ram, culoare });
+    brandContext, modelContext,
+    culoareContext, availabilityContext, stocareContext, ramContext, ratingContext,
+  } = useProductsData({ limit, page, sort, brand, rating, model, availability, stocare, ram, culoare, kind, tip });
 
   const activeFilterCount =
     brand.length + rating.length + model.length +
@@ -17,6 +18,7 @@ export const useProductFilters = ({ initialBrand = [] } = {}) => {
   return {
     ...filterState, singleProductData, displayAllProducts, pagesArray,
     activeFilterCount, isFetching, isLoading,
-    culoareContext, availabilityContext, stocareContext, ramContext,
+    brandContext, modelContext,
+    culoareContext, availabilityContext, stocareContext, ramContext, ratingContext,
   };
 };

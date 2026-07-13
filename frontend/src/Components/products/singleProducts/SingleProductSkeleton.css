@@ -1,0 +1,150 @@
+/* ── base skeleton ───────────────────────────────────────── */
+.sk {
+	background: #e5e7eb;
+	border-radius: var(--radius-md);
+	animation: skp 1.5s ease-in-out infinite;
+}
+
+@keyframes skp {
+	0%, 100% { opacity: 1; }
+	50%       { opacity: 0.45; }
+}
+
+/* ── hero skeleton ───────────────────────────────────────── */
+.sp-hero-skel {
+	display: grid;
+	grid-template-columns: 1fr 1fr minmax(260px, 300px);
+	gap: 28px;
+}
+
+.sk-img {
+	aspect-ratio: 1/1;
+	border-radius: var(--radius-lg);
+}
+
+.sk-col {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	padding-top: 8px;
+}
+
+.sk-chip   { height: 22px; width: 70px; border-radius: 20px; }
+.sk-h1     { height: 48px; }
+.sk-stars  { height: 20px; width: 130px; }
+.sk-line   { height: 14px; }
+.sk-line.w60 { width: 60%; }
+.sk-line.w40 { width: 40%; }
+.sk-price  { height: 80px; border-radius: var(--radius-lg); }
+.sk-btn    { height: 48px; }
+.sk-btn.op6 { opacity: 0.55; }
+
+/* ── breadcrumb skeleton ─────────────────────────────────── */
+.sp-skel-bc {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.sp-skel-bc__item       { height: 12px; width: 60px; }
+.sp-skel-bc__item--cur  { width: 100px; }
+
+/* ── delivery skeleton ───────────────────────────────────── */
+.sp-skel-del {
+	height: 90px;
+	border-radius: var(--radius-md);
+}
+
+/* ── vendor bar skeleton ─────────────────────────────────── */
+.sp-skel-vib {
+	height: 48px;
+	border-radius: var(--radius-md);
+	margin: 16px 0 24px;
+}
+
+/* ── tabs skeleton ───────────────────────────────────────── */
+.sp-skel-tabs {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 20px;
+	padding: 10px 0;
+}
+
+.sp-skel-tab {
+	height: 34px;
+	border-radius: 6px;
+	flex-shrink: 0;
+}
+
+/* ── section skeleton ────────────────────────────────────── */
+.sp-skel-section {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: 24px;
+	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.sp-skel-sec-title { height: 22px; width: 180px; }
+
+/* ── specs skeleton ──────────────────────────────────────── */
+.sp-skel-specs {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+	gap: 12px;
+}
+
+.sp-skel-spec-card {
+	background: var(--bg-page);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.sp-skel-spec-icon  { height: 28px; width: 28px; border-radius: 6px; }
+.sp-skel-spec-label { height: 11px; width: 60%; }
+.sp-skel-spec-val   { height: 16px; width: 80%; }
+
+/* ── reviews skeleton ────────────────────────────────────── */
+.sp-skel-reviews {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.sp-rskel {
+	display: flex;
+	gap: 10px;
+	padding: 6px 0;
+}
+
+.sp-skel-av {
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.sp-rskel-col {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+
+.sp-skel-rn { height: 13px; width: 110px; }
+.sp-skel-rs { height: 13px; width: 80px; }
+.sp-skel-rt { height: 36px; }
+
+@media (max-width: 860px) {
+	.sp-hero-skel {
+		grid-template-columns: 1fr;
+	}
+}

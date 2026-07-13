@@ -4,6 +4,7 @@ import Stars from "./Stars";
 import { AVAIL_COLOR, DEMO_COLORS } from "./singleProductConstants";
 import { deliveryDate } from "./singleProductUtils";
 import { TruckIcon, ReturnIcon, ShieldIcon, CheckIcon, CartIcon, HeartIcon, LockIcon, CheckSmIcon, PhoneIcon } from "./singleProductIcons";
+import "./ProductHero.css";
 
 const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, listing }) => {
   const [selColor, setSelColor] = useState(0);
@@ -27,7 +28,7 @@ const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, li
       <div className="sp-img-wrap">
         {avail && <span className="sp-avail" style={{ background: aStyle.bg, color: aStyle.color }}>{avail}</span>}
         <div className="sp-img-inner">
-          <img src={pandaImg} alt={`${p.brand} ${productName}`} />
+          <img src={src.images?.[0] || pandaImg} alt={`${p.brand} ${productName}`} />
         </div>
       </div>
 

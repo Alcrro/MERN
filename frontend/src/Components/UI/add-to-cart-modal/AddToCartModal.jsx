@@ -68,7 +68,7 @@ const AddToCartModal = () => {
               return (
                 <div className="crt-modal__item" key={i}>
                   <Link to="/cart" className="crt-modal__img-wrap">
-                    <img src={panda} alt={name} />
+                    <img src={p.images?.[0] || panda} alt={name} />
                   </Link>
                   <div className="crt-modal__info">
                     <Link to="/cart" className="crt-modal__name">{p.brand} {name}</Link>

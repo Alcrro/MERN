@@ -1,6 +1,6 @@
 # Database: Cart → Order
 
-> **Last updated:** 2026-07-10
+> **Last updated:** 2026-07-13
 > **Affects collections:** `Order`
 
 ---

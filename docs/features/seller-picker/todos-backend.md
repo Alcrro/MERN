@@ -1,6 +1,6 @@
 # Backend TODOs: Seller Picker
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Stack:** Node.js, Express, MongoDB/Mongoose
 > **Conventions:** controllers în `controllers/[resource]/`, routes în `routes/`
 > **Requires:** feature `product-catalog` implementat (CatalogProduct model + seeder)
@@ -23,7 +23,14 @@
   ```js
   ProductSchema.index({ catalogRef: 1, listingStatus: 1, price: 1 });
   ```
-- [ ] Verifică în MongoDB Compass că indexul apare după restart
+- [x] Adaugă index unic parțial (un singur listing publicat per vendor per catalog entry):
+  ```js
+  ProductSchema.index(
+    { vendor: 1, catalogRef: 1 },
+    { unique: true, sparse: true, partialFilterExpression: { publishStatus: "published", catalogRef: { $ne: null } } }
+  );
+  ```
+- [ ] Verifică în MongoDB Compass că indexurile apar după restart
 
 ---
 
@@ -33,7 +40,7 @@
 
 - [x] Adaugă handler `getSellers` în `backend/controllers/products/products.js`
   - Validează `catalogRef` — dacă nu e ObjectId valid → `400`
-  - Query: `Product.find({ catalogRef, listingStatus: "approved" }).sort({ price: 1 }).populate("vendor", "shopName")`
+  - Query: `Product.find({ catalogRef, listingStatus: "approved", publishStatus: "published" }).sort({ price: 1 }).populate("vendor", "shopName vendorProfile")`
   - Returnează `{ sellers, count }`
   - Zero sellers → `{ sellers: [], count: 0 }` (nu 404)
 - [x] Adaugă ruta în `backend/routes/products/products.js`:
@@ -79,7 +86,7 @@
 
 - [x] `getSellers` — public (nu necesită autentificare)
 - [x] `catalogRef` inexistent în DB → `{ sellers: [], count: 0 }` (nu 404)
-- [x] Listing-uri cu `listingStatus !== "approved"` — excluse prin `listingStatus: "approved"` în query
+- [x] Listing-uri cu `listingStatus !== "approved"` sau `publishStatus !== "published"` — excluse din query
 - [x] `console.log` — zero în cod final
 
 ---

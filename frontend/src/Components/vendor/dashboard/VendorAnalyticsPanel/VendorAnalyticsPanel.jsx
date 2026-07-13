@@ -2,10 +2,33 @@ import { useGetVendorAnalyticsQuery } from "../../../../features/vendor/rtkVendo
 import StatCard from "../../shared/StatCard";
 import "./VendorAnalyticsPanel.css";
 
+const VendorAnalyticsCardSkeleton = () => (
+  <div className="vap__skel-card">
+    <div className="skel vap__skel-label" />
+    <div className="skel vap__skel-value" />
+  </div>
+);
+
 const VendorAnalyticsPanel = () => {
   const { data, isLoading } = useGetVendorAnalyticsQuery();
 
-  if (isLoading) return <p className="vap__loading">Se încarcă…</p>;
+  if (isLoading) return (
+    <div className="vap">
+      <div className="skel vap__skel-title" />
+      <section className="vap__section">
+        <div className="skel vap__skel-section-label" />
+        <div className="vap__row">
+          {[0, 1, 2, 3].map((i) => <VendorAnalyticsCardSkeleton key={i} />)}
+        </div>
+      </section>
+      <section className="vap__section">
+        <div className="skel vap__skel-section-label" />
+        <div className="vap__row">
+          {[0, 1].map((i) => <VendorAnalyticsCardSkeleton key={i} />)}
+        </div>
+      </section>
+    </div>
+  );
 
   const s = data || {};
 

@@ -9,6 +9,21 @@ import "./CatalogAdmin.css";
 
 const KIND_LABEL = { Electronics: "Electronice", Clothing: "Îmbrăcăminte", Furniture: "Mobilă", HomeGarden: "Casă", Books: "Cărți" };
 
+const CatalogRowSkeleton = () => (
+  <tr className="cat-admin__skel-row">
+    <td><div className="skel cat-admin__skel-cell cat-admin__skel-cell--badge" /></td>
+    <td><div className="skel cat-admin__skel-cell cat-admin__skel-cell--brand" /></td>
+    <td><div className="skel cat-admin__skel-cell cat-admin__skel-cell--model" /></td>
+    <td><div className="skel cat-admin__skel-cell cat-admin__skel-cell--detail" /></td>
+    <td>
+      <div className="cat-admin__skel-btns">
+        <div className="skel cat-admin__skel-cell cat-admin__skel-cell--btn" />
+        <div className="skel cat-admin__skel-cell cat-admin__skel-cell--btn" />
+      </div>
+    </td>
+  </tr>
+);
+
 const CatalogAdmin = () => {
   const [kind, setKind] = useState("");
   const [page, setPage] = useState(1);
@@ -55,7 +70,22 @@ const CatalogAdmin = () => {
       </div>
 
       {isFetching ? (
-        <p className="cat-admin__loading">Se încarcă…</p>
+        <div className="cat-admin__table-wrap">
+          <table className="cat-admin__table">
+            <thead>
+              <tr>
+                <th>Categorie</th>
+                <th>Brand</th>
+                <th>Model / Nume</th>
+                <th>Detaliu</th>
+                <th>Acțiuni</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[0, 1, 2, 3, 4].map((i) => <CatalogRowSkeleton key={i} />)}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <div className="cat-admin__table-wrap">
           <table className="cat-admin__table">

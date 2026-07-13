@@ -1,6 +1,6 @@
 # Backend TODOs: Vendor Profile
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Stack:** Node.js, Express, Mongoose
 
 ---
@@ -84,9 +84,9 @@
 
 | File | Status | Notes |
 |------|--------|-------|
-| `models/auth/register.js` | [ ] | `VendorProfileSchema` + câmp pe `RegisterSchema` |
-| `controllers/vendor/vendor.js` | [ ] | adaugă `updateVendorProfile` |
-| `routes/vendor/vendor.js` | [ ] | `PUT /vendor/profile` |
-| `controllers/products/products.js` | [ ] | populate extins în `getSellers` |
-| `controllers/admin/admin.js` | [ ] | adaugă `getAdminVendors` |
-| `routes/admin/admin.js` | [ ] | `GET /admin/vendors` |
+| `models/auth/register.js` | [x] | `VendorProfileSchema` + câmp pe `RegisterSchema` |
+| `controllers/vendor/vendor.js` | [x] | `updateVendorProfile` adăugat |
+| `routes/vendor/vendor.js` | [x] | `PUT /vendor/profile` |
+| `controllers/products/products.js` | [x] | populate extins în `getSellers` |
+| `controllers/admin/admin.js` | [x] | `getAdminVendors` adăugat |
+| `routes/admin/admin.js` | [x] | `GET /admin/vendors` |

@@ -14,6 +14,7 @@ import cardsViewSlice from "../features/buttons/buttonsSlice";
 import hoverLinkReducer from "../features/cartModal/cartModalSlice";
 import menuDepartmentReducer from "../features/menu-department/menuDepartmentSlice";
 import favoritesReducer from "../features/favorites/favoritesSlice";
+import breadcrumbReducer from "../features/ui/breadcrumbSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     hoverLink: hoverLinkReducer,
     menuDepartment: menuDepartmentReducer,
     favorites: favoritesReducer,
+    breadcrumb: breadcrumbReducer,
     productCategory: postAddProductCategoryReducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,

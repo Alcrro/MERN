@@ -8,6 +8,10 @@ export const adminApi = createApi({
   }),
   tagTypes: ["PendingVendors", "PendingListings"],
   endpoints: (builder) => ({
+    getAdminVendors: builder.query({
+      query: () => "admin/vendors",
+      providesTags: ["PendingVendors"],
+    }),
     getAdminPendingVendors: builder.query({
       query: () => "admin/vendors/pending",
       providesTags: ["PendingVendors"],
@@ -37,6 +41,7 @@ export const adminApi = createApi({
 });
 
 export const {
+  useGetAdminVendorsQuery,
   useGetAdminPendingVendorsQuery,
   useApproveVendorMutation,
   useGetAdminPendingListingsQuery,

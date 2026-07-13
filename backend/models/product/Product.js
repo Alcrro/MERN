@@ -44,6 +44,15 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    publishStatus: {
+      type: String,
+      enum: ["draft", "published"],
+      default: "draft",
+    },
+    sku: {
+      type: String,
+      sparse: true,
+    },
     catalogRef: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CatalogProduct",
@@ -61,8 +70,19 @@ const ProductSchema = new mongoose.Schema(
 );
 
 ProductSchema.pre("save", function (next) {
-  const identifier = this.model || this.name || "";
-  this.slug = slugify((this.brand + (identifier ? " " + identifier : "")).trim(), { lower: true });
+  const identifier = this.get("model") || this.get("name") || this.get("title") || "";
+
+  // Build a rich slug with all relevant spec fields for SEO-friendly URLs
+  // e.g. samsung-galaxy-s21-128gb-8gb-ram-negru
+  const slugParts = [
+    this.brand,
+    identifier,
+    this.get("stocare") || this.get("memorieInterna"),
+    this.get("RAM"),
+    this.get("culoare"),
+    this.get("tip"),
+  ].filter(Boolean);
+  this.slug = slugify(slugParts.join(" "), { lower: true, strict: true });
 
   if (!this.description) {
     this.description = `${this.brand} ${identifier}`.trim();
@@ -107,10 +127,26 @@ ProductSchema.index({ vendor: 1, listingStatus: 1 });
 ProductSchema.index({ catalogRef: 1, listingStatus: 1, price: 1 });
 ProductSchema.index({ listingStatus: 1, createdAt: -1 });
 
+// sku lookup — unique per product, used in public URL
+ProductSchema.index({ sku: 1 }, { unique: true, sparse: true });
+
 // text search pe brand + description
 ProductSchema.index(
   { brand: "text", description: "text" },
   { weights: { brand: 3, description: 1 }, name: "ProductTextIndex" }
+);
+
+// one published listing per vendor per catalog entry
+ProductSchema.index(
+  { vendor: 1, catalogRef: 1 },
+  {
+    unique: true,
+    sparse: true,
+    partialFilterExpression: {
+      publishStatus: "published",
+      catalogRef: { $ne: null },
+    },
+  }
 );
 
 const Product = mongoose.model("Products", ProductSchema);

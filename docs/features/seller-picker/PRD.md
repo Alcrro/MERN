@@ -2,7 +2,7 @@
 
 > **Status:** `Shipped`
 > **Owner:** Alexandru Roventa
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Related tech spec:** [tech-spec.md](./tech-spec.md)
 > **Depends on:** `docs/features/product-catalog/` — trebuie implementat primul
 
@@ -34,10 +34,10 @@
 
 - [ ] `#1` — Listing-ul afișează un singur card per `catalogRef`; produsele fără `catalogRef` apar normal (backwards compatible)
 - [ ] `#2` — Prețul afișat pe card e `MIN(price)` dintre toate listările aprobate cu același `catalogRef`
-- [ ] `#2` — Badge "N oferte" apare pe card când există mai mult de un seller
-- [ ] `#3` — Pe pagina produsului, secțiunea `SellerPicker` listează toți vendorii aprobați cu preț + stoc + rating vendor
-- [ ] `#3` — Primul seller din listă e cel cu prețul minim (sortat automat)
-- [ ] `#4` — Butonul "Adaugă în coș" din `SellerPicker` adaugă listarea vendorului selectat (nu a catalogului)
+- [x] `#2` — Badge "N oferte" apare pe card când există mai mult de un seller
+- [x] `#3` — Pe pagina produsului, secțiunea `SellerPicker` listează toți vendorii aprobați cu preț + stoc + date firmă
+- [x] `#3` — Primul seller din listă e cel cu prețul minim (sortat automat + auto-selectat)
+- [x] `#4` — Butonul "Adaugă în coș" adaugă listarea vendorului selectat (din `selectedListing` în `SingleProducts`)
 - [ ] `#5` — Un listing vendor cu `listingStatus: "approved"` apare în picker în max 1 minut (fără cache vechi)
 
 ---

@@ -1,7 +1,7 @@
 # Tech Spec: Cart
 
 > **Status:** `Shipped`
-> **Last updated:** 2026-07-10
+> **Last updated:** 2026-07-13
 > **Related PRD:** [PRD.md](./PRD.md)
 
 ---
@@ -10,7 +10,7 @@
 
 ### What we're building
 
-Client-side shopping cart with Redux + localStorage persistence. No API calls — all state is local. The cart has two surfaces: a full-page view at `/cart` and a hover dropdown in the header. Checkout (`/cart/checkout`) is not yet implemented.
+Client-side shopping cart with Redux + localStorage persistence. No API calls for the cart itself — all state is local. The cart has two surfaces: a full-page view at `/cart` and a hover dropdown in the header. Checkout (`/cart/checkout`) is fully implemented: 3-step flow (adresă → plată → confirmare), calls `POST /api/orders` via RTK Query, clears cart on success.
 
 ### Architecture decision log
 
@@ -77,7 +77,7 @@ Errors: `400` no items / insufficient stock, `404` address not found
 **`GET /api/orders`**
 Response `200`: `{ success: true, count: N, orders: Order[] }`
 
-⚠ **Not connected to frontend** — `Checkout.jsx` is a stub. No RTK Query endpoint calls these routes yet.
+**RTK Query hooks** (`features/order/rtkOrders.js`, `features/address/rtkAddresses.js`) — ambele înregistrate în `app/store.js`.
 
 ---
 
@@ -106,11 +106,20 @@ Response `200`: `{ success: true, count: N, orders: Order[] }`
 
 Header (always mounted)
   AddToCartIcon (atom)                     Components/UI/add-to-cart-icon/AddToCartIcon.jsx   18 lines ✓
-  AddToCartModal (organism)                Components/UI/add-to-cart-modal/AddToCartModal.jsx 134 lines ✓
+  AddToCartModal (organism)                Components/UI/add-to-cart-modal/AddToCartModal.jsx 126 lines ✓
+    → imagine dinamică: p.images?.[0] || panda
+    → aliniere viewport-aware: left|center|right via useEffect+useRef
+
+/cart/checkout route
+  Checkout (organism)                      Components/UI/checkout/Checkout.jsx                 49 lines ✓
+    CheckoutStepAddress (molecule)         Components/UI/checkout/CheckoutStepAddress.jsx       72 lines ✓
+    CheckoutStepPayment (molecule)         Components/UI/checkout/CheckoutStepPayment.jsx       26 lines ✓
+    CheckoutStepConfirm (molecule)         Components/UI/checkout/CheckoutStepConfirm.jsx       33 lines ✓
+    CheckoutSuccess (atom)                 Components/UI/checkout/CheckoutSuccess.jsx           20 lines ✓
+    useCheckoutState (hook, co-located)    Components/UI/checkout/useCheckoutState.js
 
 DEAD (unused, should be deleted)
   Add-to-cart-button.jsx                   Components/UI/add-to-cart-button/
-  AddToCartV2Button.jsx                    Components/UI/add-to-cart-v2-button/
 ```
 
 ### Redux state shape

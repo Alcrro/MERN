@@ -64,15 +64,34 @@ exports.getPendingListings = asyncHandler(async (req, res) => {
   const [products, count] = await Promise.all([
     Product.find({ listingStatus: "pending" })
       .populate("vendor", "name email shopName")
+      .populate("catalogRef", "brand specs")
       .sort("-createdAt")
       .skip(skip)
       .limit(limit),
     Product.countDocuments({ listingStatus: "pending" }),
   ]);
 
+  const productsWithDupCheck = await Promise.all(
+    products.map(async (p) => {
+      const obj = p.toObject();
+      if (p.catalogRef && p.vendor) {
+        const dupExists = await Product.exists({
+          vendor: p.vendor._id || p.vendor,
+          catalogRef: p.catalogRef._id || p.catalogRef,
+          publishStatus: "published",
+          _id: { $ne: p._id },
+        });
+        obj.hasDuplicate = !!dupExists;
+      } else {
+        obj.hasDuplicate = false;
+      }
+      return obj;
+    })
+  );
+
   res.status(200).json({
     success: true,
-    products,
+    products: productsWithDupCheck,
     count,
     numberOfPages: Math.ceil(count / limit),
   });

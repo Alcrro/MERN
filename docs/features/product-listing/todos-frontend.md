@@ -1,6 +1,6 @@
 # Frontend TODOs: Product Listing
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Stack:** React 18, Redux Toolkit, RTK Query, React Router v6, plain CSS
 
 ---
@@ -16,8 +16,9 @@
 
 ## Phase 2 — Core UI
 
-- [x] `/products` route registered in `App.js`
-- [x] `Products.jsx` — 39 lines, uses `useProductFilters` + `useSeo`, renders sidebar + listing
+- [x] `/products` route → `ProductsDiscover.jsx` (hub landing page, 8 produse per categorie)
+- [x] `/products/:categorySlug` și `/products/:categorySlug/:tipSlug` → `Products.jsx`
+- [x] `Products.jsx` — 49 lines, uses `useProductFilters` + `useSeo`, renders sidebar + listing + EcosystemCarousels + ProductConfigurator
 - [x] `ProductGrid.jsx` — listing area: ListingPanel + skeleton/Cards + Pagination
 - [x] `ListingPanel.jsx` — sort dropdown, limit dropdown, active filter chips with × remove, mobile filter toggle
 - [x] `FilterContent.jsx` — sidebar: AllCategories + AvailabilityFilter + StorageFilter + RamFilter + ColorFilter + RatingSideBarFilter
@@ -28,12 +29,16 @@
 - [x] `RamFilter.jsx` — RAM chips
 - [x] `ColorFilter.jsx` — color swatch buttons via `COLOR_MAP`; inactive (out-of-context) state
 - [x] `RatingSideBarFilter.jsx` — star rating filter (1–5)
-- [x] `Cards.jsx` — product card with grid/list layout variants
+- [x] `Cards.jsx` — product card: grid/list layout, favorites heart button, `sellersCount` badge, low stock warning ("Ultimul produs în stoc"), SKU-based URL
 - [x] `CardSkeleton.jsx` — shown during `isFetching`
 - [x] `Pagination.jsx` — page number links
 - [x] Empty state — "Niciun produs găsit" message when 0 results
 - [x] `filterUtils.js` — `getUniqueValues`, `countByField`
 - [x] `utils/seoHelpers.js` → `buildProductSeo` — dynamic `<title>` from active brand/model
+- [x] `utils/categorySlugMap.js` — `CATEGORY_SLUG_TO_KIND`, `TIP_SLUG_TO_TIP` și reverse maps
+- [x] `Breadcrumb.jsx` — breadcrumb dinamic cu `buildCrumbs`, Redux `lastLabel`, sticky pe mobile
+- [x] `favoritesSlice` — Redux slice wishlist (localStorage-backed)
+- [x] `breadcrumbSlice` — Redux slice pentru `lastLabel` dinamic pe pagina de produs
 
 ---
 
@@ -48,21 +53,23 @@
 
 ## Hooks structure
 
-- [x] `useFilterState.js` — co-located with Products.jsx; 11 `useState` + 2 `useSelector`
-- [x] `useProductsData.js` — in `features/product/`; two RTK calls + per-filter context computation
-- [x] `useProductFilters.js` — thin composition: calls `useFilterState` + `useProductsData`, adds `activeFilterCount`
+- [x] `useFilterState.js` — co-located cu Products.jsx; 10 `useState`; derivă `kind`/`tip` din `useParams` + `categorySlugMap`; sincronizează `sort` + `availability` din `useSearchParams`
+- [x] `useProductsData.js` — în `features/product/`; două RTK calls + calcul context per filtru
+- [x] `useProductFilters.js` — thin composition: cheamă `useFilterState` + `useProductsData`, adaugă `activeFilterCount`
 
 ---
 
 ## Gaps found
 
-- [x] **`useProductFilters.js`** — split into `useFilterState.js` + `features/product/useProductsData.js`
-- [x] **`Products.jsx`** — refactored from 107 → 39 lines; SEO extracted to `utils/seoHelpers.js`; listing extracted to `ProductGrid.jsx`
+- [x] **`useProductFilters.js`** — split în `useFilterState.js` + `features/product/useProductsData.js`
+- [x] **`Products.jsx`** — refactored; SEO extras în `utils/seoHelpers.js`; listing extras în `ProductGrid.jsx`
 - [x] **`AvailabilityFilter.jsx`** — fixed `href="#!"` → `type="button"`
 - [x] **`StorageFilter.jsx`** — fixed `href="#!"` → `type="button"`
 - [x] **`RamFilter.jsx`** — fixed `href="#!"` → `type="button"`
 - [x] **`RatingSideBarFilter.jsx`** — fixed `href="#"`, removed `/* eslint-disable */`
 - [x] **Dead code deleted** — `BrandFilter.jsx`, `ModelFilter.jsx`, `SideBarTree.jsx`, `Pages/Products/Products.jsx`, `BrandFilterPanel.jsx`
-- [ ] **`useProductFilters.js`** — still technically violates one-hook-one-action (composes two hooks + adds count); acceptable as thin composition but worth noting
-- [ ] **Pagination** — `pagesFilterArray` (legacy prop) passed as `[]` to Pagination — Pagination API has dead param
-- [ ] **`colorFilter` context** — `ratingContext` in `useProductsData` uses `applyFilters` which doesn't filter by rating, so rating doesn't restrict color options
+- [ ] **`useProductFilters.js`** — thin composition acceptabilă dar tehnic violează one-hook-one-action
+- [ ] **Pagination** — `pagesFilterArray` (legacy prop) passed as `[]` to Pagination — param mort
+- [ ] **`colorFilter` context** — `ratingContext` în `useProductsData` nu filtrează după rating, deci ratingul nu restrânge opțiunile de culoare
+- [ ] **`search` param** — backend-ul suportă `search=`, dar nicio intrare de search în sidebar; nu este wired în `useFilterState`
+- [ ] **Filter state URL-sync parțial** — doar `sort` și `availability` citite din `useSearchParams`; brand/model/stocare/RAM/culoare sunt `useState` pur (nu sunt shareabile prin URL)

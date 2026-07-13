@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const VendorProfileSchema = new mongoose.Schema({
   cui:           { type: String, default: null },
   denumireFirma: { type: String, maxlength: 150, default: null },
-  tipEntitate:   { type: String, enum: ["SRL", "PFA", "SA", "RA", "II", "ONG"], default: null },
+  tipEntitate:   { type: String, enum: ["SRL", "PFA", "SA", "RA", "II", "ONG"] },
   orasDepozit:   { type: String, maxlength: 100, default: null },
   zileLivrare: {
     min: { type: Number, min: 0, default: null },

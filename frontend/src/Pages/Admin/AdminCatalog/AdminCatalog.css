@@ -1,0 +1,13 @@
+.admin-catalog-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem 1.5rem;
+  gap: 2rem;
+}
+
+.admin-catalog-page__divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}

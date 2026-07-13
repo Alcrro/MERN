@@ -1,6 +1,6 @@
 # Backend TODOs: Cart → Order
 
-> **Last updated:** 2026-07-10
+> **Last updated:** 2026-07-13
 > **Stack:** Node.js, Express, Mongoose
 
 ---
@@ -47,6 +47,6 @@
 ## Gaps found
 
 - [ ] `createOrder` — stock is decremented per-item with individual `product.save()` calls; if one fails mid-loop, earlier items are already decremented with no rollback (no transaction)
-- [ ] `createOrder` — no RTK Query endpoint on the frontend calls this yet (`Checkout.jsx` is a stub)
+- [x] `createOrder` — conectat la frontend via `useCreateOrderMutation` în `useCheckoutState.js`
 - [ ] No `isPaid` / `paidAt` update endpoint — payment confirmation has no handler
 - [ ] `getAllOrders` pagination: `limit` comes from query string unsanitized (`Number(limit)` — no max cap)

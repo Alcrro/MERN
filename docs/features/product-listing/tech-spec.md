@@ -1,6 +1,6 @@
 # Tech Spec: Product Listing
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Stack:** React 18, RTK Query, Redux Toolkit, React Router v6, Express, Mongoose
 
 ---
@@ -8,16 +8,22 @@
 ## Data Flow
 
 ```
-/products route → Products.jsx
+/products                          → ProductsDiscover.jsx (hub landing, 8 prod/categorie)
+/products/:categorySlug            → Products.jsx
+/products/:categorySlug/:tipSlug   → Products.jsx
+  └─► useParams() → categorySlug + tipSlug
+        → categorySlugMap → kind + tip
   └─► useProductFilters()               — thin composition hook
-        ├─► useFilterState()            — 11 filter useState vars + cardView from Redux
+        ├─► useFilterState()            — 10 filter useState + useSearchParams (sort, availability)
         └─► useProductsData(params)     — two RTK calls
-              ├─► useGetAllProductsQuery()       GET /api/products (unfiltered, for filter option context)
-              └─► useGetProductsQuery(params)    GET /api/products?{all 10 filter params}
+              ├─► useGetAllProductsQuery()       GET /api/products (unfiltered, filter context)
+              └─► useGetProductsQuery(params)    GET /api/products?{all filter params}
                     └─► RTK cache → { queryProducts, pagesArray, isFetching }
 
-Filter state is plain useState — NOT stored in URL query params.
-cardView (grid/list) persists in Redux (cardViewSlice).
+Filter state: useSearchParams pt sort + availability; useState pur pt restul.
+cardView (grid/list) persistă în Redux (cardViewSlice).
+favoritesSlice — wishlist persistat în localStorage.
+breadcrumbSlice — lastLabel dinamic per pagina de produs.
 ```
 
 ### Per-filter context pattern
@@ -51,6 +57,7 @@ ratingContext       = applyFilters(displayAllProducts, base);  // rating not in 
 | `model` | string[] | — | `$in` match |
 | `kind` | string | — | Mongoose discriminator key (e.g. `Electronics`) |
 | `tip` | string | — | Sub-type within discriminator |
+| `tips` | string[] | — | Multi-tip array (`$in` match) |
 | `availability` | string[] | — | Maps to `stock.availability` ($in) |
 | `stocare` | string[] | — | `$in` match on `stocare` field |
 | `ram` | string[] | — | `$in` match on `RAM` field |
@@ -82,7 +89,7 @@ ratingContext       = applyFilters(displayAllProducts, base);  // rating not in 
 }
 ```
 
-Note: `queryProducts` is the filtered page; `totalProducts` is used client-side for filter option context.
+Note: `queryProducts` este filtrat prin aggregation pipeline; produse cu `catalogRef` sunt grupate (MIN price, sellersCount). `totalProducts` — unfiltered, pentru context filtre.
 
 ### GET /api/product/:id
 
@@ -105,7 +112,8 @@ Note: `queryProducts` is the filtered page; `totalProducts` is used client-side 
 ## Component Tree
 
 ```
-App.js → Route "products" → Products.jsx         [organism, 39 lines]
+App.js → Route "products"                    → ProductsDiscover.jsx  [page, hub]
+App.js → Route "products/:categorySlug[/:tipSlug]" → Products.jsx   [organism, 49 lines]
   ├─► useProductFilters()
   ├─► useSeo() + buildProductSeo()
   ├─► MobileFilterSheet.jsx                       [molecule, 34 lines]
@@ -142,12 +150,16 @@ App.js → Route "products" → Products.jsx         [organism, 39 lines]
 `features/product/rtkProducts.js`:
 
 ```js
-getProducts(params)     // useGetProductsQuery — paginated + filtered
-getAllProducts()         // useGetAllProductsQuery — unfiltered; used for filter context only
-getSingleProduct(id)    // useGetSingleProductQuery
+getProducts(params)       // useGetProductsQuery — paginated + filtered + aggregate dedup
+getAllProducts()           // useGetAllProductsQuery — unfiltered; filter context
+getSingleProduct(id)      // useGetSingleProductQuery
+getProductBySku(sku)      // useGetProductBySkuQuery
+getSellers(catalogRef)    // useGetSellersQuery
+getEcosystem(tip)         // useGetEcosystemQuery
+configureEcosystem(body)  // useConfigureEcosystemMutation
 ```
 
-tagTypes: `["Products", "Reviews", "Categories"]`
+tagTypes: `["Products", "Reviews", "Categories", "Sellers"]`
 
 ---
 
@@ -156,9 +168,15 @@ tagTypes: `["Products", "Reviews", "Categories"]`
 ```js
 // cardViewSlice — grid vs list toggle
 {
-  cardViewGridClassName: string,   // e.g. "card-view-grid"
+  cardViewGridClassName: string,
   cardViewListClassName: string,
 }
+
+// favoritesSlice — wishlist (localStorage-backed)
+{ items: Product[] }
+
+// breadcrumbSlice — lastLabel dinamic
+{ lastLabel: string | null }
 
 // addToCartSlice
 {
@@ -167,3 +185,9 @@ tagTypes: `["Products", "Reviews", "Categories"]`
   cartTotalAmount: number,
 }
 ```
+
+### Utility files
+
+| File | Purpose |
+|------|---------|
+| `utils/categorySlugMap.js` | `CATEGORY_SLUG_TO_KIND`, `TIP_SLUG_TO_TIP` și reverse maps |

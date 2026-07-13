@@ -41,3 +41,34 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
+
+/* ── skeleton ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skel {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover, rgba(0,0,0,0.06)) 50%, var(--bg-card) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+
+.voverview__skel-title { width: 200px; height: 28px; }
+.voverview__skel-cta { width: 130px; height: 36px; border-radius: var(--radius-sm); }
+.voverview__skel-section-label { width: 80px; height: 12px; }
+
+.voverview__skel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+  background: var(--bg-card);
+  min-width: 130px;
+}
+
+.voverview__skel-label { width: 72px; height: 12px; }
+.voverview__skel-value { width: 52px; height: 30px; }

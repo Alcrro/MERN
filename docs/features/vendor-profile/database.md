@@ -1,6 +1,6 @@
 # Database: Vendor Profile
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Affects collections:** `users` (model `Register`)
 
 ---
@@ -53,7 +53,7 @@ vendorProfile: { type: VendorProfileSchema, default: () => ({}) },
 |------|-----|-------------|---------|------|
 | `cui` | String | — | null | Format: 2–10 cifre. Validat în controller, nu în model. |
 | `denumireFirma` | String | maxlength: 150 | null | Numele legal al firmei |
-| `tipEntitate` | String | enum: SRL/PFA/SA/RA/II/ONG | null | Forma juridică |
+| `tipEntitate` | String | enum: SRL/PFA/SA/RA/II/ONG | — | Forma juridică |
 | `orasDepozit` | String | maxlength: 100 | null | Orașul de unde pleacă coletele |
 | `zileLivrare.min` | Number | min: 0 | null | Zile lucrătoare minim |
 | `zileLivrare.max` | Number | min: 0 | null | Zile lucrătoare maxim |

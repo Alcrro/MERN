@@ -1,114 +1,160 @@
+/* ── bar ─────────────────────────────────────────────────── */
 .bc-bar {
-  display: none;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+	display: block;
+	background: var(--bg-card);
+	border-bottom: 1px solid var(--border);
+}
+
+/* desktop: hide bar when no meaningful crumbs (home page) */
+.bc-bar--home {
+	display: none;
+}
+
+/* desktop: hide mobile-only elements */
+.bc-logo,
+.bc-back,
+.bc-divider {
+	display: none;
 }
 
 .bc-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 24px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .bc-back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: var(--radius-sm);
-  color: var(--text-medium);
-  flex-shrink: 0;
-  transition: background .12s, color .12s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: var(--radius-sm);
+	color: var(--text-medium);
+	flex-shrink: 0;
+	transition:
+		background 0.12s,
+		color 0.12s;
 }
 
 .bc-back:hover {
-  background: var(--bg-page);
-  color: var(--primary);
+	background: var(--bg-page);
+	color: var(--primary);
 }
 
 .bc-list {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  list-style: none;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  min-width: 0;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	list-style: none;
+	flex-wrap: nowrap;
+	overflow: hidden;
+	min-width: 0;
 }
 
 .bc-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-  min-width: 0;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	white-space: nowrap;
+	min-width: 0;
 }
 
-.bc-item:last-child { min-width: 0; overflow: hidden; }
+.bc-item:last-child {
+	min-width: 0;
+	overflow: hidden;
+}
 
 .bc-link {
-  font-size: .78rem;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color .12s;
-  display: flex;
-  align-items: center;
+	font-size: 0.78rem;
+	color: var(--text-muted);
+	text-decoration: none;
+	transition: color 0.12s;
+	display: flex;
+	align-items: center;
 }
 
-.bc-link:hover { color: var(--primary); }
+.bc-link:hover {
+	color: var(--primary);
+}
 
 .bc-home {
-  display: flex;
-  align-items: center;
-  padding: 2px;
+	display: flex;
+	align-items: center;
+	padding: 2px;
 }
 
 .bc-current {
-  font-size: .78rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-color: var(--primary);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .bc-sep {
-  font-size: .7rem;
-  color: var(--border);
-  user-select: none;
+	font-size: 0.7rem;
+	color: var(--border);
+	user-select: none;
 }
 
 .bc-logo {
-  font-size: 1.3rem;
-  font-weight: 800;
-  letter-spacing: -.5px;
-  text-transform: lowercase;
-  background: linear-gradient(135deg, var(--primary), #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  flex-shrink: 0;
+	font-size: 1.3rem;
+	font-weight: 800;
+	letter-spacing: -0.5px;
+	text-transform: lowercase;
+	background: linear-gradient(135deg, var(--primary), #7c3aed);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	line-height: 1;
+	flex-shrink: 0;
 }
 
 .bc-divider {
-  width: 1px;
-  height: 16px;
-  background: var(--border);
-  flex-shrink: 0;
+	width: 1px;
+	height: 16px;
+	background: var(--border);
+	flex-shrink: 0;
 }
 
 /* ── Mobile only ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .bc-bar    { display: block; }
-  .bc-inner  { padding: 0 12px; height: 40px; }
-  .bc-back   { width: 32px; height: 32px; }
+	.bc-bar {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+	}
+
+	.bc-bar--home {
+		display: block;
+	}
+
+	.bc-logo,
+	.bc-back,
+	.bc-divider {
+		display: flex;
+	}
+
+	.bc-logo {
+		display: block;
+	}
+
+	.bc-inner {
+		padding: 0 12px;
+		height: 40px;
+	}
+
+	.bc-back {
+		width: 32px;
+		height: 32px;
+	}
 }

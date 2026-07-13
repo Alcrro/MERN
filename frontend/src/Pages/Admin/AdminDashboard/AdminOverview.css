@@ -1,0 +1,46 @@
+.admin-ov { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.admin-ov__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.admin-ov__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.admin-ov__card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: box-shadow .15s, border-color .15s;
+}
+
+.admin-ov__card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.admin-ov__card-icon { font-size: 1.75rem; line-height: 1; }
+
+.admin-ov__card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.1rem;
+}
+
+.admin-ov__card-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}

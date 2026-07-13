@@ -1,8 +1,9 @@
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, "../../.env") });
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { Register } = require("../models/auth/register");
 const Product = require("../models/product/Product");
+const { generateSku } = require("../utils/skuGenerator");
 
 const VENDORS = [
   {
@@ -150,6 +151,7 @@ async function run() {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash("Vendor123!", salt);
   const vendorMap = {};
+  const vendorCityMap = {};
 
   for (const v of VENDORS) {
     let user = await Register.findOne({ email: v.email });
@@ -178,6 +180,7 @@ async function run() {
     }
     const key = v.email.split("@")[0]; // "techzone" or "mobilehub"
     vendorMap[key] = user._id;
+    vendorCityMap[key] = v.vendorProfile?.orasDepozit || "";
   }
 
   // 2. For each LISTINGS entry, find the canonical product and clone it per vendor
@@ -203,7 +206,7 @@ async function run() {
         continue;
       }
 
-      const { _id, slug, createdAt, updatedAt, __v, rating, ...base } = canonical;
+      const { _id, slug, sku, createdAt, updatedAt, __v, rating, ...base } = canonical;
 
       await Product.create({
         ...base,
@@ -213,8 +216,10 @@ async function run() {
         vendor: vendorId,
         user: vendorId,
         listingStatus: "approved",
+        publishStatus: "published",
         rejectionReason: null,
         rating: { average: 0, count: 0 },
+        sku: generateSku(base.brand || "", vendorCityMap[entry.vendor] || "", base.model || ""),
       });
       created++;
       console.log(`  + ${entry.vendor} → ${item.brand} ${item.model} · ${entry.price} RON · ${entry.avail}`);

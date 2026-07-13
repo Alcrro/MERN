@@ -1,12 +1,8 @@
 import FilterSection from "../filterSection/FilterSection";
 import { getUniqueValues, countByField } from "../filterUtils";
 
-const ModelCategory = ({ data, model, setModel, brand, setPage, setRating }) => {
-  const allProducts = data?.totalProducts;
-  const queryProducts = data?.queryProducts;
-
-  const source = brand.length === 0 ? allProducts : queryProducts;
-  const items = getUniqueValues(source, "model").sort((a, b) => a.localeCompare(b));
+const ModelCategory = ({ contextProducts = [], model, setModel, brand, setPage, setRating }) => {
+  const items = getUniqueValues(contextProducts, "model").filter(Boolean).sort((a, b) => a.localeCompare(b));
 
   const handleToggle = (value, isChecked) => {
     if (isChecked) {
@@ -14,7 +10,7 @@ const ModelCategory = ({ data, model, setModel, brand, setPage, setRating }) => 
       setPage(1);
       setRating([]);
     } else {
-      setModel(model.filter(m => m !== value));
+      setModel(model.filter((m) => m !== value));
     }
   };
 
@@ -24,7 +20,7 @@ const ModelCategory = ({ data, model, setModel, brand, setPage, setRating }) => 
       items={items}
       selected={model}
       onToggle={handleToggle}
-      getCount={(value) => countByField(allProducts, "model", value)}
+      getCount={(value) => countByField(contextProducts, "model", value)}
     />
   );
 };

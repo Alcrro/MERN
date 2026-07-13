@@ -26,20 +26,25 @@
 
 ## Faza 2 — Admin: gestiune catalog
 - [x] `AdminCatalog.jsx` (page) — redirect dacă nu ești admin
-- [x] `CatalogAdmin.jsx` — tabel cu filtru kind + paginare + delete
+- [x] `CatalogAdmin.jsx` — tabel cu filtru kind + paginare + delete + skeleton (5 rânduri shimmer)
 - [x] `CatalogEntryModal.jsx` — add/edit modal cu specs dinamice per kind
+- [x] `PendingListingsAdmin.jsx` — tabel cu listinguri vendor în așteptare, aprobă/respinge per listing, skeleton, paginare
+- [x] `AdminCatalog.jsx` compune `PendingListingsAdmin` + `CatalogAdmin` separate prin `<hr>`
+- [x] `rtkAdmin.js` — `useGetAdminPendingListingsQuery`, `useApproveListingMutation`
+- [x] Duplicate check vizibil în `PendingListingsAdmin` (badge ⚠ Duplicat publicat / ✓ Unic / Fără ref catalog)
 
 ## Faza 3 — Polish
 - [x] Mobile responsive: VendorCatalogPanel, CatalogTable
 - [x] Dark mode: VendorCatalogPanel.css, CatalogRow.css, CatalogTable.css, CatalogVariantTable.css
 - [x] `type="button"` pe toate butoanele non-submit
-- [x] Loading state: skeleton în CatalogTable, "Se încarcă…" în CatalogAdmin
+- [x] Loading state: skeleton în CatalogTable (8 rânduri); skeleton în CatalogAdmin (5 rânduri shimmer)
 - [x] Empty state: "Niciun produs găsit." în CatalogTable + CatalogAdmin
 
 ## Gaps found
-- [ ] `CatalogAdmin.jsx` — lipsă `html[data-theme="dark"]` în `CatalogAdmin.css`
-- [ ] `CatalogEntryModal.jsx` — lipsă `html[data-theme="dark"]` în `CatalogEntryModal.css`
+- [x] `CatalogAdmin.jsx` — dark mode parțial implementat (doar `.cat-admin__action--del`) în `CatalogAdmin.css`
+- [x] `CatalogEntryModal.jsx` — dark mode parțial implementat (doar `.cem-overlay`) în `CatalogEntryModal.css`
 - [ ] `CatalogEntryModal.jsx` — câmpurile `culoare[]` și `refPrice` nu sunt în formular
 - [ ] `CatalogBrowserModal.jsx` — component implementat dar neimportat nicăieri (dead code)
 - [ ] Nicio notificare vizuală (toast) după publish reușit în `CatalogVariantTable`
 - [ ] `searchCatalog` RTK — fără paginare; rezultate limitate la 20
+- [ ] `PendingListingsAdmin` — lipsă câmp motiv respingere (reason) în UI pentru butonul "Respinge"

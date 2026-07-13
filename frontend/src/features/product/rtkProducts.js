@@ -21,7 +21,7 @@ export const productsApi = createApi({
       providesTags: [{ type: "Products" }],
     }),
     getProducts: builder.query({
-      query: ({ limit, page, sort, brand, rating, model, availability = [], stocare = [], ram = [], culoare = [] }) => {
+      query: ({ limit, page, sort, brand, rating, model, availability = [], stocare = [], ram = [], culoare = [], kind = "", tip = "", tips = [] }) => {
         const q = [
           `sort=${sort}`,
           `limit=${limit}`,
@@ -33,6 +33,8 @@ export const productsApi = createApi({
           ...stocare.map((s) => `stocare=${encodeURIComponent(s)}`),
           ...ram.map((r) => `ram=${encodeURIComponent(r)}`),
           ...culoare.map((c) => `culoare=${encodeURIComponent(c)}`),
+          ...(kind ? [`kind=${encodeURIComponent(kind)}`] : []),
+          ...(tips.length ? tips.map((t) => `tip=${encodeURIComponent(t)}`) : tip ? [`tip=${encodeURIComponent(tip)}`] : []),
         ].join("&");
         return `products?${q}`;
       },
@@ -41,6 +43,10 @@ export const productsApi = createApi({
     getSingleProduct: builder.query({
       query: (id) => `product/${id}`,
       providesTags: (result, error, id) => [{ type: "Products", id }],
+    }),
+    getProductBySku: builder.query({
+      query: (sku) => `product/sku/${sku}`,
+      providesTags: (result, error, sku) => [{ type: "Products", id: sku }],
     }),
     addProduct: builder.mutation({
       query: (body) => ({
@@ -89,6 +95,19 @@ export const productsApi = createApi({
         { type: "Products" },
       ],
     }),
+    /* ── Ecosystem ── */
+    getEcosystem: builder.query({
+      query: (tip) => `ecosystem/${encodeURIComponent(tip)}`,
+      keepUnusedDataFor: 3600,
+    }),
+    configureEcosystem: builder.mutation({
+      query: (body) => ({
+        url: "ecosystem/configure",
+        method: "POST",
+        body,
+      }),
+    }),
+
     deleteReview: builder.mutation({
       query: ({ reviewId, productId }) => ({
         url: `reviews/${reviewId}`,
@@ -108,6 +127,7 @@ export const {
   useGetAllProductsQuery,
   useGetProductsQuery,
   useGetSingleProductQuery,
+  useGetProductBySkuQuery,
   useGetSellersQuery,
   useAddProductMutation,
   useUpdateProductMutation,
@@ -115,4 +135,6 @@ export const {
   useGetReviewsQuery,
   useAddReviewMutation,
   useDeleteReviewMutation,
+  useGetEcosystemQuery,
+  useConfigureEcosystemMutation,
 } = productsApi;

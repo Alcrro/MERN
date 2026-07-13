@@ -2,6 +2,7 @@ const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const Products = require("../../models/product/Product");
+const { generateSku } = require("../../utils/skuGenerator");
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -13,7 +14,14 @@ exports.getProducts = asyncHandler(async (req, res) => {
   const limit = Math.min(100, Number(req.query.limit) || 30);
   const skip = (page - 1) * limit;
 
-  const queryObject = { listingStatus: "approved" };
+  const queryObject = {
+    listingStatus: "approved",
+    $or: [
+      { publishStatus: "published" },
+      { publishStatus: { $exists: false } },
+      { vendor: null },
+    ],
+  };
 
   if (search) {
     queryObject.$text = { $search: search };
@@ -30,10 +38,12 @@ exports.getProducts = asyncHandler(async (req, res) => {
     queryObject.model = { $in: models };
   }
   if (kind) {
-    queryObject.kind = kind;
+    const kindArr = Array.isArray(kind) ? kind : [kind];
+    queryObject.kind = { $in: kindArr };
   }
   if (tip) {
-    queryObject.tip = tip;
+    const tipArr = Array.isArray(tip) ? tip : [tip];
+    queryObject.tip = { $in: tipArr };
   }
   if (availability) {
     const avArr = Array.isArray(availability) ? availability : [availability];
@@ -86,7 +96,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
       { $group: { _id: { $ifNull: ["$catalogRef", "$_id"] } } },
       { $count: "total" },
     ]),
-    Products.find({ listingStatus: "approved" }).sort("-createdAt"),
+    Products.find({ listingStatus: "approved", $or: [{ publishStatus: "published" }, { publishStatus: { $exists: false } }, { vendor: null }] }).sort("-createdAt"),
   ]);
 
   const totalFiltered = countResult[0]?.total ?? 0;
@@ -107,7 +117,8 @@ exports.getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/product/:id
 // @access  Public
 exports.getProduct = asyncHandler(async (req, res, next) => {
-  const product = await Products.findById(req.params.id);
+  const product = await Products.findById(req.params.id)
+    .populate("vendor", "shopName vendorProfile");
 
   if (!product) {
     return next(new ErrorResponse(`Product not found with id of ${req.params.id}`, 404));
@@ -117,6 +128,20 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
     success: true,
     product: product,
   });
+});
+
+// @desc    Fetch single product by SKU
+// @route   GET /api/product/sku/:sku
+// @access  Public
+exports.getProductBySku = asyncHandler(async (req, res, next) => {
+  const product = await Products.findOne({ sku: req.params.sku })
+    .populate("vendor", "shopName vendorProfile");
+
+  if (!product) {
+    return next(new ErrorResponse(`Product not found with sku ${req.params.sku}`, 404));
+  }
+
+  res.status(200).json({ success: true, product });
 });
 
 // @desc    Fetch single product by slug
@@ -142,7 +167,15 @@ exports.getSellers = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Invalid catalogRef", 400));
   }
 
-  const sellers = await Products.find({ catalogRef, listingStatus: "approved" })
+  const sellers = await Products.find({
+    catalogRef,
+    listingStatus: "approved",
+    $or: [
+      { publishStatus: "published" },
+      { publishStatus: { $exists: false } },
+      { vendor: null },
+    ],
+  })
     .sort({ price: 1 })
     .populate("vendor", "shopName vendorProfile")
     .select("price stock vendor images listingStatus rating");
@@ -174,6 +207,7 @@ exports.postProduct = asyncHandler(async (req, res, next) => {
     rating: { average: 0, count: 0 },
     stock: { quantity: stock ?? 0, availability: availability ?? "In Stoc" },
     user: req.user.id,
+    sku: generateSku(productBrand, "", productModel || ""),
     ...(culoare && { culoare }),
   });
 

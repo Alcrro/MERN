@@ -5,6 +5,7 @@ import Stars from "./Stars";
 import StarPicker from "./StarPicker";
 import { avatarColor, fmtDate } from "./singleProductUtils";
 import { TrashSmIcon, LoginIcon, DoneIcon } from "./singleProductIcons";
+import "./ProductReviews.css";
 
 const ProductReviews = ({ reviews, isLoading, authUser, productId, avg, rcount }) => {
   const [starValue,  setStarValue]  = useState(0);

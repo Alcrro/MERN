@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Product = require("../../models/product/Product");
+const { generateSku } = require("../../utils/skuGenerator");
 const Electronics = require("../../models/product/types/Electronics");
 const Clothing = require("../../models/product/types/Clothing");
 const Furniture = require("../../models/product/types/Furniture");
@@ -114,8 +115,17 @@ exports.getVendorProducts = asyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const filter = { vendor: req.user._id };
-  if (req.query.status && ["pending", "approved", "rejected"].includes(req.query.status)) {
-    filter.listingStatus = req.query.status;
+  const { status } = req.query;
+  if (status === "published") {
+    filter.listingStatus = "approved";
+    filter.publishStatus = "published";
+  } else if (status === "draft") {
+    filter.listingStatus = "approved";
+    filter.publishStatus = "draft";
+  } else if (status === "pending") {
+    filter.listingStatus = "pending";
+  } else if (status === "rejected") {
+    filter.listingStatus = "rejected";
   }
 
   const [products, count] = await Promise.all([
@@ -143,12 +153,15 @@ exports.createVendorProduct = asyncHandler(async (req, res) => {
   }
 
   const Model = KIND_MODEL[kind];
+  const city  = req.user.vendorProfile?.orasDepozit || "";
+  const model = fields.model || fields.name || fields.title || "";
   const product = await Model.create({
     ...fields,
     user: req.user._id,
     vendor: req.user._id,
     listingStatus: "pending",
     rating: { average: 0, count: 0 },
+    sku: generateSku(fields.brand || "", city, model),
   });
 
   res.status(201).json({ success: true, product });
@@ -171,7 +184,7 @@ exports.updateVendorProduct = asyncHandler(async (req, res) => {
 
   const { kind, user, vendor, ...updates } = req.body;
 
-  Object.assign(product, updates, { listingStatus: "pending", rejectionReason: null });
+  Object.assign(product, updates, { listingStatus: "pending", publishStatus: "draft", rejectionReason: null });
   await product.save();
 
   res.status(200).json({ success: true, product });
@@ -210,14 +223,71 @@ exports.getVendorOrders = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, orders });
 });
 
+// @desc   Publish an approved product listing
+// @route  PUT /api/vendor/products/:id/publish
+// @access Private/Vendor
+exports.publishVendorProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    res.status(404);
+    throw new Error("Produsul nu a fost găsit");
+  }
+  if (product.vendor?.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error("Nu ești autorizat să publici acest produs");
+  }
+  if (product.listingStatus !== "approved") {
+    res.status(400);
+    throw new Error("Produsul trebuie aprobat de admin înainte de publicare");
+  }
+  if (product.publishStatus === "published") {
+    res.status(400);
+    throw new Error("Produsul este deja publicat");
+  }
+
+  const issues = [];
+  if (!product.images || product.images.length === 0) issues.push("cel puțin o imagine");
+  if (!product.description || product.description.trim().length < 10) issues.push("descriere (minim 10 caractere)");
+  if (product.price == null || product.price <= 0) issues.push("preț valid (> 0)");
+  if (product.stock == null || product.stock.quantity == null) issues.push("cantitate stoc");
+
+  if (issues.length > 0) {
+    res.status(400);
+    throw new Error(`Produsul nu este complet. Lipsește: ${issues.join(", ")}`);
+  }
+
+  if (product.catalogRef) {
+    const existing = await Product.findOne({
+      vendor: req.user._id,
+      catalogRef: product.catalogRef,
+      publishStatus: "published",
+      _id: { $ne: product._id },
+    });
+    if (existing) {
+      res.status(409);
+      throw new Error("Ai deja un produs publicat pentru acest articol din catalog. Un vânzător poate apărea o singură dată per produs.");
+    }
+  }
+
+  product.publishStatus = "published";
+  await product.save();
+
+  res.status(200).json({ success: true, product });
+});
+
 // @desc   Get vendor analytics
 // @route  GET /api/vendor/analytics
 // @access Private/Vendor
 exports.getVendorAnalytics = asyncHandler(async (req, res) => {
-  const [statusCounts, vendorProducts] = await Promise.all([
+  const [statusCounts, publishCounts, vendorProducts] = await Promise.all([
     Product.aggregate([
       { $match: { vendor: req.user._id } },
       { $group: { _id: "$listingStatus", count: { $sum: 1 } } },
+    ]),
+    Product.aggregate([
+      { $match: { vendor: req.user._id } },
+      { $group: { _id: "$publishStatus", count: { $sum: 1 } } },
     ]),
     Product.find({ vendor: req.user._id }).select("_id price"),
   ]);
@@ -239,6 +309,9 @@ exports.getVendorAnalytics = asyncHandler(async (req, res) => {
   const counts = { pending: 0, approved: 0, rejected: 0 };
   statusCounts.forEach(({ _id, count }) => { counts[_id] = count; });
 
+  const pubCounts = { draft: 0, published: 0 };
+  publishCounts.forEach(({ _id, count }) => { if (_id) pubCounts[_id] = count; });
+
   const { totalUnitsSold = 0, estimatedRevenue = 0 } = orderItems[0] || {};
 
   res.status(200).json({
@@ -247,6 +320,7 @@ exports.getVendorAnalytics = asyncHandler(async (req, res) => {
     approvedListings: counts.approved,
     pendingListings: counts.pending,
     rejectedListings: counts.rejected,
+    publishedListings: pubCounts.published,
     totalUnitsSold,
     estimatedRevenue,
   });

@@ -1,7 +1,11 @@
+// Segments that are skipped but inject a virtual parent crumb instead
+const VIRTUAL_PARENTS = {
+  product: { label: "Produse", to: "/products" },
+};
+
 export const LABELS = {
   "":        "Acasă",
   products:  "Produse",
-  product:   "Produs",
   cart:      "Coș",
   checkout:  "Finalizare",
   profile:   "Profil",
@@ -30,6 +34,10 @@ export const buildCrumbs = (pathname) => {
 
   for (const seg of segments) {
     path += `/${seg}`;
+    if (VIRTUAL_PARENTS[seg]) {
+      crumbs.push(VIRTUAL_PARENTS[seg]);
+      continue;
+    }
     const label = LABELS[seg];
     if (label === null) continue;
     crumbs.push({

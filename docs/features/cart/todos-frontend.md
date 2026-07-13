@@ -1,6 +1,6 @@
 # Frontend TODOs: Cart
 
-> **Last updated:** 2026-07-10
+> **Last updated:** 2026-07-13
 > **Stack:** React 18, Redux Toolkit, React Router v6, plain CSS
 
 ---
@@ -57,7 +57,9 @@
 - [x] `AddToCartV2Button.jsx` — curățat (fără eslint-disable, destructured `{ data }`, text în română, `type="button"`)
 - [x] `FiltersAndProducts.jsx` + `Add-to-cart-button/` — șterse (nefolosite)
 - [x] `Steps.jsx` — now route-aware via `useLocation`; `/cart` → step 0 active, `/cart/checkout` → step 1 active
-- [ ] All cart items — product image hardcoded to `panda.png`; should use `item.data.image` when available
+- [x] `AddToCartModal.jsx` — imagine dinamică: `p.images?.[0] || panda` (fallback la placeholder)
+- [x] `AddToCartModal.jsx` — aliniere smart: `useEffect + useRef` calculează `left|center|right` bazat pe poziția în viewport
+- [ ] `CartItem.jsx` — product image still hardcoded to `panda.png`; should use `item.data.images?.[0] || panda` (already fixed in AddToCartModal, not yet in CartItem)
 - [x] `Checkout.jsx` — implementat: 3 pași (adresă → plată → confirmare), redirect dacă neautentificat/coș gol, success state
 - [x] `CheckoutStepAddress.jsx` — selectare adresă existentă sau adăugare inline via `useAddAddressMutation`
 - [x] `CheckoutStepPayment.jsx` — selecție Card / Ramburs

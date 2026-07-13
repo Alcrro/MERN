@@ -1,6 +1,6 @@
 # Frontend TODOs: Vendor Profile
 
-> **Last updated:** 2026-07-11
+> **Last updated:** 2026-07-13
 > **Stack:** React 18, RTK Query, Redux Toolkit, React Router v6, plain CSS
 
 ---
@@ -41,20 +41,20 @@
 
 ## Phase 4 — SellerRow update
 
-- [ ] Modifică `Components/vendor/shared/SellerRow/SellerRow.jsx`:
+- [x] Modifică `Components/vendor/shared/SellerRow/SellerRow.jsx`:
   - Dacă `seller.vendor.vendorProfile.zileLivrare` există → afișează `{min}-{max} zile`
   - Dacă `seller.vendor.vendorProfile.orasDepozit` → afișează orașul
   - Dacă `seller.vendor.vendorProfile.returZile` → afișează "retur N zile"
   - Dacă `seller.vendor.vendorProfile.tipEntitate` → afișează badge tip (SRL / PFA etc.)
-- [ ] Adaugă CSS pentru noile elemente în `SellerRow.css`
+- [x] Adaugă CSS pentru noile elemente în `SellerRow.css`
 
 ---
 
 ## Phase 5 — Polish
 
-- [ ] Dark mode — `html[data-theme="dark"]` în `VendorProfilePanel.css`
-- [ ] Mobile — 768px + 375px breakpoints (form stacked vertical)
-- [ ] A11y — `<label>` explicit pe fiecare câmp, `type="button"` pe cancel
+- [x] Dark mode — `html[data-theme="dark"]` în `VendorProfilePanel.css`
+- [x] Mobile — 768px + 375px breakpoints (form stacked vertical)
+- [x] A11y — `<label>` explicit pe fiecare câmp, `type="submit"` pe butonul de salvare
 - [ ] Validare client-side: CUI format (2–10 cifre), min ≤ max pentru zileLivrare
 - [ ] `npm run build` — zero warnings
 
@@ -64,9 +64,9 @@
 
 | File | Status | Notes |
 |------|--------|-------|
-| `features/vendor/rtkVendor.js` | [ ] | adaugă `updateVendorProfile` |
-| `utils/constants.js` | [ ] | `TIP_ENTITATE_OPTIONS`, link în `VENDOR_LINKS` |
-| `Components/vendor/dashboard/VendorProfilePanel/` | [ ] | nou organism |
-| `App.js` | [ ] | rută `/vendor/dashboard/profile` |
-| `Components/vendor/shared/SellerRow/SellerRow.jsx` | [ ] | date profil vendor |
-| `Components/vendor/shared/SellerRow/SellerRow.css` | [ ] | stiluri date noi |
+| `features/vendor/rtkVendor.js` | [x] | `updateVendorProfile` adăugat |
+| `utils/constants.js` | [x] | `TIP_ENTITATE_OPTIONS`, link în `VENDOR_LINKS` |
+| `Components/vendor/dashboard/VendorProfilePanel/` | [x] | organism creat |
+| `App.js` | [x] | rută `/vendor/dashboard/profile` |
+| `Components/vendor/shared/SellerRow/SellerRow.jsx` | [x] | date profil vendor afișate |
+| `Components/vendor/shared/SellerRow/SellerRow.css` | [x] | stiluri date noi |

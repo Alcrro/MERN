@@ -12,11 +12,11 @@ export const LIMIT_OPTIONS = [30, 60, 90];
 
 /* ─── Navigation promo links ─────────────────────────────── */
 export const PROMO_LINKS = [
-  { label: "Oferte zilnice", to: "/products?availability=Promotii", accent: "#ef4444" },
-  { label: "Noutăți",        to: "/products?availability=Nou" },
-  { label: "Resigilate",     to: "/products?availability=Resigilat" },
-  { label: "Top vânzări",    to: "/products?sort=-rating" },
-  { label: "Clearance",      to: "/products?sort=price" },
+  { label: "Oferte zilnice", to: "/products/all?availability=Promotii",              accent: "#ef4444" },
+  { label: "Noutăți",        to: "/products/all?sort=Newest" },
+  { label: "Resigilate",     to: "/products/all?availability=Resigilat" },
+  { label: "Top vânzări",    to: "/products/all?sort=Rating%3A+High+to+Low" },
+  { label: "Clearance",      to: "/products/all?sort=Price%3A+Low+to+High" },
 ];
 
 /* ─── User roles ─────────────────────────────────────────── */
@@ -87,10 +87,11 @@ export const ORDER_STATUS_COLORS = { Pending: "#f59e0b", Processing: "#3b82f6", 
 
 /* ─── Vendor — product status tabs ───────────────────────── */
 export const VENDOR_STATUS_TABS = [
-  { key: undefined,   label: "Toate" },
-  { key: "approved",  label: "Aprobate" },
-  { key: "pending",   label: "În așteptare" },
-  { key: "rejected",  label: "Respinse" },
+  { key: undefined,    label: "Toate" },
+  { key: "published",  label: "Publicate" },
+  { key: "draft",      label: "Draft" },
+  { key: "pending",    label: "În așteptare" },
+  { key: "rejected",   label: "Respinse" },
 ];
 
 /* ─── Vendor — entity type options ──────────────────────── */
@@ -101,6 +102,15 @@ export const TIP_ENTITATE_OPTIONS = [
   { value: "RA",  label: "RA" },
   { value: "II",  label: "II" },
   { value: "ONG", label: "ONG" },
+];
+
+/* ─── Admin sidebar links ────────────────────────────────── */
+export const ADMIN_LINKS = [
+  { to: "/admin/dashboard",           label: "Prezentare generală", icon: "📊", end: true },
+  { to: "/admin/dashboard/listings",  label: "Produse în verificare", icon: "🕐" },
+  { to: "/admin/dashboard/catalog",   label: "Catalog produse", icon: "📦" },
+  { to: "/admin/dashboard/vendors",   label: "Vânzători", icon: "🏪" },
+  { to: "/admin/dashboard/categories", label: "Categorii", icon: "🗂️" },
 ];
 
 /* ─── Vendor sidebar links ───────────────────────────────── */
