@@ -1,40 +1,62 @@
 import { useState } from "react";
-import pandaImg from "../../../Assets/images/panda.png";
 import Stars from "./Stars";
-import { AVAIL_COLOR, DEMO_COLORS } from "./singleProductConstants";
+import ProductImageCarousel from "./ProductImageCarousel";
+import VariantPicker from "./VariantPicker";
+import useVariantPicker from "./useVariantPicker";
+import { AVAIL_COLOR } from "./singleProductConstants";
 import { deliveryDate } from "./singleProductUtils";
-import { TruckIcon, ReturnIcon, ShieldIcon, CheckIcon, CartIcon, HeartIcon, LockIcon, CheckSmIcon, PhoneIcon } from "./singleProductIcons";
+import {
+  TruckIcon, ZapIcon, StoreIcon,
+  ReturnIcon, ShieldIcon, BadgeIcon,
+  CheckIcon, CartIcon, HeartIcon,
+  LockIcon, CheckSmIcon, PhoneIcon,
+} from "./singleProductIcons";
+import InstallmentWidget from "./InstallmentWidget";
 import "./ProductHero.css";
 
-const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, listing }) => {
-  const [selColor, setSelColor] = useState(0);
+const DELIVERY = [
+  { id: "standard", Icon: TruckIcon, name: "Livrare standard",  sub: () => `Ajunge: ${deliveryDate()}`, price: "Gratuit"    },
+  { id: "express",  Icon: ZapIcon,   name: "Curier express",     sub: () => "Mâine până la 14:00",       price: "19,99 RON" },
+  { id: "pickup",   Icon: StoreIcon, name: "Ridicare personală", sub: () => "Azi din București",          price: "Gratuit"   },
+];
 
-  const src    = listing ?? p;
-  const avail  = src.stock?.availability;
-  const qty    = src.stock?.quantity ?? 0;
-  const aStyle = AVAIL_COLOR[avail] || AVAIL_COLOR["In Stoc"];
-  const isOut  = avail === "Stoc Epuizat" || qty === 0;
+const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, listing, recPct = 0 }) => {
+  const [delivery, setDelivery] = useState("standard");
+
+  const src      = listing ?? p;
+  const variants = src.variants ?? [];
+
+  const { attrKeys, options, selected, activeVariant, isValid, select } = useVariantPicker(variants);
+  const activeV  = activeVariant ?? {};
+
+  const allImgs = [...new Set([...(activeV.images ?? []), ...(src.images ?? [])].filter(Boolean))];
+
+  const avail   = activeV.stock?.availability;
+  const qty     = activeV.stock?.quantity ?? 0;
+  const aStyle  = AVAIL_COLOR[avail] || AVAIL_COLOR["In Stoc"];
+  const isOut   = avail === "Stoc Epuizat" || qty === 0;
   const isPromo = avail === "Promotii";
-  const price  = src.price ?? 0;
-  const fmtP   = price.toLocaleString("ro-RO");
-  const discount = isPromo ? Math.round(price * 0.1) : 0;
-  const fmtFinal = (price - discount).toLocaleString("ro-RO");
-  const avg      = p.rating?.average ?? 0;
-  const rcount   = p.rating?.count ?? 0;
+  const price   = activeV.price ?? 0;
+  const fmtP    = price.toLocaleString("ro-RO");
+  const discount  = isPromo ? Math.round(price * 0.1) : 0;
+  const fmtFinal  = (price - discount).toLocaleString("ro-RO");
+  const avg     = p.rating?.average ?? 0;
+  const rcount  = p.rating?.count ?? 0;
 
   return (
     <section className="sp-hero">
 
-      <div className="sp-img-wrap">
-        {avail && <span className="sp-avail" style={{ background: aStyle.bg, color: aStyle.color }}>{avail}</span>}
-        <div className="sp-img-inner">
-          <img src={src.images?.[0] || pandaImg} alt={`${p.brand} ${productName}`} />
-        </div>
-      </div>
+      <ProductImageCarousel
+        images={allImgs}
+        alt={`${p.brand} ${productName}`}
+        avail={avail}
+        availStyle={aStyle}
+      />
 
       <div className="sp-details">
         <div className="sp-chips"><span className="sp-chip-brand">{p.brand}</span></div>
         <h1 className="sp-title">{p.brand} {productName}</h1>
+
         {avg > 0 && (
           <div className="sp-rating-row">
             <Stars value={avg} size={17} />
@@ -44,28 +66,40 @@ const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, li
             </button>
           </div>
         )}
-        <div className="sp-sep" />
-        {p.stocare && (
-          <div className="sp-variant-group">
-            <span className="sp-variant-label">Stocare</span>
-            <div className="sp-variant-chips"><button className="sp-vchip sp-vchip--on">{p.stocare}</button></div>
+        {recPct > 0 && (
+          <div className="sp-rec">
+            <div className="sp-rec-track"><div className="sp-rec-fill" style={{ width: `${recPct}%` }} /></div>
+            <span className="sp-rec-label"><strong>{recPct}%</strong> recomandă produsul</span>
           </div>
         )}
-        <div className="sp-variant-group">
-          <span className="sp-variant-label">Culoare: <strong>{DEMO_COLORS[selColor].name}</strong></span>
-          <div className="sp-colors">
-            {DEMO_COLORS.map((c, i) => (
-              <button key={i} className={`sp-color${selColor === i ? " sp-color--on" : ""}`}
-                style={{ background: c.hex }} onClick={() => setSelColor(i)} title={c.name} />
-            ))}
-          </div>
-        </div>
+
         <div className="sp-sep" />
-        <div className="sp-delivery">
-          <div className="sp-del-row"><TruckIcon /><div><span className="sp-del-title">Livrare gratuită</span><span className="sp-del-sub">Ajunge la tine: <strong>{deliveryDate()}</strong></span></div></div>
-          <div className="sp-del-row"><ReturnIcon /><div><span className="sp-del-title">Retur gratuit 30 zile</span><span className="sp-del-sub">Fără întrebări</span></div></div>
-          <div className="sp-del-row"><ShieldIcon /><div><span className="sp-del-title">Garanție 24 luni</span><span className="sp-del-sub">Produse originale cu factură</span></div></div>
+
+        <VariantPicker attrKeys={attrKeys} options={options} selected={selected} isValid={isValid} onSelect={select} />
+
+        <div className="sp-sep" />
+
+        <div className="sp-delivery-picker">
+          {DELIVERY.map(({ id, Icon, name, sub, price: dPrice }) => (
+            <label key={id} className={`sp-dopt${delivery === id ? " sp-dopt--on" : ""}`}>
+              <input type="radio" name="delivery" value={id} checked={delivery === id} onChange={() => setDelivery(id)} />
+              <span className="sp-dopt-icon"><Icon /></span>
+              <span className="sp-dopt-body">
+                <span className="sp-dopt-name">{name}</span>
+                <span className="sp-dopt-sub">{sub()}</span>
+              </span>
+              <span className="sp-dopt-price">{dPrice}</span>
+            </label>
+          ))}
         </div>
+
+        <div className="sp-seller-card">
+          <div className="sp-sc-row"><ShieldIcon /><span>Garanție <strong>24 luni</strong> de la producător</span></div>
+          <div className="sp-sc-row"><ReturnIcon /><span>Retur gratuit <strong>30 zile</strong> fără întrebări</span></div>
+          <div className="sp-sc-row"><CheckSmIcon /><span>Asigurare transport <strong>inclusă</strong></span></div>
+          <div className="sp-sc-row"><BadgeIcon /><span>Vânzător <strong>certificat</strong> AlcRo</span></div>
+        </div>
+
         <div className="sp-stock">
           {isOut ? <span className="sp-s-out">✕ Stoc epuizat</span>
             : qty <= 3 ? <span className="sp-s-low">⚠ Ultimele {qty} bucăți</span>
@@ -88,11 +122,18 @@ const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, li
             <span className="sp-pval-total">{discount > 0 ? fmtFinal : fmtP} RON</span>
           </div>
         </div>
+
+        <InstallmentWidget price={discount > 0 ? price - discount : price} />
+
         <div className="sp-cta">
-          <button className={`sp-btn-primary${added ? " sp-btn-primary--done" : ""}`} onClick={onAddToCart} disabled={isOut}>
+          <button
+            className={`sp-btn-primary${added ? " sp-btn-primary--done" : ""}`}
+            onClick={() => onAddToCart(activeV)}
+            disabled={isOut}
+          >
             {added ? <><CheckIcon />Adăugat în coș</> : <><CartIcon />Adaugă în coș</>}
           </button>
-          <button className="sp-btn-outline"><HeartIcon />Adaugă la favorite</button>
+          <button type="button" className="sp-btn-outline"><HeartIcon />Adaugă la favorite</button>
         </div>
         <div className="sp-mini-trust">
           <span><LockIcon /> Plată securizată</span>

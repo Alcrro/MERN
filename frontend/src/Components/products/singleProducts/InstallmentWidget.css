@@ -1,0 +1,158 @@
+.inst {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+  border: 1px solid #c7d2fe;
+  border-radius: var(--radius-md);
+}
+
+.inst__head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+
+.inst__head svg { color: var(--primary); flex-shrink: 0; }
+
+.inst__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  flex: 1;
+}
+
+.inst__zero {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #059669;
+  background: #d1fae5;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+/* ── selectable row ─────────────────────────────────────── */
+.inst__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,.7);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(99,102,241,.18);
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+}
+
+.inst__row:hover {
+  border-color: var(--primary);
+  background: rgba(255,255,255,.95);
+}
+
+.inst__row--on {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+/* ── radio dot ──────────────────────────────────────────── */
+.inst__radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.12s;
+}
+
+.inst__row--on .inst__radio {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.inst__radio-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.inst__row--on .inst__radio-dot { opacity: 1; }
+
+.inst__label {
+  font-size: 0.78rem;
+  color: var(--text-medium);
+  flex: 1;
+}
+
+.inst__label strong { color: var(--text-dark); font-weight: 700; }
+
+.inst__amount {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  white-space: nowrap;
+}
+
+.inst__mo {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+.inst__check {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ── summary line ───────────────────────────────────────── */
+.inst__summary {
+  margin: 4px 0 0;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 6px 10px;
+  background: rgba(37,99,235,.06);
+  border-radius: var(--radius-sm);
+}
+
+.inst__summary strong { color: var(--primary-dark); }
+
+/* ── dark mode ──────────────────────────────────────────── */
+html[data-theme="dark"] .inst {
+  background: linear-gradient(135deg, rgba(37,99,235,.1) 0%, rgba(124,58,237,.08) 100%);
+  border-color: rgba(99,102,241,.3);
+}
+
+html[data-theme="dark"] .inst__row {
+  background: rgba(255,255,255,.04);
+  border-color: rgba(99,102,241,.2);
+}
+
+html[data-theme="dark"] .inst__row--on {
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.2);
+}
+
+html[data-theme="dark"] .inst__zero {
+  background: rgba(5,150,105,.2);
+  color: #34d399;
+}
+
+html[data-theme="dark"] .inst__summary {
+  background: rgba(37,99,235,.1);
+}

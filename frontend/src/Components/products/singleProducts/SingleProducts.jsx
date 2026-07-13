@@ -33,6 +33,11 @@ const SingleProducts = () => {
   const { data: rd, isLoading: rLoad } = useGetReviewsQuery(productId, { skip: !pd?.product });
   const { added, handleCart } = useAddProductToCart(selectedListing ?? pd?.product);
 
+  const reviews = rd?.reviews ?? [];
+  const recPct  = reviews.length >= 3
+    ? Math.round(reviews.filter((r) => r.value >= 4).length / reviews.length * 100)
+    : 0;
+
   const p           = pd?.product;
   const productName = p ? (p.model || p.name || p.brand) : null;
   useBreadcrumbLabel(productName);
@@ -48,7 +53,7 @@ const SingleProducts = () => {
       <ProductHero
         p={p} productName={productName} added={added}
         onAddToCart={handleCart} onScrollToReviews={() => scrollTo("recenzii")}
-        listing={selectedListing}
+        listing={selectedListing} recPct={recPct}
       />
       {p.catalogRef
         ? <SellerPicker catalogRef={p.catalogRef} onSellerChange={setSelected} />

@@ -1,0 +1,155 @@
+/* ── wrapper ─────────────────────────────────────────────── */
+.pic {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+/* ── main stage ──────────────────────────────────────────── */
+.pic__main {
+	position: relative;
+	background: linear-gradient(145deg, #eef2ff 0%, #f8faff 55%, #f0fdf4 100%);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	aspect-ratio: 1 / 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.pic__badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	font-size: 0.68rem;
+	font-weight: 700;
+	padding: 3px 10px;
+	border-radius: 20px;
+	letter-spacing: 0.04em;
+	z-index: 2;
+}
+
+.pic__img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	transition: transform 0.32s ease;
+	pointer-events: none;
+}
+
+.pic__main:hover .pic__img {
+	transform: scale(1.06);
+}
+
+/* ── prev / next — position overrides for inside-image context */
+.pic__main .carousel-btn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0;
+	z-index: 2;
+}
+
+.pic__main:hover .carousel-btn { opacity: 1; }
+.pic__main .pic__nav--l { left: 10px; }
+.pic__main .pic__nav--r { right: 10px; }
+.pic__main .carousel-btn:active { transform: translateY(-50%) scale(0.92); }
+
+/* ── dot indicators ──────────────────────────────────────── */
+.pic__dots {
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 5px;
+	z-index: 2;
+}
+
+.pic__dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+	background: rgba(0, 0, 0, 0.22);
+	transition:
+		background 0.12s,
+		width 0.18s;
+}
+
+.pic__dot--on {
+	background: var(--primary);
+	width: 16px;
+}
+
+/* ── thumbnails ──────────────────────────────────────────── */
+.pic__thumbs {
+	display: flex;
+	gap: 8px;
+	overflow-x: auto;
+	scrollbar-width: none;
+	padding-bottom: 2px;
+}
+
+.pic__thumbs::-webkit-scrollbar {
+	display: none;
+}
+
+.pic__thumb {
+	flex-shrink: 0;
+	width: 62px;
+	height: 62px;
+	border-radius: var(--radius-sm);
+	border: 2px solid var(--border);
+	background: var(--bg-page);
+	padding: 5px;
+	cursor: pointer;
+	overflow: hidden;
+	transition: border-color 0.12s;
+}
+
+.pic__thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.pic__thumb--on {
+	border-color: var(--primary);
+}
+.pic__thumb:hover {
+	border-color: var(--primary);
+}
+
+/* ── dark mode ───────────────────────────────────────────── */
+html[data-theme="dark"] .pic__main {
+	background: linear-gradient(
+		145deg,
+		rgba(37, 99, 235, 0.06) 0%,
+		rgba(255, 255, 255, 0.02) 100%
+	);
+}
+
+html[data-theme="dark"] .pic__nav {
+	background: rgba(20, 20, 30, 0.85);
+	border-color: rgba(255, 255, 255, 0.12);
+	color: #e2e8f0;
+}
+
+html[data-theme="dark"] .pic__dot {
+	background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── responsive ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+	.pic__main {
+		aspect-ratio: unset;
+		height: 340px;
+	}
+}
+
+@media (max-width: 860px) {
+	.pic__main {
+		height: 280px;
+	}
+}

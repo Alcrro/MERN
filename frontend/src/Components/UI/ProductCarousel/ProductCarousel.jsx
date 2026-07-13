@@ -1,10 +1,9 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import Cards from "../../products/cards/Cards";
+import CarouselNavBtn from "./CarouselNavBtn";
 import "./ProductCarousel.css";
 
-const ChevLeft   = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>;
-const ChevRight  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>;
 const ArrowRight = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
 
 const CARD_W = 256;
@@ -37,7 +36,7 @@ const ProductCarousel = ({ title, linkTo, data, isLoading }) => {
         </div>
       ) : data?.length > 0 ? (
         <div className="carousel-wrapper">
-          <button className="carousel-btn carousel-btn-prev" onClick={() => scroll(-1)} aria-label="Înapoi"><ChevLeft /></button>
+          <CarouselNavBtn direction="prev" onClick={() => scroll(-1)} />
           <div className="carousel-viewport" ref={ref}>
             <div className="carousel-track">
               {data.map((item, i) => (
@@ -45,7 +44,7 @@ const ProductCarousel = ({ title, linkTo, data, isLoading }) => {
               ))}
             </div>
           </div>
-          <button className="carousel-btn carousel-btn-next" onClick={() => scroll(1)} aria-label="Înainte"><ChevRight /></button>
+          <CarouselNavBtn direction="next" onClick={() => scroll(1)} />
         </div>
       ) : null}
     </section>

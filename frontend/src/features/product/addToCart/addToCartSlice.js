@@ -23,27 +23,32 @@ const recalc = (state) => {
   save(state);
 };
 
+const resolvePrice = (data) =>
+  data.price ?? data.minPrice ?? data.variants?.[0]?.price ?? 0;
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     addToCart: (state, action) => {
+      const price = resolvePrice(action.payload.data);
       const idx = state.card.findIndex((i) => i.data._id === action.payload.data._id);
       if (idx >= 0) {
         state.card[idx].itemQuantity  += 1;
-        state.card[idx].itemAmountPrice = action.payload.data.price * state.card[idx].itemQuantity;
+        state.card[idx].itemAmountPrice = price * state.card[idx].itemQuantity;
       } else {
-        state.card.push({ ...action.payload, itemQuantity: 1, itemAmountPrice: action.payload.data.price });
+        state.card.push({ ...action.payload, itemQuantity: 1, itemAmountPrice: price });
       }
       recalc(state);
     },
 
     removeSingleCart: (state, action) => {
+      const price = resolvePrice(action.payload.data);
       const idx = state.card.findIndex((i) => i.data._id === action.payload.data._id);
       if (idx < 0) return;
       if (state.card[idx].itemQuantity > 1) {
         state.card[idx].itemQuantity  -= 1;
-        state.card[idx].itemAmountPrice = action.payload.data.price * state.card[idx].itemQuantity;
+        state.card[idx].itemAmountPrice = price * state.card[idx].itemQuantity;
       } else {
         state.card.splice(idx, 1);
       }

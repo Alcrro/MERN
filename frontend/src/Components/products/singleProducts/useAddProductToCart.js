@@ -6,9 +6,10 @@ export const useAddProductToCart = (product) => {
   const dispatch = useDispatch();
   const [added, setAdded] = useState(false);
 
-  const handleCart = () => {
+  const handleCart = (variant) => {
     if (!product) return;
-    dispatch(addToCart({ data: product }));
+    const data = variant?.price != null ? { ...product, price: variant.price } : product;
+    dispatch(addToCart({ data }));
     setAdded(true);
     setTimeout(() => setAdded(false), 2200);
   };
