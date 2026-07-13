@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetProductsQuery, useGetCategoriesQuery } from "../../features/product/rtkProducts";
 import ProductCarousel from "../../Components/UI/ProductCarousel";
 import HeroSection from "../../Components/home/HeroSection";

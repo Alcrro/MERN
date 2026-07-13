@@ -1,4 +1,3 @@
-import React from "react";
 import "../add-to-favorite-v2-button/addToFavoriteV2Button.css";
 
 const AddToFavoriteV2Button = () => {

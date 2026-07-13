@@ -1,4 +1,3 @@
-import React from "react";
 import "./starRating.css";
 
 const SingleCardRating = ({ data }) => {

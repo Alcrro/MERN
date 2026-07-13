@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CloseIcon, GridIcon, ChevronIcon, ChevronRight, LogoutIcon } from "../icons";
 import { PROMO_LINKS, ROLE_LABEL } from "../../../utils/constants";

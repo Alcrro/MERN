@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronIcon, LogoutIcon } from "../icons";
 import "./UserMenu.css";

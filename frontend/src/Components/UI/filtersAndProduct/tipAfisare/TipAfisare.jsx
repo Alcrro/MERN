@@ -1,4 +1,3 @@
-import React from "react";
 import "./tipAfisare.css";
 import { useDispatch, useSelector } from "react-redux";
 import { cardViewGrid, cardViewList } from "../../../../features/buttons/buttonsSlice";
