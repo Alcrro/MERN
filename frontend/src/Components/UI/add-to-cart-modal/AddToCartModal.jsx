@@ -45,11 +45,11 @@ const AddToCartModal = () => {
               <p>Coșul este gol</p>
             </div>
           ) : (
-            items.map((item, i) => {
+            items.map((item) => {
               const p    = item.data;
               const name = p.model || p.name || p.brand;
               return (
-                <div className="crt-modal__item" key={i}>
+                <div className="crt-modal__item" key={item.data._id}>
                   <Link to="/cart" className="crt-modal__img-wrap">
                     <img src={p.images?.[0] || panda} alt={name} />
                   </Link>

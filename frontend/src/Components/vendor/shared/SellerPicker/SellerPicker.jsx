@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGetSellersQuery } from "../../../../features/product/rtkProducts";
 import SellerRow from "../SellerRow";
 import "./SellerPicker.css";
@@ -14,13 +14,16 @@ const SellerPicker = ({ catalogRef, onSellerChange }) => {
   const sellers = data?.sellers ?? [];
   const [selected, setSelected] = useState(null);
   const [isOpen, setIsOpen]     = useState(true);
+  const autoSelected = useRef(false);
 
   useEffect(() => {
-    if (sellers.length > 0 && !selected) {
-      setSelected(sellers[0]);
-      onSellerChange?.(sellers[0]);
+    const first = data?.sellers?.[0];
+    if (first && !autoSelected.current) {
+      autoSelected.current = true;
+      setSelected(first);
+      onSellerChange?.(first);
     }
-  }, [sellers.length]);
+  }, [data, onSellerChange]);
 
   const handleSelect = (seller) => {
     setSelected(seller);

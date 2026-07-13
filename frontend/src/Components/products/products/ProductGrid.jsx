@@ -40,7 +40,7 @@ const ProductGrid = ({ filters, onOpenFilters }) => {
             <div className={`card-collection ${cardViewGridClass || cardViewListClass}`}>
               {isFetching
                 ? Array.from({ length: SKELETON_COUNT }, (_, i) => <CardSkeleton key={i} />)
-                : products.map((item, i) => <Cards products={item} key={i} />)
+                : products.map((item) => <Cards products={item} key={item._id} />)
               }
             </div>
           </div>
