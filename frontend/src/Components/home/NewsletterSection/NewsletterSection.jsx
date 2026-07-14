@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { MailIcon } from "../homeIcons";
 import { useNewsletter } from "./useNewsletter";
 
@@ -36,7 +37,11 @@ const NewsletterSection = () => {
             {error?.data?.message || "Ceva nu a mers. Încearcă din nou."}
           </p>
         )}
-        <p className="home-newsletter__notice">Fără spam. Te poți dezabona oricând.</p>
+        <p className="home-newsletter__notice">
+          Prin abonare ești de acord cu{" "}
+          <Link to="/privacy" className="home-newsletter__privacy-link">Politica de confidențialitate</Link>.
+          Fără spam — te poți dezabona oricând.
+        </p>
       </div>
     </section>
   );

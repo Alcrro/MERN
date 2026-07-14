@@ -40,6 +40,7 @@ import AdminCatalogPanel from "./Components/administrator/catalog/CatalogAdmin";
 import AdminVendors from "./Pages/Admin/AdminVendors/AdminVendors";
 import AdminCategories from "./Pages/Admin/AdminCategories/AdminCategories";
 import VendorPage from "./Pages/VendorPage/VendorPage";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
 
 const App = () => {
   return (
@@ -96,6 +97,7 @@ const App = () => {
           <Route path="/vendor/:vendorId" element={<VendorPage />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route exact path="/about" element={<About />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="*" element={<NoMatch />} />
           <Route path="/product/*" element={<NoMatch />} />
         </Routes>

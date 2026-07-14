@@ -516,7 +516,16 @@ html[data-theme="dark"] .home-newsletter__error {
 .home-newsletter__notice {
   font-size: .75rem;
   color: var(--text-muted);
+  text-align: center;
 }
+
+.home-newsletter__privacy-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.home-newsletter__privacy-link:hover { text-decoration: underline; }
 
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 992px) {
