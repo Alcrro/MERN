@@ -2,7 +2,7 @@ import { MailIcon } from "../homeIcons";
 import { useNewsletter } from "./useNewsletter";
 
 const NewsletterSection = () => {
-  const { email, setEmail, subscribed, handleSubscribe } = useNewsletter();
+  const { email, setEmail, subscribed, handleSubscribe, isLoading, error } = useNewsletter();
 
   return (
     <section className="home-newsletter" aria-label="Newsletter">
@@ -13,7 +13,7 @@ const NewsletterSection = () => {
           Abonează-te și primești oferte exclusive, noutăți și prețuri speciale direct pe email.
         </p>
         {subscribed ? (
-          <p className="home-newsletter__thanks">✓ Mulțumim! Te-ai abonat cu succes.</p>
+          <p className="home-newsletter__thanks">✓ Mulțumim! Verifică-ți emailul pentru confirmare.</p>
         ) : (
           <form className="home-newsletter__form" onSubmit={handleSubscribe}>
             <input
@@ -22,11 +22,19 @@ const NewsletterSection = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading}
               className="home-newsletter__input"
               aria-label="Adresa de email"
             />
-            <button type="submit" className="home-newsletter__btn">Abonează-te</button>
+            <button type="submit" disabled={isLoading} className="home-newsletter__btn">
+              {isLoading ? "Se trimite…" : "Abonează-te"}
+            </button>
           </form>
+        )}
+        {error && (
+          <p className="home-newsletter__error">
+            {error?.data?.message || "Ceva nu a mers. Încearcă din nou."}
+          </p>
         )}
         <p className="home-newsletter__notice">Fără spam. Te poți dezabona oricând.</p>
       </div>

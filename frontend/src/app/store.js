@@ -9,6 +9,7 @@ import { vendorApi } from "../features/vendor/rtkVendor";
 import { uploadApi } from "../features/upload/rtkUpload";
 import { adminApi } from "../features/admin/rtkAdmin";
 import { catalogApi } from "../features/catalog/rtkCatalog";
+import { newsletterApi } from "../features/newsletter/rtkNewsletter";
 import addToCartReducer from "../features/product/addToCart/addToCartSlice";
 import cardsViewSlice from "../features/buttons/buttonsSlice";
 import hoverLinkReducer from "../features/cartModal/cartModalSlice";
@@ -34,6 +35,7 @@ export const store = configureStore({
     [uploadApi.reducerPath]: uploadApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [catalogApi.reducerPath]: catalogApi.reducer,
+    [newsletterApi.reducerPath]: newsletterApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -43,7 +45,8 @@ export const store = configureStore({
       .concat(vendorApi.middleware)
       .concat(uploadApi.middleware)
       .concat(adminApi.middleware)
-      .concat(catalogApi.middleware),
+      .concat(catalogApi.middleware)
+      .concat(newsletterApi.middleware),
 });
 
 export default store;

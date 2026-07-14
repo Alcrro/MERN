@@ -38,6 +38,7 @@
 		"nodemailer": "^9.0.3",
 		"openai": "^6.46.0",
 		"react-to-print": "^2.14.12",
+		"resend": "^6.17.2",
 		"slugify": "^1.6.5"
 	},
 	"devDependencies": {

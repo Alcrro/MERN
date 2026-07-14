@@ -59,6 +59,7 @@ server.use("/api/admin", require("./routes/admin/admin"));
 server.use("/api/catalog", require("./routes/catalog/catalog"));
 server.use("/api/upload", require("./routes/upload/upload"));
 server.use("/api/ecosystem", require("./routes/ecosystem/ecosystem"));
+server.use("/api/newsletter", require("./routes/newsletter/newsletter"));
 server.use(notFoundMiddleware);
 
 server.use(errorHandler);
