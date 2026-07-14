@@ -15,7 +15,9 @@ const ColorFilter = () => {
   const { culoare, setCuloare, culoareContext: contextProducts = [] } = useFilters();
   const [open, setOpen] = useState(true);
 
-  const options = [...new Set(contextProducts.flatMap((p) => p.culoare ?? []).filter(Boolean))].sort();
+  const options = [...new Set(
+    contextProducts.flatMap((p) => p.variants?.map((v) => v.attributes?.Culoare).filter(Boolean) ?? [])
+  )].sort();
 
   const visibleOptions = [
     ...options,

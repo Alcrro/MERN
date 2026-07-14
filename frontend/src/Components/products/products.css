@@ -3,16 +3,16 @@
 	display: flex;
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 20px 24px;
-	gap: 20px;
+	padding: 20px 0px;
+	gap: 1rem;
 	align-items: flex-start;
 }
 
 /* ─── Mobile < 992px : single column, no sidebar ─────── */
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
 	.container-products-outer {
 		flex-direction: column;
-		padding: 16px;
+		padding: 16px 0px;
 	}
 	.container-products-outer .filter {
 		display: none;
@@ -39,7 +39,7 @@
 }
 
 /* ─── Desktop ≥ 992px : sidebar + content ──────────────── */
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
 	.container-products-outer {
 		flex-direction: row;
 	}
@@ -71,12 +71,7 @@
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
-
-@media (min-width: 1300px) {
-	.card-collection.card-v2-grid {
-		grid-template-columns: repeat(4, 1fr);
-	}
-}
+*/
 
 /* ─── Sort selects (legacy, unused now) ─────────────────── */
 .limit select,

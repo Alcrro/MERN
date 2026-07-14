@@ -90,9 +90,7 @@ const Cards = ({ products: data }) => {
                 {priceFormatted}<span className="price-currency">RON</span>
               </p>
             </div>
-            <div className="card-v2-add-to-cart">
-              <AddToCartV2Button data={data} />
-            </div>
+            <AddToCartV2Button data={data} />
           </div>
         </div>
       </div>

@@ -6,10 +6,10 @@ const applyFilters = (products, { kind, tip, brand, model, availability, stocare
     if (tip                && p.tip  !== tip)                                          return false;
     if (brand.length       && !brand.includes(p.brand))                               return false;
     if (model.length       && !model.includes(p.model))                               return false;
-    if (availability.length && !availability.includes(p.stock?.availability))         return false;
-    if (stocare.length     && !stocare.includes(p.stocare))                           return false;
-    if (ram.length         && !ram.includes(p.RAM))                                   return false;
-    if (culoare.length     && !p.culoare?.some?.((c) => culoare.includes(c)))         return false;
+    if (availability.length && !p.variants?.some((v) => availability.includes(v.stock?.availability))) return false;
+    if (stocare.length     && !p.variants?.some((v) => stocare.includes(v.attributes?.Stocare)))      return false;
+    if (ram.length         && !ram.includes(p.RAM))                                                    return false;
+    if (culoare.length     && !p.variants?.some((v) => culoare.includes(v.attributes?.Culoare)))      return false;
     return true;
   });
 

@@ -8,7 +8,7 @@ const AvailabilityFilter = () => {
   const [open, setOpen] = useState(true);
 
   const counts = Object.fromEntries(
-    OPTIONS.map((opt) => [opt, contextProducts.filter((p) => p.stock?.availability === opt).length])
+    OPTIONS.map((opt) => [opt, contextProducts.filter((p) => p.variants?.some((v) => v.stock?.availability === opt)).length])
   );
 
   const toggle = (val) =>

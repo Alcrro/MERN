@@ -7,9 +7,9 @@ const StorageFilter = () => {
 
   const toGB = (s) => (s?.toUpperCase().includes("TB") ? parseFloat(s) * 1024 : parseFloat(s));
 
-  const options = [...new Set(contextProducts.map((p) => p.stocare).filter(Boolean))].sort(
-    (a, b) => toGB(a) - toGB(b)
-  );
+  const options = [...new Set(
+    contextProducts.flatMap((p) => p.variants?.map((v) => v.attributes?.Stocare).filter(Boolean) ?? [])
+  )].sort((a, b) => toGB(a) - toGB(b));
 
   const toggle = (val) =>
     setStocare((prev) =>
@@ -31,7 +31,7 @@ const StorageFilter = () => {
       {open && (
         <div className="filter-body scrollable">
           {visible.map((val) => {
-            const count = contextProducts.filter((p) => p.stocare === val).length;
+            const count = contextProducts.filter((p) => p.variants?.some((v) => v.attributes?.Stocare === val)).length;
             return (
               <div className="filter-inner" key={val}>
                 <input

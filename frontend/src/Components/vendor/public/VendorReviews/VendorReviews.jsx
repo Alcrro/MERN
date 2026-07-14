@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import { useSelector } from "react-redux";
 import { useGetVendorReviewsQuery, useAddVendorReviewMutation } from "../../../../features/vendor/rtkVendor";
 import Stars from "../../../products/singleProducts/Stars";
-import StarPicker from "../../../products/singleProducts/StarPicker";
+import StarPicker from "../../../products/singleProducts/sections/StarPicker";
 import "./VendorReviews.css";
 
 const initial = { star: 0, comment: "", err: "", submitting: false };
