@@ -1,16 +1,16 @@
 import { useState } from "react";
-import Stars from "./Stars";
+import Stars from "../Stars";
 import ProductImageCarousel from "./ProductImageCarousel";
 import VariantPicker from "./VariantPicker";
 import useVariantPicker from "./useVariantPicker";
-import { AVAIL_COLOR } from "./singleProductConstants";
-import { deliveryDate } from "./singleProductUtils";
+import { AVAIL_COLOR } from "../singleProductConstants";
+import { deliveryDate } from "../singleProductUtils";
 import {
   TruckIcon, ZapIcon, StoreIcon,
   ReturnIcon, ShieldIcon, BadgeIcon,
   CheckIcon, CartIcon, HeartIcon,
   LockIcon, CheckSmIcon, PhoneIcon,
-} from "./singleProductIcons";
+} from "../singleProductIcons";
 import InstallmentWidget from "./InstallmentWidget";
 import "./ProductHero.css";
 

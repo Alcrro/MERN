@@ -1,6 +1,6 @@
 import Section from "./Section";
 import ProductReviews from "./ProductReviews";
-import { getSpecs } from "./singleProductUtils";
+import { getSpecs } from "../singleProductUtils";
 import "./ProductSections.css";
 
 const toParagraphs = (text) =>

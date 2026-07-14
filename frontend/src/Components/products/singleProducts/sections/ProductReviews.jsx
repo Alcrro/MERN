@@ -1,10 +1,10 @@
 import { useReducer } from "react";
 import { Link } from "react-router-dom";
-import { useAddReviewMutation, useDeleteReviewMutation } from "../../../features/product/rtkProducts";
-import Stars from "./Stars";
+import { useAddReviewMutation, useDeleteReviewMutation } from "../../../../features/product/rtkProducts";
+import Stars from "../Stars";
 import StarPicker from "./StarPicker";
-import { avatarColor, fmtDate } from "./singleProductUtils";
-import { TrashSmIcon, LoginIcon, DoneIcon } from "./singleProductIcons";
+import { avatarColor, fmtDate } from "../singleProductUtils";
+import { TrashSmIcon, LoginIcon, DoneIcon } from "../singleProductIcons";
 import "./ProductReviews.css";
 
 const initialForm = { starValue: 0, comment: "", formErr: "", submitting: false };

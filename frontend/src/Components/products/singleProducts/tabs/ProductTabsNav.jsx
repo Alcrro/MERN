@@ -1,4 +1,4 @@
-import { TAB_KEYS, TAB_LABELS } from "./singleProductConstants";
+import { TAB_KEYS, TAB_LABELS } from "../singleProductConstants";
 import "./ProductTabsNav.css";
 
 const ProductTabsNav = ({ navRef, activeTab, scrollTo, rcount }) => {

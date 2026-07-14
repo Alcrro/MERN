@@ -1,4 +1,4 @@
-import { COLOR_MAP, isLightHex } from "../../../../utils/colorUtils";
+import { COLOR_MAP, isLightHex } from "../../../../../utils/colorUtils";
 import "./VariantPicker.css";
 
 const VariantPicker = ({ attrKeys, options, selected, isValid, onSelect }) => {

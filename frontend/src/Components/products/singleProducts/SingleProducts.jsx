@@ -8,11 +8,11 @@ import { useAddProductToCart } from "./useAddProductToCart";
 import { useBreadcrumbLabel } from "../../../hooks/useBreadcrumbLabel";
 import SingleProductSkeleton from "./SingleProductSkeleton";
 import ProductNotFound from "./ProductNotFound";
-import ProductHero from "./ProductHero";
-import ProductTabsNav from "./ProductTabsNav";
-import ProductSections from "./ProductSections";
+import ProductHero from "./hero/ProductHero";
+import ProductTabsNav from "./tabs/ProductTabsNav";
+import ProductSections from "./sections/ProductSections";
 import SellerPicker from "../../vendor/shared/SellerPicker";
-import VendorInfoBar from "./VendorInfoBar";
+import VendorInfoBar from "./hero/VendorInfoBar";
 import ProductConfigurator from "../ProductConfigurator";
 import "./singleProduct.css";
 

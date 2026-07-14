@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import pandaImg from "../../../Assets/images/panda.png";
-import CarouselNavBtn from "../../UI/ProductCarousel/CarouselNavBtn";
+import pandaImg from "../../../../Assets/images/panda.png";
+import CarouselNavBtn from "../../../UI/ProductCarousel/CarouselNavBtn";
 import "./ProductImageCarousel.css";
 
 const ProductImageCarousel = ({ images = [], alt = "", avail, availStyle }) => {

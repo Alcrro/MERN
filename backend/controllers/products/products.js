@@ -51,7 +51,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
   }
   if (stocare) {
     const stocareArr = Array.isArray(stocare) ? stocare : [stocare];
-    queryObject.stocare = { $in: stocareArr };
+    queryObject["variants.attributes.Stocare"] = { $in: stocareArr };
   }
   if (ram) {
     const ramArr = Array.isArray(ram) ? ram : [ram];
@@ -59,7 +59,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
   }
   if (culoare) {
     const culoareArr = Array.isArray(culoare) ? culoare : [culoare];
-    queryObject.culoare = { $in: culoareArr };
+    queryObject["variants.attributes.Culoare"] = { $in: culoareArr };
   }
 
   const sortMap = {
