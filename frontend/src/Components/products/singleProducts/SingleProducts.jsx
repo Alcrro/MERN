@@ -13,13 +13,13 @@ import ProductTabsNav from "./tabs/ProductTabsNav";
 import ProductSections from "./sections/ProductSections";
 import SellerPicker from "../../vendor/shared/SellerPicker";
 import VendorInfoBar from "./hero/VendorInfoBar";
-import ProductConfigurator from "../ProductConfigurator";
 import "./singleProduct.css";
 
 const SingleProducts = () => {
   const { id, sku }  = useParams();
   const authUser     = useSelector((s) => s.auth.user);
   const [selectedListing, setSelected] = useState(null);
+  const [selectedAttrs,   setAttrs]    = useState({});
 
   const { navRef, sectionRefs, activeTab, scrollTo } = useScrollSpy(TAB_KEYS);
 
@@ -31,15 +31,19 @@ const SingleProducts = () => {
   const productId = pd?.product?._id ?? id;
 
   const { data: rd, isLoading: rLoad } = useGetReviewsQuery(productId, { skip: !pd?.product });
-  const { added, handleCart } = useAddProductToCart(selectedListing ?? pd?.product);
+
+  const p           = pd?.product;
+  const productName = p ? (p.model || p.name || p.brand) : null;
+
+  const cartProduct = selectedListing && p
+    ? { ...selectedListing, brand: p.brand, model: p.model, name: p.name, images: p.images }
+    : p;
+  const { added, handleCart } = useAddProductToCart(cartProduct);
 
   const reviews = rd?.reviews ?? [];
   const recPct  = reviews.length >= 3
     ? Math.round(reviews.filter((r) => r.value >= 4).length / reviews.length * 100)
     : 0;
-
-  const p           = pd?.product;
-  const productName = p ? (p.model || p.name || p.brand) : null;
   useBreadcrumbLabel(productName);
 
   if (pLoad) return <SingleProductSkeleton />;
@@ -53,10 +57,10 @@ const SingleProducts = () => {
       <ProductHero
         p={p} productName={productName} added={added}
         onAddToCart={handleCart} onScrollToReviews={() => scrollTo("recenzii")}
-        listing={selectedListing} recPct={recPct}
+        listing={selectedListing} recPct={recPct} onAttrsChange={setAttrs}
       />
       {p.catalogRef
-        ? <SellerPicker catalogRef={p.catalogRef} onSellerChange={setSelected} />
+        ? <SellerPicker catalogRef={p.catalogRef} onSellerChange={setSelected} selectedAttrs={selectedAttrs} />
         : p.vendor?.shopName && <VendorInfoBar vendor={p.vendor} />
       }
       <ProductTabsNav navRef={navRef} activeTab={activeTab} scrollTo={scrollTo} rcount={rcount} />
@@ -64,7 +68,6 @@ const SingleProducts = () => {
         p={p} productName={productName} sectionRefs={sectionRefs}
         reviewData={{ reviews: rd?.reviews ?? [], isLoading: rLoad, authUser, productId, avg, rcount }}
       />
-      <ProductConfigurator tip={p.tip} brand={p.brand} model={p.model} />
     </div>
   );
 };

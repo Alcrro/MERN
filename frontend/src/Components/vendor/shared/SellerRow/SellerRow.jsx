@@ -15,13 +15,14 @@ const SellerRow = ({ seller, selected, onSelect }) => {
   const price = (seller.minPrice ?? firstVariant?.price)?.toLocaleString("ro-RO");
   const avail = firstVariant?.stock?.availability;
   const shop  = seller.vendor?.shopName ?? "Vânzător";
-  const vp      = seller.vendor?.vendorProfile;
+  const vp      = seller.vendor?.profile ?? {};
+  const loc     = seller.vendor?.locations?.[0] ?? {};
   const tip     = vp?.tipEntitate;
-  const vRating = seller.vendor?.vendorRating;
-  const city  = vp?.orasDepozit;
-  const retur = vp?.returZile;
-  const min   = vp?.zileLivrare?.min;
-  const max   = vp?.zileLivrare?.max;
+  const vRating = seller.vendor?.rating;
+  const city    = loc.oras;
+  const retur   = vp?.returZile;
+  const min     = loc.zileLivrare?.min;
+  const max     = loc.zileLivrare?.max;
   const mod   = AVAIL_MOD[avail] ?? "gray";
 
   return (

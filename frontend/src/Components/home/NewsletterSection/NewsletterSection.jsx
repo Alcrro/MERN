@@ -3,7 +3,9 @@ import { MailIcon } from "../homeIcons";
 import { useNewsletter } from "./useNewsletter";
 
 const NewsletterSection = () => {
-  const { email, setEmail, subscribed, handleSubscribe, isLoading, error } = useNewsletter();
+  const { email, setEmail, successMsg, handleSubscribe, isLoading, error } = useNewsletter();
+
+  const alreadySubscribed = successMsg === "Ești deja abonat.";
 
   return (
     <section className="home-newsletter" aria-label="Newsletter">
@@ -13,8 +15,12 @@ const NewsletterSection = () => {
         <p className="home-newsletter__sub">
           Abonează-te și primești oferte exclusive, noutăți și prețuri speciale direct pe email.
         </p>
-        {subscribed ? (
-          <p className="home-newsletter__thanks">✓ Mulțumim! Verifică-ți emailul pentru confirmare.</p>
+        {successMsg ? (
+          <p className="home-newsletter__thanks">
+            {alreadySubscribed
+              ? "Acest email este deja abonat la newsletter."
+              : "✓ Mulțumim! Verifică-ți emailul pentru confirmare."}
+          </p>
         ) : (
           <form className="home-newsletter__form" onSubmit={handleSubscribe}>
             <input

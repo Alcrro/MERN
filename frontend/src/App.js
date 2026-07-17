@@ -41,6 +41,13 @@ import AdminVendors from "./Pages/Admin/AdminVendors/AdminVendors";
 import AdminCategories from "./Pages/Admin/AdminCategories/AdminCategories";
 import VendorPage from "./Pages/VendorPage/VendorPage";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import Terms from "./Pages/Terms";
+import GDPR from "./Pages/GDPR";
+import CookieBanner from "./Components/CookieBanner";
+import OrderDetail from "./Pages/Orders/OrderDetail";
+import ShopCardPage from "./Pages/ShopCard/ShopCard";
+import ProfilePaymentMethods from "./Components/profile/ProfilePaymentMethods/ProfilePaymentMethods";
+import ProfileSummary from "./Components/profile/ProfileSummary";
 
 const App = () => {
   return (
@@ -67,12 +74,15 @@ const App = () => {
           <Route path="/cart/checkout" element={<Checkout />} />
 
           <Route element={<PrivateRoutes />}>
+            <Route path="/orders/:id" element={<OrderDetail />} />
             <Route path="/profile" element={<Profile />}>
-              <Route index element={<Navigate to="info" replace />} />
+              <Route index element={<ProfileSummary />} />
               <Route path="info"     element={<ProfileInfo />} />
               <Route path="orders"   element={<ProfileOrders />} />
               <Route path="address"  element={<ProfileAddress />} />
-              <Route path="settings" element={<ProfileSettings />} />
+              <Route path="my-card"          element={<ShopCardPage />} />
+              <Route path="payment-methods" element={<ProfilePaymentMethods />} />
+              <Route path="settings"        element={<ProfileSettings />} />
             </Route>
             <Route path="admin/dashboard" element={<AdminDashboard />}>
               <Route index element={<AdminOverview />} />
@@ -98,12 +108,15 @@ const App = () => {
           <Route path="/favorites" element={<Favorites />} />
           <Route exact path="/about" element={<About />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/gdpr" element={<GDPR />} />
           <Route path="*" element={<NoMatch />} />
           <Route path="/product/*" element={<NoMatch />} />
         </Routes>
         </main>
         {/* </UserAuthProvider> */}
         <Footer />
+        <CookieBanner />
       </div>
     </Router>
   );

@@ -2,6 +2,7 @@ const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const Products = require("../../models/product/Product");
+const Vendor = require("../../models/vendor/Vendor");
 const { generateSku } = require("../../utils/skuGenerator");
 
 // @desc    Fetch all products
@@ -42,7 +43,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
     queryObject.kind = { $in: kindArr };
   }
   if (tip) {
-    const tipArr = Array.isArray(tip) ? tip : [tip];
+    const tipArr = (Array.isArray(tip) ? tip : [tip]).map((t) => new RegExp(`^${t.replace(/-/g, " ")}$`, "i"));
     queryObject.tip = { $in: tipArr };
   }
   if (availability) {
@@ -117,7 +118,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
 // @access  Public
 exports.getProduct = asyncHandler(async (req, res, next) => {
   const product = await Products.findById(req.params.id)
-    .populate("vendor", "shopName vendorProfile");
+    .populate("vendor", "shopName");
 
   if (!product) {
     return next(new ErrorResponse(`Product not found with id of ${req.params.id}`, 404));
@@ -134,7 +135,7 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
 // @access  Public
 exports.getProductBySku = asyncHandler(async (req, res, next) => {
   const product = await Products.findOne({ sku: req.params.sku })
-    .populate("vendor", "shopName vendorProfile");
+    .populate("vendor", "shopName");
 
   if (!product) {
     return next(new ErrorResponse(`Product not found with sku ${req.params.sku}`, 404));
@@ -176,10 +177,23 @@ exports.getSellers = asyncHandler(async (req, res, next) => {
     ],
   })
     .sort({ minPrice: 1 })
-    .populate("vendor", "shopName vendorProfile vendorRating")
-    .select("minPrice variants vendor images listingStatus rating");
+    .populate("vendor", "shopName")
+    .select("minPrice variants vendor images listingStatus rating")
+    .lean();
 
-  res.status(200).json({ success: true, sellers, count: sellers.length });
+  const userIds = sellers.map((s) => s.vendor?._id).filter(Boolean);
+  const vendorDocs = await Vendor.find({ user: { $in: userIds } })
+    .select("user profile locations rating")
+    .lean();
+  const vMap = Object.fromEntries(vendorDocs.map((v) => [v.user.toString(), v]));
+
+  const enriched = sellers.map((s) => {
+    if (!s.vendor?._id) return s;
+    const vd = vMap[s.vendor._id.toString()];
+    return { ...s, vendor: { ...s.vendor, profile: vd?.profile ?? {}, locations: vd?.locations ?? [], rating: vd?.rating ?? { average: 0, count: 0 } } };
+  });
+
+  res.status(200).json({ success: true, sellers: enriched, count: enriched.length });
 });
 
 // @desc 	Create a product

@@ -236,6 +236,9 @@
 .sp-sc-row svg { color: var(--primary); flex-shrink: 0; }
 .sp-sc-row strong { color: var(--text-dark); font-weight: 700; }
 
+.sp-sc-rating { display: flex; align-items: center; gap: 6px; color: var(--warning, #f59e0b); font-weight: 600; font-size: 0.82rem; }
+.sp-sc-rating-count { color: var(--text-muted); font-weight: 400; font-size: 0.78rem; }
+
 /* ── stock ───────────────────────────────────────────────── */
 .sp-stock {
 	font-size: 0.82rem;
@@ -354,6 +357,15 @@
 	background: var(--text-muted);
 	box-shadow: none;
 	cursor: not-allowed;
+}
+
+.sp-btn-primary--out {
+	background: var(--bg-card);
+	color: var(--text-muted);
+	border: 1.5px solid var(--border);
+	box-shadow: none;
+	cursor: default;
+	pointer-events: none;
 }
 
 .sp-btn-outline {

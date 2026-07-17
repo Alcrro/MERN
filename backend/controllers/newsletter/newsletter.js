@@ -1,16 +1,16 @@
 const asyncHandler = require("express-async-handler");
+const ErrorResponse = require("../../utilitis/errorResponse");
 const { Resend } = require("resend");
 const { welcomeNewsletter } = require("../../utils/emailTemplates/welcomeNewsletter");
 const Subscriber = require("../../models/newsletter/Subscriber");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const subscribeNewsletter = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+const subscribeNewsletter = asyncHandler(async (req, res, next) => {
+  const email = (req.body.email || "").trim().toLowerCase();
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    res.status(400);
-    throw new Error("Adresă de email invalidă.");
+    return next(new ErrorResponse("Adresă de email invalidă.", 400));
   }
 
   const existing = await Subscriber.findOne({ email });
@@ -40,12 +40,11 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "Abonare reușită." });
 });
 
-const unsubscribeNewsletter = asyncHandler(async (req, res) => {
-  const { email } = req.query;
+const unsubscribeNewsletter = asyncHandler(async (req, res, next) => {
+  const email = (req.query.email || "").trim().toLowerCase();
 
   if (!email) {
-    res.status(400);
-    throw new Error("Email lipsă.");
+    return next(new ErrorResponse("Email lipsă.", 400));
   }
 
   const subscriber = await Subscriber.findOne({ email });

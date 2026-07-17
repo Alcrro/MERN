@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Vendor = require("../vendor/Vendor");
 
 const VendorReviewSchema = new mongoose.Schema(
   {
@@ -13,17 +14,17 @@ const VendorReviewSchema = new mongoose.Schema(
 VendorReviewSchema.index({ vendor: 1, user: 1 }, { unique: true });
 VendorReviewSchema.index({ vendor: 1, createdAt: -1 });
 
-VendorReviewSchema.statics.calcAverageRating = async function (vendorId) {
+VendorReviewSchema.statics.calcAverageRating = async function (userId) {
   const stats = await this.aggregate([
-    { $match: { vendor: vendorId } },
+    { $match: { vendor: userId } },
     { $group: { _id: "$vendor", average: { $avg: "$value" }, count: { $sum: 1 } } },
   ]);
 
   const update = stats.length > 0
-    ? { "vendorRating.average": Math.round(stats[0].average * 10) / 10, "vendorRating.count": stats[0].count }
-    : { "vendorRating.average": 0, "vendorRating.count": 0 };
+    ? { "rating.average": Math.round(stats[0].average * 10) / 10, "rating.count": stats[0].count }
+    : { "rating.average": 0, "rating.count": 0 };
 
-  await this.model("Register").findByIdAndUpdate(vendorId, update);
+  await Vendor.findOneAndUpdate({ user: userId }, update);
 };
 
 VendorReviewSchema.post("save", function () {

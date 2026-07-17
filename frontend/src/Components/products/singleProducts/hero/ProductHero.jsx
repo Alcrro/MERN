@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Stars from "../Stars";
 import ProductImageCarousel from "./ProductImageCarousel";
 import VariantPicker from "./VariantPicker";
@@ -14,19 +14,34 @@ import {
 import InstallmentWidget from "./InstallmentWidget";
 import "./ProductHero.css";
 
-const DELIVERY = [
-  { id: "standard", Icon: TruckIcon, name: "Livrare standard",  sub: () => `Ajunge: ${deliveryDate()}`, price: "Gratuit"    },
-  { id: "express",  Icon: ZapIcon,   name: "Curier express",     sub: () => "Mâine până la 14:00",       price: "19,99 RON" },
-  { id: "pickup",   Icon: StoreIcon, name: "Ridicare personală", sub: () => "Azi din București",          price: "Gratuit"   },
-];
+const buildDelivery = (listing) => {
+  const loc  = listing?.vendor?.locations?.[0];
+  const min  = loc?.zileLivrare?.min;
+  const max  = loc?.zileLivrare?.max;
+  const city = loc?.oras;
+  const standardSub = min != null && max != null
+    ? () => `${min}–${max} zile lucrătoare`
+    : () => `Ajunge: ${deliveryDate()}`;
+  const pickupSub = city ? () => `Azi din ${city}` : null;
 
-const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, listing, recPct = 0 }) => {
-  const [delivery, setDelivery] = useState("standard");
+  return [
+    { id: "standard", Icon: TruckIcon, name: "Livrare standard",  sub: standardSub,                       price: "Gratuit"    },
+    { id: "express",  Icon: ZapIcon,   name: "Curier express",     sub: () => "Mâine până la 14:00",       price: "19,99 RON" },
+    ...(pickupSub ? [{ id: "pickup", Icon: StoreIcon, name: "Ridicare personală", sub: pickupSub, price: "Gratuit" }] : []),
+  ];
+};
+
+const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, listing, recPct = 0, onAttrsChange }) => {
+  const [delivery,     setDelivery]     = useState("standard");
+  const [selectedRate, setSelectedRate] = useState(null);
+  const DELIVERY = buildDelivery(listing);
 
   const src      = listing ?? p;
   const variants = src.variants ?? [];
 
   const { attrKeys, options, selected, activeVariant, isValid, select } = useVariantPicker(variants);
+
+  useEffect(() => { onAttrsChange?.(selected); }, [selected, onAttrsChange]);
   const activeV  = activeVariant ?? {};
 
   const allImgs = [...new Set([...(activeV.images ?? []), ...(src.images ?? [])].filter(Boolean))];
@@ -95,9 +110,25 @@ const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, li
 
         <div className="sp-seller-card">
           <div className="sp-sc-row"><ShieldIcon /><span>Garanție <strong>24 luni</strong> de la producător</span></div>
-          <div className="sp-sc-row"><ReturnIcon /><span>Retur gratuit <strong>30 zile</strong> fără întrebări</span></div>
+          <div className="sp-sc-row">
+            <ReturnIcon />
+            <span>
+              Retur gratuit <strong>{listing?.vendor?.profile?.returZile ?? 30} zile</strong> fără întrebări
+            </span>
+          </div>
           <div className="sp-sc-row"><CheckSmIcon /><span>Asigurare transport <strong>inclusă</strong></span></div>
-          <div className="sp-sc-row"><BadgeIcon /><span>Vânzător <strong>certificat</strong> AlcRo</span></div>
+          {listing?.vendor?.shopName
+            ? <div className="sp-sc-row"><BadgeIcon /><span>Vândut de <strong>{listing.vendor.shopName}</strong></span></div>
+            : <div className="sp-sc-row"><BadgeIcon /><span>Vânzător <strong>certificat</strong> AlcRo</span></div>
+          }
+          {listing?.vendor?.rating?.count > 0 && (
+            <div className="sp-sc-row">
+              <span className="sp-sc-rating">
+                ★ {listing.vendor.rating.average.toFixed(1)}
+                <span className="sp-sc-rating-count">({listing.vendor.rating.count} recenzii vânzător)</span>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="sp-stock">
@@ -123,16 +154,25 @@ const ProductHero = ({ p, productName, added, onAddToCart, onScrollToReviews, li
           </div>
         </div>
 
-        <InstallmentWidget price={discount > 0 ? price - discount : price} />
+        <InstallmentWidget
+          price={discount > 0 ? price - discount : price}
+          selected={selectedRate}
+          onSelect={setSelectedRate}
+        />
 
         <div className="sp-cta">
-          <button
-            className={`sp-btn-primary${added ? " sp-btn-primary--done" : ""}`}
-            onClick={() => onAddToCart(activeV)}
-            disabled={isOut}
-          >
-            {added ? <><CheckIcon />Adăugat în coș</> : <><CartIcon />Adaugă în coș</>}
-          </button>
+          {isOut ? (
+            <span className="sp-btn-primary sp-btn-primary--out" aria-disabled="true">
+              <CartIcon />Stoc epuizat
+            </span>
+          ) : (
+            <button
+              className={`sp-btn-primary${added ? " sp-btn-primary--done" : ""}`}
+              onClick={() => onAddToCart(activeV, selectedRate)}
+            >
+              {added ? <><CheckIcon />Adăugat în coș</> : <><CartIcon />Adaugă în coș</>}
+            </button>
+          )}
           <button type="button" className="sp-btn-outline"><HeartIcon />Adaugă la favorite</button>
         </div>
         <div className="sp-mini-trust">

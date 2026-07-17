@@ -171,6 +171,32 @@ html[data-theme="dark"] .sk-pulse {
 	}
 }
 
+.vph__locations {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.vph__loc {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	background: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 0.3rem 0.7rem;
+	font-size: 0.82rem;
+}
+
+.vph__loc-oras {
+	font-weight: 600;
+}
+
+.vph__loc-livrare {
+	color: var(--text-muted);
+}
+
 @media (max-width: 480px) {
 	.vph {
 		padding: 14px 14px;

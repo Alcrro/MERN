@@ -90,7 +90,19 @@ const Cards = ({ products: data }) => {
                 {priceFormatted}<span className="price-currency">RON</span>
               </p>
             </div>
-            <AddToCartV2Button data={data} />
+            {qty === 0 || avail === "Stoc Epuizat" ? (
+              <button
+                type="button"
+                className={`atc-btn atc-btn--fav${isFav ? " atc-btn--added" : ""}`}
+                onClick={(e) => { e.preventDefault(); dispatch(toggleFavorite(data)); }}
+                aria-label={isFav ? "Eliminat din favorite" : "Adaugă la favorite"}
+              >
+                <HeartIcon filled={isFav} />
+                <span>{isFav ? "În favorite" : "Adaugă la favorite"}</span>
+              </button>
+            ) : (
+              <AddToCartV2Button data={data} />
+            )}
           </div>
         </div>
       </div>

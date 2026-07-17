@@ -37,3 +37,22 @@
 html[data-theme="dark"] .atc-btn--added {
   background: #15803d;
 }
+
+.atc-btn--fav {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.atc-btn--fav:hover:not(:disabled) {
+  background: var(--bg-card);
+  border-color: #e11d48;
+  color: #e11d48;
+  box-shadow: none;
+}
+
+.atc-btn--fav.atc-btn--added {
+  background: transparent;
+  color: #e11d48;
+  border-color: #e11d48;
+}

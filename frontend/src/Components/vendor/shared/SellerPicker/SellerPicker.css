@@ -108,6 +108,16 @@
 
 .seller-picker__error { color: var(--accent); }
 
+.seller-picker__no-match {
+  font-size: .8rem;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  margin: 0 0 4px;
+  background: var(--bg-page);
+  border-radius: 6px;
+  border-left: 3px solid var(--warning, #f59e0b);
+}
+
 /* ── Skeleton ───────────────────────────────────────────── */
 .seller-picker__skeleton {
   display: flex;

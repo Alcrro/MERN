@@ -1,9 +1,10 @@
 import "./VendorInfoBar.css";
 
 const VendorInfoBar = ({ vendor }) => {
-  const vp   = vendor.vendorProfile ?? {};
-  const min  = vp.zileLivrare?.min;
-  const max  = vp.zileLivrare?.max;
+  const vp  = vendor.profile ?? {};
+  const loc = vendor.locations?.[0] ?? {};
+  const min = loc.zileLivrare?.min;
+  const max = loc.zileLivrare?.max;
 
   return (
     <div className="vib">
@@ -13,9 +14,9 @@ const VendorInfoBar = ({ vendor }) => {
         {vp.tipEntitate && <span className="vib__tip">{vp.tipEntitate}</span>}
       </div>
       <div className="vib__meta">
-        {vp.orasDepozit && <span>📍 {vp.orasDepozit}</span>}
+        {loc.oras      && <span>📍 {loc.oras}</span>}
         {min != null && max != null && <span>🚚 {min}–{max} zile</span>}
-        {vp.returZile   != null && <span>↩ {vp.returZile} zile retur</span>}
+        {vp.returZile  != null && <span>↩ {vp.returZile} zile retur</span>}
       </div>
     </div>
   );

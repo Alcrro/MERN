@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./InstallmentWidget.css";
 
 const WalletIcon = () => (
@@ -12,9 +11,7 @@ const PLANS = [3, 6, 12];
 const MIN_PRICE = 200;
 const fmt = (n) => n.toLocaleString("ro-RO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-const InstallmentWidget = ({ price }) => {
-  const [selected, setSelected] = useState(null);
-
+const InstallmentWidget = ({ price, selected, onSelect }) => {
   if (!price || price < MIN_PRICE) return null;
 
   return (
@@ -33,7 +30,7 @@ const InstallmentWidget = ({ price }) => {
             key={n}
             type="button"
             className={`inst__row${on ? " inst__row--on" : ""}`}
-            onClick={() => setSelected(on ? null : n)}
+            onClick={() => onSelect(on ? null : n)}
             aria-pressed={on}
           >
             <span className="inst__radio">

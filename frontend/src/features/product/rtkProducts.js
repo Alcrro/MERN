@@ -34,23 +34,23 @@ export const productsApi = createApi({
           ...ram.map((r) => `ram=${encodeURIComponent(r)}`),
           ...culoare.map((c) => `culoare=${encodeURIComponent(c)}`),
           ...(kind ? [`kind=${encodeURIComponent(kind)}`] : []),
-          ...(tips.length ? tips.map((t) => `tip=${encodeURIComponent(t)}`) : tip ? [`tip=${encodeURIComponent(tip)}`] : []),
+          ...(tips.length ? tips.map((t) => `tip=${encodeURIComponent(t.toLowerCase().replace(/\s+/g, '-'))}`) : tip ? [`tip=${encodeURIComponent(tip.toLowerCase().replace(/\s+/g, '-'))}`] : []),
         ].join("&");
         return `products?${q}`;
       },
       providesTags: [{ type: "Products" }],
     }),
     getSingleProduct: builder.query({
-      query: (id) => `product/${id}`,
+      query: (id) => `products/${id}`,
       providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
     getProductBySku: builder.query({
-      query: (sku) => `product/sku/${sku}`,
+      query: (sku) => `products/sku/${sku}`,
       providesTags: (result, error, sku) => [{ type: "Products", id: sku }],
     }),
     addProduct: builder.mutation({
       query: (body) => ({
-        url: "admin/product",
+        url: "admin/products",
         method: "POST",
         body,
       }),
@@ -58,7 +58,7 @@ export const productsApi = createApi({
     }),
     updateProduct: builder.mutation({
       query: (body) => ({
-        url: "api/product",
+        url: "admin/products",
         method: "PUT",
         body,
       }),
@@ -66,7 +66,7 @@ export const productsApi = createApi({
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({
-        url: `api/product/${id}`,
+        url: `admin/products/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [{ type: "Products" }],
@@ -80,12 +80,12 @@ export const productsApi = createApi({
 
     /* ── Reviews ── */
     getReviews: builder.query({
-      query: (productId) => `product/${productId}/reviews`,
+      query: (productId) => `products/${productId}/reviews`,
       providesTags: (result, error, productId) => [{ type: "Reviews", id: productId }],
     }),
     addReview: builder.mutation({
       query: ({ productId, value, comment }) => ({
-        url: `product/${productId}/reviews`,
+        url: `products/${productId}/reviews`,
         method: "POST",
         body: { value, comment },
       }),

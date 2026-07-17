@@ -34,8 +34,11 @@ const cartSlice = createSlice({
       const price = resolvePrice(action.payload.data);
       const idx = state.card.findIndex((i) => i.data._id === action.payload.data._id);
       if (idx >= 0) {
-        state.card[idx].itemQuantity  += 1;
-        state.card[idx].itemAmountPrice = price * state.card[idx].itemQuantity;
+        state.card[idx].itemQuantity    += 1;
+        state.card[idx].itemAmountPrice  = price * state.card[idx].itemQuantity;
+        state.card[idx].data._selectedRate  = action.payload.data._selectedRate ?? null;
+        state.card[idx].data._variantAttrs  = action.payload.data._variantAttrs  ?? {};
+        state.card[idx].data._variantImages = action.payload.data._variantImages ?? [];
       } else {
         state.card.push({ ...action.payload, itemQuantity: 1, itemAmountPrice: price });
       }
@@ -70,3 +73,9 @@ const cartSlice = createSlice({
 
 export const { addToCart, removeFromCart, removeSingleCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
+
+export const selectCartIsInstallmentEligible = (state) =>
+  state.addToCart.card.some((item) => {
+    const price = item.data?.price ?? item.data?.minPrice ?? 0;
+    return price >= 200;
+  });

@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
+const ErrorResponse = require("../../utilitis/errorResponse");
 const mongoose = require("mongoose");
 const { Register } = require("../../models/auth/register");
+const Vendor = require("../../models/vendor/Vendor");
 const Products = require("../../models/product/Product");
 const VendorReview = require("../../models/vendorReview/VendorReview");
 
@@ -9,22 +11,34 @@ const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 // @desc    Get public vendor profile
 // @route   GET /api/vendor/public/:vendorId
 // @access  Public
-exports.getPublicVendor = asyncHandler(async (req, res) => {
+exports.getPublicVendor = asyncHandler(async (req, res, next) => {
   const { vendorId } = req.params;
   if (!isValidId(vendorId)) {
-    res.status(400);
-    throw new Error("Invalid vendorId");
+    return next(new ErrorResponse("Invalid vendorId", 400));
   }
 
-  const vendor = await Register.findOne(
-    { _id: vendorId, role: "vendor", vendorStatus: "approved" },
-    "shopName shopDescription avatar createdAt vendorProfile vendorRating"
-  );
+  const [user, vendorDoc] = await Promise.all([
+    Register.findOne(
+      { _id: vendorId, role: "vendor", vendorStatus: "approved" },
+      "shopName avatar createdAt"
+    ),
+    Vendor.findOne({ user: vendorId }),
+  ]);
 
-  if (!vendor) {
-    res.status(404);
-    throw new Error("Vendor not found");
+  if (!user) {
+    return next(new ErrorResponse("Vendor not found", 404));
   }
+
+  const vendor = {
+    _id:             user._id,
+    shopName:        user.shopName,
+    avatar:          user.avatar,
+    createdAt:       user.createdAt,
+    shopDescription: vendorDoc?.shopDescription ?? null,
+    profile:         vendorDoc?.profile ?? {},
+    locations:       vendorDoc?.locations ?? [],
+    rating:          vendorDoc?.rating ?? { average: 0, count: 0 },
+  };
 
   res.status(200).json({ success: true, vendor });
 });
@@ -32,11 +46,10 @@ exports.getPublicVendor = asyncHandler(async (req, res) => {
 // @desc    Get public vendor's active products
 // @route   GET /api/vendor/public/:vendorId/products
 // @access  Public
-exports.getPublicVendorProducts = asyncHandler(async (req, res) => {
+exports.getPublicVendorProducts = asyncHandler(async (req, res, next) => {
   const { vendorId } = req.params;
   if (!isValidId(vendorId)) {
-    res.status(400);
-    throw new Error("Invalid vendorId");
+    return next(new ErrorResponse("Invalid vendorId", 400));
   }
 
   const page  = Math.max(1, Number(req.query.page) || 1);
@@ -69,11 +82,10 @@ exports.getPublicVendorProducts = asyncHandler(async (req, res) => {
 // @desc    Get reviews for a vendor
 // @route   GET /api/vendor/public/:vendorId/reviews
 // @access  Public
-exports.getVendorReviews = asyncHandler(async (req, res) => {
+exports.getVendorReviews = asyncHandler(async (req, res, next) => {
   const { vendorId } = req.params;
   if (!isValidId(vendorId)) {
-    res.status(400);
-    throw new Error("Invalid vendorId");
+    return next(new ErrorResponse("Invalid vendorId", 400));
   }
 
   const reviews = await VendorReview.find({ vendor: vendorId })
@@ -86,17 +98,15 @@ exports.getVendorReviews = asyncHandler(async (req, res) => {
 // @desc    Add a review for a vendor
 // @route   POST /api/vendor/public/:vendorId/reviews
 // @access  Private
-exports.addVendorReview = asyncHandler(async (req, res) => {
+exports.addVendorReview = asyncHandler(async (req, res, next) => {
   const { vendorId } = req.params;
   if (!isValidId(vendorId)) {
-    res.status(400);
-    throw new Error("Invalid vendorId");
+    return next(new ErrorResponse("Invalid vendorId", 400));
   }
 
   const { value, comment } = req.body;
   if (!value || value < 1 || value > 5) {
-    res.status(400);
-    throw new Error("value must be between 1 and 5");
+    return next(new ErrorResponse("value must be between 1 and 5", 400));
   }
 
   const vendor = await Register.findOne(
@@ -104,8 +114,7 @@ exports.addVendorReview = asyncHandler(async (req, res) => {
     "_id"
   );
   if (!vendor) {
-    res.status(404);
-    throw new Error("Vendor not found");
+    return next(new ErrorResponse("Vendor not found", 404));
   }
 
   try {
@@ -119,8 +128,7 @@ exports.addVendorReview = asyncHandler(async (req, res) => {
     res.status(201).json({ success: true, review: populated });
   } catch (err) {
     if (err.code === 11000) {
-      res.status(409);
-      throw new Error("Ai lăsat deja o recenzie pentru acest vânzător");
+      return next(new ErrorResponse("Ai lăsat deja o recenzie pentru acest vânzător", 409));
     }
     throw err;
   }

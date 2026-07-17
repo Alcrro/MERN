@@ -31,6 +31,16 @@ const limiter = rateLimit({
 });
 server.use("/api/auth", limiter);
 
+const newsletterLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { success: false, message: "Prea multe cereri. Încearcă din nou în câteva ore." },
+});
+server.use("/api/newsletter/subscribe", newsletterLimiter);
+
+// webhook Stripe necesită raw body — înregistrat ÎNAINTE de express.json()
+server.use("/api/stripe", require("./routes/stripe/stripe"));
+
 server.use(express.json({ limit: "10kb" }));
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
@@ -48,10 +58,10 @@ server.use("/api/auth", require("./routes/auth/auth"));
 server.use("/api/users", require("./routes/user/user"));
 server.use("/api/", require("./routes/products/products"));
 server.use("/api/admin/", require("./routes/productCategory/productCategory"));
-server.use("/api/product/:productId/reviews", require("./routes/review/review"));
+server.use("/api/products/:productId/reviews", require("./routes/review/review"));
 server.use("/api/reviews", require("./routes/review/review"));
-server.use("/api/product/:productId/stock", require("./routes/stock/stock"));
-server.use("/api/admin/product/:productId/stock", require("./routes/stock/stock"));
+server.use("/api/products/:productId/stock", require("./routes/stock/stock"));
+server.use("/api/admin/products/:productId/stock", require("./routes/stock/stock"));
 server.use("/api/orders", require("./routes/order/order"));
 server.use("/api/addresses", require("./routes/address/address"));
 server.use("/api", require("./routes/vendor/vendor"));
@@ -60,6 +70,8 @@ server.use("/api/catalog", require("./routes/catalog/catalog"));
 server.use("/api/upload", require("./routes/upload/upload"));
 server.use("/api/ecosystem", require("./routes/ecosystem/ecosystem"));
 server.use("/api/newsletter", require("./routes/newsletter/newsletter"));
+server.use("/api/shop-card", require("./routes/shopCard/shopCard"));
+server.use("/api/payment-methods", require("./routes/paymentMethods/paymentMethods"));
 server.use(notFoundMiddleware);
 
 server.use(errorHandler);

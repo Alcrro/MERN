@@ -114,6 +114,21 @@
   transform: scale(0.99);
 }
 
+.auth-submit-btn:disabled {
+  background-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-group-checkbox a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-group-checkbox a:hover { text-decoration: underline; }
+
 .auth-link {
   text-align: center;
   margin-top: 1.25rem;

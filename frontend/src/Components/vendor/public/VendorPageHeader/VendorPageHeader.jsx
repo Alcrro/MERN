@@ -22,9 +22,9 @@ const VendorPageHeaderSkeleton = () => (
 const VendorPageHeader = ({ vendor, isLoading }) => {
   if (isLoading) return <VendorPageHeaderSkeleton />;
 
-  const vp      = vendor?.vendorProfile ?? {};
-  const rating  = vendor?.vendorRating ?? { average: 0, count: 0 };
-  const hasDepo = Boolean(vp.orasDepozit);
+  const vp     = vendor?.profile ?? {};
+  const rating = vendor?.rating ?? { average: 0, count: 0 };
+  const locs   = vendor?.locations ?? [];
 
   return (
     <div className="vph">
@@ -32,9 +32,13 @@ const VendorPageHeader = ({ vendor, isLoading }) => {
         <div className="vph__name-row">
           <h1 className="vph__name">{vendor.shopName}</h1>
           {vp.tipEntitate && <span className="vph__entitate">{vp.tipEntitate}</span>}
-          <span className={`vph__badge${hasDepo ? " vph__badge--depot" : " vph__badge--drop"}`}>
-            {hasDepo ? `Depozit: ${vp.orasDepozit}` : "Dropshipping"}
-          </span>
+          {locs.length > 0 ? (
+            <span className="vph__badge vph__badge--depot">
+              {locs.length === 1 ? `Depozit: ${locs[0].oras}` : `${locs.length} locații`}
+            </span>
+          ) : (
+            <span className="vph__badge vph__badge--drop">Dropshipping</span>
+          )}
         </div>
 
         {rating.count > 0 && (
@@ -54,11 +58,6 @@ const VendorPageHeader = ({ vendor, isLoading }) => {
         {vp.denumireFirma && <span className="vph__meta-item"><b>Firmă:</b> {vp.denumireFirma}</span>}
         {vp.cui           && <span className="vph__meta-item"><b>CUI:</b> {vp.cui}</span>}
         {vp.emailContact  && <span className="vph__meta-item"><b>Contact:</b> {vp.emailContact}</span>}
-        {(vp.zileLivrare?.min != null && vp.zileLivrare?.max != null) && (
-          <span className="vph__meta-item">
-            <b>Livrare:</b> {vp.zileLivrare.min}–{vp.zileLivrare.max} zile
-          </span>
-        )}
         {vp.returZile != null && (
           <span className="vph__meta-item"><b>Retur:</b> {vp.returZile} zile</span>
         )}
@@ -66,6 +65,19 @@ const VendorPageHeader = ({ vendor, isLoading }) => {
           <span className="vph__meta-item"><b>Activ din:</b> {formatActiveSince(vendor.createdAt)}</span>
         )}
       </div>
+
+      {locs.length > 1 && (
+        <div className="vph__locations">
+          {locs.map((loc, i) => (
+            <div key={i} className="vph__loc">
+              <span className="vph__loc-oras">{loc.oras}</span>
+              {loc.zileLivrare?.min != null && loc.zileLivrare?.max != null && (
+                <span className="vph__loc-livrare">{loc.zileLivrare.min}–{loc.zileLivrare.max} zile</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const ErrorResponse = require("../../utilitis/errorResponse");
 const EcosystemCache = require("../../models/ecosystemCache/EcosystemCache");
 const FALLBACK = require("../../utils/productEcosystemFallback");
 
@@ -28,9 +29,9 @@ Răspunde EXCLUSIV în limba română.
 Răspunde cu un obiect JSON valid cu exact cheile: critical, recommended, tasks.
 Nu include URL-uri sau slug-uri.`;
 
-exports.getEcosystem = asyncHandler(async (req, res) => {
+exports.getEcosystem = asyncHandler(async (req, res, next) => {
   const tip = decodeURIComponent(req.params.tip || "").trim();
-  if (!tip) return res.status(400).json({ message: "tip is required" });
+  if (!tip) return next(new ErrorResponse("tip is required", 400));
 
   const cached = await EcosystemCache.findOne({ tip });
   if (cached) {

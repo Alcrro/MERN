@@ -151,6 +151,11 @@ export const CATALOG_SPEC_FIELDS = {
   Books:       ["titlu", "autor", "editura", "pagini", "ISBN"],
 };
 
+/* ─── Checkout — installments ────────────────────────────── */
+export const INSTALLMENT_BANKS  = ["BT", "ING", "Raiffeisen", "BCR"];
+export const INSTALLMENT_MONTHS = [3, 6, 10, 12];
+export const INSTALLMENT_MIN_PRICE = 200;
+
 /* ─── Home stats ─────────────────────────────────────────── */
 export const STATS = [
   { value: "500+",  label: "Produse disponibile" },

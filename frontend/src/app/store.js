@@ -10,6 +10,10 @@ import { uploadApi } from "../features/upload/rtkUpload";
 import { adminApi } from "../features/admin/rtkAdmin";
 import { catalogApi } from "../features/catalog/rtkCatalog";
 import { newsletterApi } from "../features/newsletter/rtkNewsletter";
+import { shopCardApi } from "../features/shopCard/rtkShopCard";
+import shopCardReducer from "../features/shopCard/shopCardSlice";
+import { paymentMethodsApi } from "../features/paymentMethods/rtkPaymentMethods";
+import { authApi } from "../features/auth/rtkAuth";
 import addToCartReducer from "../features/product/addToCart/addToCartSlice";
 import cardsViewSlice from "../features/buttons/buttonsSlice";
 import hoverLinkReducer from "../features/cartModal/cartModalSlice";
@@ -36,6 +40,10 @@ export const store = configureStore({
     [adminApi.reducerPath]: adminApi.reducer,
     [catalogApi.reducerPath]: catalogApi.reducer,
     [newsletterApi.reducerPath]: newsletterApi.reducer,
+    [shopCardApi.reducerPath]: shopCardApi.reducer,
+    shopCard: shopCardReducer,
+    [paymentMethodsApi.reducerPath]: paymentMethodsApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -46,7 +54,10 @@ export const store = configureStore({
       .concat(uploadApi.middleware)
       .concat(adminApi.middleware)
       .concat(catalogApi.middleware)
-      .concat(newsletterApi.middleware),
+      .concat(newsletterApi.middleware)
+      .concat(shopCardApi.middleware)
+      .concat(paymentMethodsApi.middleware)
+      .concat(authApi.middleware),
 });
 
 export default store;

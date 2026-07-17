@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const ErrorResponse = require("../../utilitis/errorResponse");
 const Product = require("../../models/product/Product");
 const { generateSku } = require("../../utils/skuGenerator");
 const Electronics = require("../../models/product/types/Electronics");
@@ -7,6 +8,7 @@ const Furniture = require("../../models/product/types/Furniture");
 const HomeGarden = require("../../models/product/types/HomeGarden");
 const Books = require("../../models/product/types/Books");
 const { Register } = require("../../models/auth/register");
+const Vendor = require("../../models/vendor/Vendor");
 const { Order } = require("../../models/order/Order");
 
 const VALID_KINDS = ["Electronics", "Clothing", "Furniture", "HomeGarden", "Books"];
@@ -22,32 +24,33 @@ const KIND_MODEL = {
 // @desc   Apply to become a vendor
 // @route  POST /api/vendor/apply
 // @access Private
-exports.applyAsVendor = asyncHandler(async (req, res) => {
+exports.applyAsVendor = asyncHandler(async (req, res, next) => {
   const user = await Register.findById(req.user._id);
 
   if (user.role === "vendor") {
-    res.status(400);
-    throw new Error("You are already a vendor");
+    return next(new ErrorResponse("You are already a vendor", 400));
   }
   if (user.vendorStatus === "pending") {
-    res.status(400);
-    throw new Error("Your application is already pending review");
+    return next(new ErrorResponse("Your application is already pending review", 400));
   }
   if (user.vendorStatus === "approved") {
-    res.status(400);
-    throw new Error("Your vendor application has already been approved");
+    return next(new ErrorResponse("Your vendor application has already been approved", 400));
   }
 
   const { shopName, shopDescription } = req.body;
   if (!shopName || !shopName.trim()) {
-    res.status(400);
-    throw new Error("Shop name is required");
+    return next(new ErrorResponse("Shop name is required", 400));
   }
 
   user.vendorStatus = "pending";
   user.shopName = shopName.trim();
-  user.shopDescription = shopDescription?.trim() || null;
   await user.save();
+
+  await Vendor.findOneAndUpdate(
+    { user: user._id },
+    { shopDescription: shopDescription?.trim() || null },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 
   res.status(200).json({ message: "Application submitted", vendorStatus: "pending" });
 });
@@ -56,54 +59,61 @@ exports.applyAsVendor = asyncHandler(async (req, res) => {
 // @route  GET /api/vendor/me
 // @access Private/Vendor
 exports.getVendorMe = asyncHandler(async (req, res) => {
-  const user = await Register.findById(req.user._id).select("-password");
-  res.status(200).json({ success: true, user });
+  const [user, vendorDoc] = await Promise.all([
+    Register.findById(req.user._id).select("-password"),
+    Vendor.findOne({ user: req.user._id }),
+  ]);
+  res.status(200).json({
+    success: true,
+    user: {
+      ...user.toObject(),
+      shopDescription: vendorDoc?.shopDescription ?? null,
+      profile:         vendorDoc?.profile ?? {},
+      locations:       vendorDoc?.locations ?? [],
+      rating:          vendorDoc?.rating ?? { average: 0, count: 0 },
+    },
+  });
 });
 
 // @desc   Update vendor profile (legal + operational info)
 // @route  PUT /api/vendor/profile
 // @access Private/Vendor
-exports.updateVendorProfile = asyncHandler(async (req, res) => {
-  const { cui, denumireFirma, tipEntitate, orasDepozit, zileLivrare, returZile, telefon, emailContact } = req.body;
+exports.updateVendorProfile = asyncHandler(async (req, res, next) => {
+  const { shopDescription, profile = {}, locations } = req.body;
 
   const VALID_TIP = ["SRL", "PFA", "SA", "RA", "II", "ONG"];
 
-  if (cui != null && !/^\d{2,10}$/.test(String(cui))) {
-    res.status(400);
-    throw new Error("CUI invalid — trebuie să conțină 2–10 cifre");
+  if (profile.cui != null && !/^\d{2,10}$/.test(String(profile.cui))) {
+    return next(new ErrorResponse("CUI invalid — trebuie să conțină 2–10 cifre", 400));
   }
-  if (tipEntitate != null && !VALID_TIP.includes(tipEntitate)) {
-    res.status(400);
-    throw new Error(`tipEntitate invalid. Valori acceptate: ${VALID_TIP.join(", ")}`);
+  if (profile.tipEntitate != null && !VALID_TIP.includes(profile.tipEntitate)) {
+    return next(new ErrorResponse(`tipEntitate invalid. Valori acceptate: ${VALID_TIP.join(", ")}`, 400));
   }
-  if (zileLivrare != null) {
-    const { min, max } = zileLivrare;
-    if (min != null && max != null && Number(min) > Number(max)) {
-      res.status(400);
-      throw new Error("zileLivrare.min nu poate fi mai mare decât max");
+  if (locations != null) {
+    for (const loc of locations) {
+      const { min, max } = loc.zileLivrare ?? {};
+      if (min != null && max != null && Number(min) > Number(max)) {
+        return next(new ErrorResponse(`zileLivrare.min nu poate depăși max pentru ${loc.oras}`, 400));
+      }
     }
   }
 
-  const update = {};
-  if (cui           != null) update["vendorProfile.cui"]           = cui;
-  if (denumireFirma != null) update["vendorProfile.denumireFirma"] = denumireFirma;
-  if (tipEntitate   != null) update["vendorProfile.tipEntitate"]   = tipEntitate;
-  if (orasDepozit   != null) update["vendorProfile.orasDepozit"]   = orasDepozit;
-  if (zileLivrare   != null) {
-    if (zileLivrare.min != null) update["vendorProfile.zileLivrare.min"] = zileLivrare.min;
-    if (zileLivrare.max != null) update["vendorProfile.zileLivrare.max"] = zileLivrare.max;
+  const updateFields = {};
+  if (shopDescription !== undefined) updateFields.shopDescription = shopDescription;
+  if (Object.keys(profile).length) {
+    for (const [k, v] of Object.entries(profile)) {
+      updateFields[`profile.${k}`] = v;
+    }
   }
-  if (returZile     != null) update["vendorProfile.returZile"]     = returZile;
-  if (telefon       != null) update["vendorProfile.telefon"]       = telefon;
-  if (emailContact  != null) update["vendorProfile.emailContact"]  = emailContact;
+  if (locations != null) updateFields.locations = locations;
 
-  const user = await Register.findByIdAndUpdate(
-    req.user._id,
-    { $set: update },
-    { new: true, runValidators: true }
-  ).select("-password");
+  const vendorDoc = await Vendor.findOneAndUpdate(
+    { user: req.user._id },
+    { $set: updateFields },
+    { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true }
+  );
 
-  res.status(200).json({ success: true, vendorProfile: user.vendorProfile });
+  res.status(200).json({ success: true, profile: vendorDoc.profile, locations: vendorDoc.locations });
 });
 
 // @desc   Get vendor's own products
@@ -144,12 +154,11 @@ exports.getVendorProducts = asyncHandler(async (req, res) => {
 // @desc   Create a product listing
 // @route  POST /api/vendor/products
 // @access Private/Vendor
-exports.createVendorProduct = asyncHandler(async (req, res) => {
+exports.createVendorProduct = asyncHandler(async (req, res, next) => {
   const { kind, ...fields } = req.body;
 
   if (!kind || !VALID_KINDS.includes(kind)) {
-    res.status(400);
-    throw new Error(`Invalid product kind. Must be one of: ${VALID_KINDS.join(", ")}`);
+    return next(new ErrorResponse(`Invalid product kind. Must be one of: ${VALID_KINDS.join(", ")}`, 400));
   }
 
   // Bridge: old form sends price + stock; new form sends variants array
@@ -165,7 +174,8 @@ exports.createVendorProduct = asyncHandler(async (req, res) => {
   delete fields.stock;
 
   const Model = KIND_MODEL[kind];
-  const city  = req.user.vendorProfile?.orasDepozit || "";
+  const vendorDoc = await Vendor.findOne({ user: req.user._id }).select("locations").lean();
+  const city = vendorDoc?.locations?.[0]?.oras || "";
   const model = fields.model || fields.name || fields.title || "";
   const product = await Model.create({
     ...fields,
@@ -182,16 +192,14 @@ exports.createVendorProduct = asyncHandler(async (req, res) => {
 // @desc   Update vendor's own product
 // @route  PUT /api/vendor/products/:id
 // @access Private/Vendor
-exports.updateVendorProduct = asyncHandler(async (req, res) => {
+exports.updateVendorProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(404);
-    throw new Error("Product not found");
+    return next(new ErrorResponse("Product not found", 404));
   }
   if (product.vendor?.toString() !== req.user._id.toString()) {
-    res.status(403);
-    throw new Error("Not authorized to update this product");
+    return next(new ErrorResponse("Not authorized to update this product", 403));
   }
 
   const { kind, user, vendor, ...updates } = req.body;
@@ -217,16 +225,14 @@ exports.updateVendorProduct = asyncHandler(async (req, res) => {
 // @desc   Delete vendor's own product
 // @route  DELETE /api/vendor/products/:id
 // @access Private/Vendor
-exports.deleteVendorProduct = asyncHandler(async (req, res) => {
+exports.deleteVendorProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(404);
-    throw new Error("Product not found");
+    return next(new ErrorResponse("Product not found", 404));
   }
   if (product.vendor?.toString() !== req.user._id.toString()) {
-    res.status(403);
-    throw new Error("Not authorized to delete this product");
+    return next(new ErrorResponse("Not authorized to delete this product", 403));
   }
 
   await product.deleteOne();
@@ -250,24 +256,20 @@ exports.getVendorOrders = asyncHandler(async (req, res) => {
 // @desc   Publish an approved product listing
 // @route  PUT /api/vendor/products/:id/publish
 // @access Private/Vendor
-exports.publishVendorProduct = asyncHandler(async (req, res) => {
+exports.publishVendorProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(404);
-    throw new Error("Produsul nu a fost găsit");
+    return next(new ErrorResponse("Produsul nu a fost găsit", 404));
   }
   if (product.vendor?.toString() !== req.user._id.toString()) {
-    res.status(403);
-    throw new Error("Nu ești autorizat să publici acest produs");
+    return next(new ErrorResponse("Nu ești autorizat să publici acest produs", 403));
   }
   if (product.listingStatus !== "approved") {
-    res.status(400);
-    throw new Error("Produsul trebuie aprobat de admin înainte de publicare");
+    return next(new ErrorResponse("Produsul trebuie aprobat de admin înainte de publicare", 400));
   }
   if (product.publishStatus === "published") {
-    res.status(400);
-    throw new Error("Produsul este deja publicat");
+    return next(new ErrorResponse("Produsul este deja publicat", 400));
   }
 
   const issues = [];
@@ -277,8 +279,7 @@ exports.publishVendorProduct = asyncHandler(async (req, res) => {
   if (product.stock == null || product.stock.quantity == null) issues.push("cantitate stoc");
 
   if (issues.length > 0) {
-    res.status(400);
-    throw new Error(`Produsul nu este complet. Lipsește: ${issues.join(", ")}`);
+    return next(new ErrorResponse(`Produsul nu este complet. Lipsește: ${issues.join(", ")}`, 400));
   }
 
   if (product.catalogRef) {
@@ -289,8 +290,7 @@ exports.publishVendorProduct = asyncHandler(async (req, res) => {
       _id: { $ne: product._id },
     });
     if (existing) {
-      res.status(409);
-      throw new Error("Ai deja un produs publicat pentru acest articol din catalog. Un vânzător poate apărea o singură dată per produs.");
+      return next(new ErrorResponse("Ai deja un produs publicat pentru acest articol din catalog. Un vânzător poate apărea o singură dată per produs.", 409));
     }
   }
 

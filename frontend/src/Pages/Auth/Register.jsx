@@ -9,8 +9,9 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "", email: "", password: "", password2: "",
   });
-  const [showPass, setShowPass]   = useState(false);
-  const [showPass2, setShowPass2] = useState(false);
+  const [showPass, setShowPass]     = useState(false);
+  const [showPass2, setShowPass2]   = useState(false);
+  const [termsAccepted, setTerms]   = useState(false);
   const { name, email, password, password2 } = formData;
 
   const dispatch  = useDispatch();
@@ -39,6 +40,10 @@ const Register = () => {
     }
     if (password.length < 6) {
       toast.error("Parola trebuie să aibă cel puțin 6 caractere.");
+      return;
+    }
+    if (!termsAccepted) {
+      toast.error("Trebuie să accepți Termenii și Condițiile.");
       return;
     }
     dispatch(register({ name, email, password, role: "client" }));
@@ -122,7 +127,22 @@ const Register = () => {
             )}
           </div>
 
-          <button type="submit" className="auth-submit-btn" disabled={isLoading}>
+          <div className="form-group-checkbox">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={termsAccepted}
+              onChange={(e) => setTerms(e.target.checked)}
+            />
+            <label htmlFor="terms">
+              Am citit și accept{" "}
+              <Link to="/terms">Termenii și Condițiile</Link>{" "}
+              și{" "}
+              <Link to="/privacy">Politica de confidențialitate</Link>
+            </label>
+          </div>
+
+          <button type="submit" className="auth-submit-btn" disabled={isLoading || !termsAccepted}>
             {isLoading ? "Se înregistrează…" : "Creează cont"}
           </button>
         </form>

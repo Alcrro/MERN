@@ -4,19 +4,19 @@ import { useSubscribeNewsletterMutation } from "../../../features/newsletter/rtk
 export const useNewsletter = () => {
   const [email, setEmail] = useState("");
   const [subscribe, { isLoading, error }] = useSubscribeNewsletterMutation();
-  const [subscribed, setSubscribed] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(null);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email.trim()) return;
     try {
-      await subscribe(email).unwrap();
-      setSubscribed(true);
+      const data = await subscribe(email).unwrap();
+      setSuccessMsg(data?.message || "Abonare reușită.");
       setEmail("");
     } catch {
       // error afișat prin `error` din RTK
     }
   };
 
-  return { email, setEmail, subscribed, handleSubscribe, isLoading, error };
+  return { email, setEmail, successMsg, handleSubscribe, isLoading, error };
 };

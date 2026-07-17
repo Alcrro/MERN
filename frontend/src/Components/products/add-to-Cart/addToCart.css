@@ -1,8 +1,8 @@
 /* ── Page ────────────────────────────────────────────────────── */
 .ct-page {
-  max-width: 1080px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 5rem;
+  padding: 2rem 24px 5rem;
 }
 
 /* ── Step indicator ─────────────────────────────────────────── */
@@ -100,7 +100,7 @@
   gap: 1.25rem;
 }
 
-.ct-items {
+.ct-vendor-card {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -108,6 +108,27 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--bg-card);
+}
+
+/* ── Vendor header (shown only when multiple vendors) ────────── */
+.ct-vendor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem 1rem;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ct-vendor-head__name {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.ct-vendor-head__count {
+  font-size: .7rem;
+  color: var(--text-muted);
 }
 
 /* ── Item card ──────────────────────────────────────────────── */
@@ -215,6 +236,20 @@ html[data-theme="dark"] .ct-item__img {
   font-size: 0.72rem;
   color: var(--text-muted);
   margin-top: 2px;
+}
+
+.ct-item__rate {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.67rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-top: 2px;
+  width: fit-content;
 }
 
 /* right: price + stepper */
@@ -452,6 +487,85 @@ html[data-theme="dark"] .ct-receipt__free { color: #4ade80; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ── Installment rates ───────────────────────────────────────── */
+.ct-rates {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.ct-rates__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .7rem 1.1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ct-rates__title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.ct-rates__zero {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 9999px;
+  padding: 1px 7px;
+}
+
+html[data-theme="dark"] .ct-rates__zero {
+  background: rgba(22,163,74,.12);
+  border-color: rgba(74,222,128,.25);
+  color: #4ade80;
+}
+
+.ct-rates__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.ct-rates__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem 1.1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ct-rates__row:last-child { border-bottom: none; }
+
+.ct-rates__n {
+  font-size: 0.8rem;
+  color: var(--text-medium);
+}
+
+.ct-rates__amt {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.ct-rates__mo {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 1px;
+}
+
+.ct-rates__note {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  padding: .5rem 1.1rem .65rem;
+  margin: 0;
+  border-top: 1px dashed var(--border);
 }
 
 /* ── CTA button ──────────────────────────────────────────────── */

@@ -1,30 +1,37 @@
 const asyncHandler = require("express-async-handler");
+const ErrorResponse = require("../../utilitis/errorResponse");
 const { Register } = require("../../models/auth/register");
+const Vendor = require("../../models/vendor/Vendor");
 const Product = require("../../models/product/Product");
 
 // @desc   Get pending vendor applications
 // @route  GET /api/admin/vendors/pending
 // @access Private/Admin
 exports.getPendingVendors = asyncHandler(async (req, res) => {
-  const vendors = await Register.find({ vendorStatus: "pending" }).select("-password").sort("-createdAt");
+  const users = await Register.find({ vendorStatus: "pending" })
+    .select("-password")
+    .sort("-createdAt")
+    .lean();
+  const ids = users.map((u) => u._id);
+  const vendorDocs = await Vendor.find({ user: { $in: ids } }).select("user shopDescription profile locations").lean();
+  const vMap = Object.fromEntries(vendorDocs.map((v) => [v.user.toString(), v]));
+  const vendors = users.map((u) => ({ ...u, ...vMap[u._id.toString()] }));
   res.status(200).json({ success: true, vendors, count: vendors.length });
 });
 
 // @desc   Approve or reject a vendor application
 // @route  PUT /api/admin/vendors/:id
 // @access Private/Admin
-exports.updateVendorStatus = asyncHandler(async (req, res) => {
+exports.updateVendorStatus = asyncHandler(async (req, res, next) => {
   const { action } = req.body;
 
   if (!["approve", "reject"].includes(action)) {
-    res.status(400);
-    throw new Error("Action must be 'approve' or 'reject'");
+    return next(new ErrorResponse("Action must be 'approve' or 'reject'", 400));
   }
 
   const user = await Register.findById(req.params.id);
   if (!user) {
-    res.status(404);
-    throw new Error("User not found");
+    return next(new ErrorResponse("User not found", 404));
   }
 
   if (action === "approve") {
@@ -47,9 +54,19 @@ exports.updateVendorStatus = asyncHandler(async (req, res) => {
 // @route  GET /api/admin/vendors
 // @access Private/Admin
 exports.getAdminVendors = asyncHandler(async (req, res) => {
-  const vendors = await Register.find({ role: "vendor" })
-    .select("name email shopName vendorStatus vendorProfile createdAt")
-    .sort("-createdAt");
+  const users = await Register.find({ role: "vendor" })
+    .select("name email shopName vendorStatus createdAt")
+    .sort("-createdAt")
+    .lean();
+  const ids = users.map((u) => u._id);
+  const vendorDocs = await Vendor.find({ user: { $in: ids } }).select("user profile locations rating").lean();
+  const vMap = Object.fromEntries(vendorDocs.map((v) => [v.user.toString(), v]));
+  const vendors = users.map((u) => ({
+    ...u,
+    profile:   vMap[u._id.toString()]?.profile   ?? {},
+    locations: vMap[u._id.toString()]?.locations ?? [],
+    rating:    vMap[u._id.toString()]?.rating    ?? { average: 0, count: 0 },
+  }));
   res.status(200).json({ success: true, vendors, count: vendors.length });
 });
 
@@ -100,18 +117,16 @@ exports.getPendingListings = asyncHandler(async (req, res) => {
 // @desc   Approve or reject a product listing
 // @route  PUT /api/admin/products/:id/status
 // @access Private/Admin
-exports.updateListingStatus = asyncHandler(async (req, res) => {
+exports.updateListingStatus = asyncHandler(async (req, res, next) => {
   const { action, reason } = req.body;
 
   if (!["approve", "reject"].includes(action)) {
-    res.status(400);
-    throw new Error("Action must be 'approve' or 'reject'");
+    return next(new ErrorResponse("Action must be 'approve' or 'reject'", 400));
   }
 
   const product = await Product.findById(req.params.id);
   if (!product) {
-    res.status(404);
-    throw new Error("Product not found");
+    return next(new ErrorResponse("Product not found", 404));
   }
 
   product.listingStatus = action === "approve" ? "approved" : "rejected";

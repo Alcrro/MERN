@@ -63,6 +63,10 @@ const ProductSchema = new mongoose.Schema(
       default: null,
     },
     rating: RatingSchema,
+    creditsOnly: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
