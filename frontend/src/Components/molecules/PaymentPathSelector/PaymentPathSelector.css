@@ -1,0 +1,67 @@
+.pps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pps__card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.pps__card--active {
+  border-color: var(--primary);
+  background: var(--primary-light, rgba(37, 99, 235, 0.06));
+}
+
+.pps__card input[type="radio"] {
+  accent-color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pps__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.pps__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.pps__desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.pps__badge {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #16a34a;
+  background: #dcfce7;
+  border-radius: 99px;
+  width: fit-content;
+}
+
+/* ── Dark mode ─────────────────────────────────────────────── */
+html[data-theme="dark"] .pps__card--active {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+html[data-theme="dark"] .pps__badge {
+  background: rgba(22, 163, 74, 0.15);
+  color: #4ade80;
+}

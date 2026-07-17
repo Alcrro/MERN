@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useGetAddressesQuery, useAddAddressMutation } from "../../../features/address/rtkAddresses";
 
-const FIELDS = [
-  { name: "street", placeholder: "Stradă și număr" },
-  { name: "city",   placeholder: "Oraș" },
-  { name: "county", placeholder: "Județ" },
-  { name: "zip",    placeholder: "Cod poștal" },
-  { name: "phone",  placeholder: "Telefon" },
+const COUNTIES = [
+  "Alba","Arad","Arges","Bacau","Bihor","Bistrita-Nasaud","Botosani",
+  "Braila","Brasov","Bucuresti","Buzau","Calarasi","Cluj","Constanta",
+  "Covasna","Dambovita","Dolj","Galati","Giurgiu","Gorj","Harghita",
+  "Hunedoara","Ialomita","Iasi","Ilfov","Maramures","Mehedinti","Mures",
+  "Neamt","Olt","Prahova","Salaj","Satu Mare","Sibiu","Suceava",
+  "Teleorman","Timis","Tulcea","Vaslui","Valcea","Vrancea",
 ];
+
 const EMPTY = { street: "", city: "", county: "", zip: "", phone: "" };
 
 const CheckoutStepAddress = ({ selectedId, onSelect }) => {
@@ -48,11 +50,19 @@ const CheckoutStepAddress = ({ selectedId, onSelect }) => {
       ))}
       {showForm ? (
         <form className="ck-form" onSubmit={handleSave}>
-          {FIELDS.map(({ name, placeholder }) => (
-            <input key={name} className="ck-input" placeholder={placeholder}
-              value={form[name]} required
-              onChange={(e) => setForm({ ...form, [name]: e.target.value })} />
-          ))}
+          <input className="ck-input" placeholder="Stradă și număr" value={form.street} required
+            onChange={(e) => setForm({ ...form, street: e.target.value })} />
+          <input className="ck-input" placeholder="Oraș" value={form.city} required
+            onChange={(e) => setForm({ ...form, city: e.target.value })} />
+          <select className="ck-input" value={form.county} required
+            onChange={(e) => setForm({ ...form, county: e.target.value })}>
+            <option value="">Selectează județul</option>
+            {COUNTIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <input className="ck-input" placeholder="Cod poștal (6 cifre)" value={form.zip} required
+            onChange={(e) => setForm({ ...form, zip: e.target.value })} />
+          <input className="ck-input" placeholder="Telefon (07xxxxxxxx)" value={form.phone} required
+            onChange={(e) => setForm({ ...form, phone: e.target.value })} />
           <div className="ck-form__row">
             <button type="submit" className="ck-btn ck-btn--primary" disabled={isSaving}>
               {isSaving ? "Se salvează..." : "Salvează adresa"}

@@ -1,0 +1,66 @@
+.add-card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 8px;
+  max-width: 480px;
+}
+
+.add-card-form__field {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.add-card-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .9rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.add-card-form__error {
+  font-size: .85rem;
+  color: #dc2626;
+  margin: 0;
+}
+
+.add-card-form__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.add-card-form__btn {
+  padding: 8px 18px;
+  border-radius: 7px;
+  font-size: .9rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background .15s, color .15s;
+}
+
+.add-card-form__btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.add-card-form__btn--cancel {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.add-card-form__btn--save {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.add-card-form__btn--save:not(:disabled):hover { opacity: .88; }
+
+html[data-theme="dark"] .add-card-form__field { background: var(--bg); }

@@ -7,7 +7,7 @@ const CheckoutStepConfirm = ({ cart, onSubmit, isSubmitting, error }) => (
       {cart.card.map((item) => (
         <div key={item.data._id} className="ck-confirm__row">
           <span className="ck-confirm__name">
-            {item.data.brand} {item.data.model || item.data.name}
+            {[item.data.brand, item.data.model || item.data.name].filter(Boolean).join(" ") || "Produs"}
             <span className="ck-confirm__qty"> ×{item.itemQuantity}</span>
           </span>
           <span className="ck-confirm__price">{fmt(item.itemAmountPrice)} RON</span>

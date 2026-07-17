@@ -1,0 +1,59 @@
+.scl {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scl__toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.scl__add-btn {
+  padding: 8px 18px;
+  border-radius: 7px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-medium);
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+
+.scl__add-btn:hover {
+  background: var(--bg-page);
+  border-color: var(--text-muted);
+}
+
+.scl__status { color: var(--text-light); font-size: .9rem; }
+.scl__status--error { color: #dc2626; }
+
+.scl__empty { color: var(--text-light); font-size: .9rem; margin: 0; }
+
+.scl__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .scl__list { flex-direction: column; }
+}
+
+html[data-theme="dark"] .scl__add-btn {
+  border-color: rgba(255, 255, 255, .3);
+  color: rgba(255, 255, 255, .7);
+}
+
+html[data-theme="dark"] .scl__add-btn:hover {
+  background: rgba(255, 255, 255, .07);
+  border-color: rgba(255, 255, 255, .5);
+}
+
+html[data-theme="dark"] .scl__status { color: rgba(255, 255, 255, .5); }
+html[data-theme="dark"] .scl__status--error { color: #fca5a5; }
+html[data-theme="dark"] .scl__empty { color: rgba(255, 255, 255, .45); }

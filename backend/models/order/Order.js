@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 
+const INSTALLMENT_BANKS  = ["BT", "ING", "Raiffeisen", "BCR"];
+const INSTALLMENT_MONTHS = [3, 6, 10, 12];
+
+const InstallmentPlanSchema = new mongoose.Schema(
+  {
+    bank:          { type: String, enum: INSTALLMENT_BANKS,  required: true },
+    months:        { type: Number, enum: INSTALLMENT_MONTHS, required: true },
+    monthlyAmount: { type: Number, required: true, min: 0 },
+  },
+  { _id: false }
+);
+
 const ORDER_STATUS = Object.freeze({
   PENDING: "Pending",
   PROCESSING: "Processing",
@@ -79,6 +91,9 @@ const OrderSchema = new mongoose.Schema(
       enum: ["Card", "Ramburs"],
       required: [true, "Payment method is required"],
     },
+    stripePaymentIntentId: {
+      type: String,
+    },
     isPaid: {
       type: Boolean,
       default: false,
@@ -86,8 +101,34 @@ const OrderSchema = new mongoose.Schema(
     paidAt: {
       type: Date,
     },
+    isRefunded: {
+      type: Boolean,
+      default: false,
+    },
+    refundedAt: {
+      type: Date,
+    },
+    paymentDetails: {
+      last4:      { type: String },
+      brand:      { type: String },
+      receiptUrl: { type: String },
+    },
+    installmentPlan: {
+      type: InstallmentPlanSchema,
+      default: null,
+    },
     deliveredAt: {
       type: Date,
+    },
+    creditsUsed: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    pointsEarned: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
   },
   {
@@ -106,7 +147,13 @@ OrderSchema.index({ status: 1, createdAt: -1 });
 // admin: toate comenzile neplătite
 OrderSchema.index({ isPaid: 1, createdAt: -1 });
 
+// webhook lookup: order după stripePaymentIntentId
+OrderSchema.index({ stripePaymentIntentId: 1 }, { sparse: true });
+
 OrderSchema.pre("save", function (next) {
+  if (this.paymentMethod === "Ramburs" && this.installmentPlan) {
+    return next(new Error("Ramburs nu este compatibil cu un plan de rate"));
+  }
   this.totalPrice = this.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -119,4 +166,4 @@ OrderSchema.virtual("itemCount").get(function () {
 });
 
 const Order = mongoose.model("Order", OrderSchema);
-module.exports = { Order, ORDER_STATUS };
+module.exports = { Order, ORDER_STATUS, INSTALLMENT_BANKS, INSTALLMENT_MONTHS };

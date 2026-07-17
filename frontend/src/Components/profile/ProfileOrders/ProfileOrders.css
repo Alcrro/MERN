@@ -1,0 +1,93 @@
+.po-loading { color: var(--text-muted); font-size: 0.9rem; padding: 12px 0; }
+
+.po-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.po-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.po-item__info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.po-item__ref  { font-weight: 700; color: var(--text-primary); font-size: 0.9rem; }
+.po-item__date { font-size: 0.82rem; color: var(--text-muted); }
+
+.po-item__status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.po-item__status--pending    { background: #fef9c3; color: #854d0e; }
+.po-item__status--processing { background: #dbeafe; color: #1d4ed8; }
+.po-item__status--shipped    { background: #e0f2fe; color: #0369a1; }
+.po-item__status--delivered  { background: #dcfce7; color: #15803d; }
+.po-item__status--cancelled  { background: #fee2e2; color: #b91c1c; }
+
+.po-item__paid {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.po-item__rate {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.po-item__right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.po-item__total { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
+
+.po-item__link {
+  font-size: 0.82rem;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.po-item__link:hover { text-decoration: underline; }
+
+html[data-theme="dark"] .po-item__status--pending    { background: #422006; color: #fde047; }
+html[data-theme="dark"] .po-item__status--processing { background: #1e3a5f; color: #93c5fd; }
+html[data-theme="dark"] .po-item__status--shipped    { background: #0c4a6e; color: #7dd3fc; }
+html[data-theme="dark"] .po-item__status--delivered  { background: #14532d; color: #86efac; }
+html[data-theme="dark"] .po-item__status--cancelled  { background: #450a0a; color: #fca5a5; }
+html[data-theme="dark"] .po-item__paid               { background: #14532d; color: #86efac; }
+html[data-theme="dark"] .po-item__rate               { background: #1e3a5f; color: #93c5fd; }
+
+@media (max-width: 500px) {
+  .po-item { flex-direction: column; align-items: flex-start; }
+  .po-item__right { width: 100%; justify-content: space-between; }
+}
