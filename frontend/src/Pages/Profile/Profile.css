@@ -30,17 +30,8 @@
 	text-align: center;
 }
 
-.prf-avatar {
-	width: 64px;
-	height: 64px;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1.6rem;
-	font-weight: 700;
-	color: #fff;
-	flex-shrink: 0;
+.prf-user-card .avatar-upload {
+	padding: 0;
 }
 
 .prf-user-name {
@@ -410,6 +401,24 @@ html[data-theme="dark"] .prf-vendor-btn:hover {
 	.prf-nav-icon {
 		font-size: 1.1rem;
 		width: auto;
+	}
+
+	/* avatar in sidebar compact pe mobile */
+	.prf-user-card .avatar--lg {
+		width: 44px;
+		height: 44px;
+		font-size: 1.1rem;
+	}
+
+	.prf-user-card .avatar-upload__badge {
+		width: 18px;
+		height: 18px;
+		font-size: .6rem;
+	}
+
+	.prf-user-card .avatar-upload__save {
+		font-size: .72rem;
+		padding: .25rem .65rem;
 	}
 
 	/* content */

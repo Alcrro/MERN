@@ -1,0 +1,75 @@
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  padding: 1.25rem 0 .5rem;
+}
+
+.avatar-upload__trigger {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.avatar-upload__trigger:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.avatar-upload__badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  pointer-events: none;
+}
+
+.avatar-upload__input {
+  display: none;
+}
+
+.avatar-upload__save {
+  padding: .4rem 1.1rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+
+.avatar-upload__save:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.avatar-upload__error {
+  font-size: .78rem;
+  color: #ef4444;
+  margin: 0;
+}
+
+html[data-theme="dark"] .avatar-upload__error {
+  color: #f87171;
+}
+
+@media (max-width: 375px) {
+  .avatar-upload__save {
+    width: 100%;
+  }
+}

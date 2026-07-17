@@ -1,7 +1,8 @@
 import { NavLink, Navigate, Outlet, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ROLE_LABEL } from "../../utils/constants";
-import { NAV, avatarColor } from "../../Components/profile/profileConstants";
+import { NAV } from "../../Components/profile/profileConstants";
+import AvatarUpload from "../../Components/molecules/AvatarUpload";
 import "./Profile.css";
 
 const Profile = () => {
@@ -13,9 +14,7 @@ const Profile = () => {
     <div className="prf-page">
       <aside className="prf-sidebar">
         <div className="prf-user-card">
-          <div className="prf-avatar" style={{ background: avatarColor(user.name) }}>
-            {user.name[0].toUpperCase()}
-          </div>
+          <AvatarUpload />
           <div className="prf-user-info">
             <p className="prf-user-name">{user.name}</p>
             <p className="prf-user-email">{user.email}</p>

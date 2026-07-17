@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronIcon, LogoutIcon } from "../icons";
+import Avatar from "../../../Components/atoms/Avatar";
 import "./UserMenu.css";
 
 const UserMenu = ({ user, onLogout }) => {
@@ -19,7 +20,7 @@ const UserMenu = ({ user, onLogout }) => {
   return (
     <div className="user-menu hide-mobile">
       <button className="avatar-btn" onClick={() => setOpen(p => !p)}>
-        <span className="avatar-circle">{user.name[0].toUpperCase()}</span>
+        <Avatar src={user.avatar} name={user.name} size="sm" />
         <span className="avatar-name">{user.name.split(" ")[0]}</span>
         <ChevronIcon open={open} />
       </button>
@@ -29,7 +30,7 @@ const UserMenu = ({ user, onLogout }) => {
           <div className="dropdown-backdrop" onClick={close} />
           <div className="user-dropdown">
             <div className="dropdown-header">
-              <span className="avatar-circle">{user.name[0].toUpperCase()}</span>
+              <Avatar src={user.avatar} name={user.name} size="md" />
               <div>
                 <p className="dropdown-name">{user.name}</p>
                 <span className={`role-badge role-${user.role}`}>{user.role}</span>

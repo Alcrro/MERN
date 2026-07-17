@@ -1,6 +1,7 @@
 const ErrorResponse = require("../../utilitis/errorResponse");
 const asyncHandler = require("express-async-handler");
 const { Register, ROLES } = require("../../models/auth/register");
+const { createCardForUser } = require("../shopCard/shopCardService");
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -20,6 +21,8 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const safeRole = Object.values(ROLES).includes(role) ? role : ROLES.CLIENT;
 
   const user = await Register.create({ name, email, password, role: safeRole });
+
+  createCardForUser(user._id).catch(() => {});
 
   sendTokenResponse(user, 201, res);
 });
@@ -55,6 +58,34 @@ exports.logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: {} });
 });
 
+// @desc    Get current logged-in user
+// @route   GET /api/auth/me
+// @access  Private
+exports.getMe = asyncHandler(async (req, res) => {
+  const user = await Register.findById(req.user._id).select("-password");
+  res.status(200).json({ success: true, user });
+});
+
+// @desc    Update current user (name, phone, avatar)
+// @route   PUT /api/auth/me
+// @access  Private
+exports.updateMe = asyncHandler(async (req, res, next) => {
+  const allowed = ["name", "phone", "avatar"];
+  const updates = {};
+  allowed.forEach((key) => { if (req.body[key] !== undefined) updates[key] = req.body[key]; });
+
+  if (Object.keys(updates).length === 0) {
+    return next(new ErrorResponse("No valid fields to update", 400));
+  }
+
+  const user = await Register.findByIdAndUpdate(req.user._id, updates, {
+    new: true,
+    runValidators: true,
+  }).select("-password");
+
+  res.status(200).json({ success: true, user });
+});
+
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
 
@@ -66,6 +97,6 @@ const sendTokenResponse = (user, statusCode, res) => {
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
     token,
-    user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar ?? null },
   });
 };

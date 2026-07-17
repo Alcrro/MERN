@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CloseIcon, GridIcon, ChevronIcon, ChevronRight, LogoutIcon } from "../icons";
 import { PROMO_LINKS, ROLE_LABEL } from "../../../utils/constants";
+import Avatar from "../../../Components/atoms/Avatar";
 import "./MobileDrawer.css";
 
 const MobileDrawer = ({ open, onClose, user, onLogout, categories }) => {
@@ -23,7 +24,7 @@ const MobileDrawer = ({ open, onClose, user, onLogout, categories }) => {
         <div className="mob-drawer__body">
           {user ? (
             <div className="mob-user-block">
-              <div className="mob-avatar">{user.name[0].toUpperCase()}</div>
+              <Avatar src={user.avatar} name={user.name} size="md" />
               <div>
                 <p className="mob-user-name">{user.name}</p>
                 <span className={`role-badge role-${user.role}`}>{ROLE_LABEL[user.role] || user.role}</span>

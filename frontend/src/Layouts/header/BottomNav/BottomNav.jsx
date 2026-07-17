@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { HomeIcon, GridIcon, SearchIcon, CartIcon, UserIcon } from "../icons";
+import Avatar from "../../../Components/atoms/Avatar";
 import "./BottomNav.css";
 
 const BottomNav = ({ onOpenMenu, searchActive, onToggleSearch }) => {
@@ -34,7 +35,7 @@ const BottomNav = ({ onOpenMenu, searchActive, onToggleSearch }) => {
         to={user ? "/profile" : "/auth/login"}
         className={`mob-bot-item${pathname.startsWith("/profile") || pathname.startsWith("/auth") ? " mob-bot-item--active" : ""}`}
       >
-        {user ? <span className="mob-bot-avatar">{user.name[0].toUpperCase()}</span> : <UserIcon />}
+        {user ? <Avatar src={user.avatar} name={user.name} size="sm" /> : <UserIcon />}
         <span>{user ? user.name.split(" ")[0] : "Cont"}</span>
       </Link>
     </nav>

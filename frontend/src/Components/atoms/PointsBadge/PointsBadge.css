@@ -1,0 +1,28 @@
+.points-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: var(--primary-light);
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+
+.points-badge:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.points-badge__star {
+  font-size: .85rem;
+  line-height: 1;
+}
+
+html[data-theme="dark"] .points-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+}
