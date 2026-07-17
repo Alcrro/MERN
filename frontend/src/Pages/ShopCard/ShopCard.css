@@ -1,0 +1,23 @@
+.shop-card-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-bottom: 24px;
+}
+
+.shop-card-page__bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.shop-card-page__loading {
+  padding: 40px 0;
+  color: var(--text-light);
+  font-size: .9rem;
+}
+
+@media (max-width: 680px) {
+  .shop-card-page { gap: 20px; }
+  .shop-card-page__bottom { grid-template-columns: 1fr; }
+}

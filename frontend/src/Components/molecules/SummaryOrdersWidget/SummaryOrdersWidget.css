@@ -1,0 +1,90 @@
+.sum-orders {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sum-orders__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sum-orders__title {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.sum-orders__link {
+  font-size: .78rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.sum-orders__link:hover { text-decoration: underline; }
+
+.sum-orders__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: .82rem;
+}
+.sum-orders__row:last-child { border-bottom: none; }
+
+.sum-orders__ref  { font-weight: 700; color: var(--text-dark); min-width: 72px; }
+.sum-orders__date { color: var(--text-muted); font-size: .76rem; }
+
+.sum-orders__badge {
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+.sum-orders__badge--pending    { background: #fef9c3; color: #854d0e; }
+.sum-orders__badge--processing { background: #dbeafe; color: #1d4ed8; }
+
+.sum-orders__total { margin-left: auto; font-weight: 600; color: var(--text-dark); }
+
+.sum-orders__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+  color: var(--text-light);
+  font-size: .85rem;
+  text-align: center;
+}
+
+.sum-orders__skeletons { display: flex; flex-direction: column; gap: 8px; }
+.sum-orders__skel {
+  height: 28px;
+  border-radius: 6px;
+  background: var(--border);
+  animation: sum-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes sum-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .45; }
+}
+
+@media (max-width: 480px) {
+  .sum-orders__row { flex-wrap: wrap; gap: 6px; }
+  .sum-orders__total { margin-left: 0; width: 100%; text-align: right; font-size: .8rem; }
+  .sum-orders__date { font-size: .7rem; }
+}
+
+html[data-theme="dark"] .sum-orders__badge--pending    { background: #422006; color: #fde047; }
+html[data-theme="dark"] .sum-orders__badge--processing { background: #1e3a5f; color: #93c5fd; }

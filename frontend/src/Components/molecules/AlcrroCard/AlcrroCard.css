@@ -1,0 +1,190 @@
+.alcrro-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1.586;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.alcrro-card:hover {
+  transform: translateY(-4px) rotate(.5deg);
+  box-shadow: 0 28px 70px rgba(0,0,0,.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alcrro-card:hover { transform: none; }
+}
+
+/* ── Tier gradients ─────────────────────────────────────── */
+.alcrro-card--standard .alcrro-card__inner {
+  background: linear-gradient(135deg, #0f0221 0%, #2d1b69 45%, #6d28d9 100%);
+}
+.alcrro-card--silver .alcrro-card__inner {
+  background: linear-gradient(150deg, #1a1a1a 0%, #3d3d3d 30%, #808080 50%, #4a4a4a 75%, #1a1a1a 100%);
+}
+.alcrro-card--gold .alcrro-card__inner {
+  background: linear-gradient(135deg, #3b1500 0%, #92400e 35%, #d97706 65%, #fbbf24 100%);
+}
+
+.alcrro-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* decorative circles */
+.alcrro-card__inner::before,
+.alcrro-card__inner::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.alcrro-card__inner::before {
+  width: 70%;
+  aspect-ratio: 1;
+  top: -40%;
+  right: -18%;
+  background: rgba(255,255,255,.07);
+}
+.alcrro-card__inner::after {
+  width: 50%;
+  aspect-ratio: 1;
+  bottom: -35%;
+  left: -8%;
+  background: rgba(255,255,255,.05);
+}
+
+/* glow overlay */
+.alcrro-card__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(255,255,255,.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(255,255,255,.07) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Top row ─────────────────────────────────────────────── */
+.alcrro-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.alcrro-card__brand {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.9);
+}
+
+/* ── Chip ────────────────────────────────────────────────── */
+.alcrro-card__chip {
+  width: 38px;
+  height: 28px;
+  background: linear-gradient(135deg, #fde68a, #f59e0b);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.alcrro-card--silver .alcrro-card__chip {
+  background: linear-gradient(135deg, #9ca3af, #d1d5db, #9ca3af);
+}
+
+.alcrro-card__chip-lines {
+  width: 26px;
+  height: 18px;
+  border: 1.5px solid rgba(120,53,15,.4);
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    rgba(120,53,15,.2) 4px,
+    rgba(120,53,15,.2) 5px
+  );
+}
+
+.alcrro-card--silver .alcrro-card__chip-lines {
+  border-color: rgba(55,65,81,.3);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    rgba(55,65,81,.15) 4px,
+    rgba(55,65,81,.15) 5px
+  );
+}
+
+/* ── Card number ─────────────────────────────────────────── */
+.alcrro-card__number {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: rgba(255,255,255,.92);
+  font-family: "Courier New", monospace;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Bottom row ──────────────────────────────────────────── */
+.alcrro-card__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  z-index: 1;
+}
+
+.alcrro-card__holder,
+.alcrro-card__balance {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alcrro-card__balance { align-items: flex-end; }
+
+.alcrro-card__label {
+  font-size: .6rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+}
+
+.alcrro-card__name {
+  font-size: .82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.92);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.alcrro-card__credits {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .alcrro-card { max-width: 100%; }
+  .alcrro-card__number { font-size: .95rem; }
+}

@@ -1,0 +1,131 @@
+.credit-pkgs { display: flex; flex-direction: column; gap: 20px; }
+
+.credit-pkgs__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.credit-pkgs__sub {
+  font-size: .82rem;
+  color: var(--text-light);
+  margin-top: -12px;
+}
+
+.credit-pkgs__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) { .credit-pkgs__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .credit-pkgs__grid { grid-template-columns: 1fr; } }
+
+/* ── Inline Stripe checkout ─────────────────────────────── */
+.credit-checkout {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.credit-checkout__title {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.credit-checkout__card-el {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.credit-checkout__err {
+  font-size: .78rem;
+  color: var(--accent);
+}
+
+.credit-checkout__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.credit-checkout__cancel {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .84rem;
+  color: var(--text-medium);
+  transition: border-color .15s;
+}
+
+.credit-checkout__cancel:hover { border-color: var(--text-medium); }
+
+.credit-checkout__pay {
+  padding: 8px 22px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: .84rem;
+  font-weight: 600;
+  transition: background .15s, opacity .15s;
+}
+
+.credit-checkout__pay:hover:not(:disabled) { background: var(--primary-dark); }
+.credit-checkout__pay:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ── Success state ───────────────────────────────────────── */
+.credit-pkgs__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 24px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.credit-pkgs__success-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.credit-pkgs__success p {
+  font-size: .9rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.credit-pkgs__success-btn {
+  padding: 8px 20px;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: .84rem;
+  font-weight: 600;
+  transition: background .15s, color .15s;
+}
+
+.credit-pkgs__success-btn:hover { background: var(--primary); color: #fff; }
+
+html[data-theme="dark"] .credit-pkgs__success-icon {
+  background: #14532d;
+  color: #86efac;
+}

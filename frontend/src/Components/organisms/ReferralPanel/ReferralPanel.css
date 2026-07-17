@@ -1,0 +1,123 @@
+.referral {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.referral__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.referral__own-label,
+.referral__apply-label {
+  font-size: .78rem;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.referral__own-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.referral__code {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  color: var(--primary);
+  font-family: "Courier New", monospace;
+}
+
+.referral__copy {
+  padding: 5px 14px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: .78rem;
+  font-weight: 600;
+  transition: background .15s, color .15s;
+}
+
+.referral__copy:hover { background: var(--primary); color: #fff; }
+
+.referral__own-hint {
+  font-size: .76rem;
+  color: var(--text-muted);
+}
+
+.referral__apply { display: flex; flex-direction: column; gap: 8px; }
+
+.referral__form {
+  display: flex;
+  gap: 8px;
+}
+
+.referral__input {
+  padding: 8px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+  background: var(--bg-input);
+  color: var(--text-dark);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  width: 130px;
+  transition: border-color .15s;
+}
+
+.referral__input:focus { outline: none; border-color: var(--primary); }
+
+.referral__btn {
+  padding: 8px 20px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: .84rem;
+  font-weight: 600;
+  transition: background .15s, opacity .15s;
+}
+
+.referral__btn:hover:not(:disabled) { background: var(--primary-dark); }
+.referral__btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.referral__success {
+  font-size: .88rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.referral__err {
+  font-size: .78rem;
+  color: var(--accent);
+}
+
+.referral__used {
+  font-size: .8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .referral__form { flex-direction: column; }
+  .referral__input { width: 100%; }
+  .referral__btn { align-self: flex-start; }
+}
+
+html[data-theme="dark"] .referral__input {
+  background: var(--bg-input);
+  border-color: var(--border);
+  color: var(--text-dark);
+}
+
+html[data-theme="dark"] .referral__success { color: #4ade80; }

@@ -1,0 +1,124 @@
+.pts-conv {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pts-conv__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.pts-conv__sub {
+  font-size: .8rem;
+  color: var(--text-light);
+  margin-top: -6px;
+}
+
+.pts-conv__form { display: flex; flex-direction: column; gap: 12px; }
+
+.pts-conv__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pts-conv__input {
+  width: 120px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+  background: var(--bg-input);
+  color: var(--text-dark);
+  transition: border-color .15s;
+}
+
+.pts-conv__input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.pts-conv__arrow {
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+.pts-conv__preview {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--primary);
+  min-width: 100px;
+}
+
+.pts-conv__err {
+  font-size: .78rem;
+  color: var(--accent);
+}
+
+.pts-conv__btn {
+  align-self: flex-start;
+  padding: 9px 24px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: .84rem;
+  font-weight: 600;
+  transition: background .15s, opacity .15s;
+}
+
+.pts-conv__btn:hover:not(:disabled) { background: var(--primary-dark); }
+.pts-conv__btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.pts-conv__empty {
+  font-size: .78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.pts-conv__ok {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.pts-conv__ok-icon {
+  font-size: 1.5rem;
+  color: #f59e0b;
+}
+
+.pts-conv__ok p {
+  font-size: .88rem;
+  color: var(--text-dark);
+}
+
+.pts-conv__ok-btn {
+  padding: 7px 18px;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: .82rem;
+  font-weight: 600;
+  transition: background .15s, color .15s;
+}
+
+.pts-conv__ok-btn:hover { background: var(--primary); color: #fff; }
+
+@media (max-width: 480px) {
+  .pts-conv__row { flex-wrap: wrap; }
+  .pts-conv__input { width: 100%; }
+}
+
+html[data-theme="dark"] .pts-conv__input {
+  background: var(--bg-input);
+  border-color: var(--border);
+  color: var(--text-dark);
+}
+
+html[data-theme="dark"] .pts-conv__ok-icon { color: #fbbf24; }

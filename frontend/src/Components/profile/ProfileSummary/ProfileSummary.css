@@ -1,0 +1,41 @@
+.prf-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.prf-summary__head {
+  padding-bottom: 4px;
+}
+
+.prf-summary__greeting {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin: 0 0 4px;
+}
+
+.prf-summary__sub {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.prf-summary__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.prf-summary__col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .prf-summary__grid {
+    grid-template-columns: 1fr;
+  }
+}
