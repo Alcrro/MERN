@@ -173,14 +173,59 @@ Stripe test card: `4242 4242 4242 4242` · any future expiry · any CVC
 
 ---
 
+## Security
+
+| Layer | Mechanism |
+|-------|-----------|
+| Auth | JWT in `httpOnly` cookie — inaccessible to JavaScript |
+| Cross-origin | `Secure; SameSite=None` cookie flags for Vercel → Render in production |
+| HTTP headers | `helmet` — sets CSP, X-Frame-Options, HSTS and 10+ other headers |
+| Rate limiting | `express-rate-limit` on `/api/auth` (100 req / 15 min) and newsletter (5 req / hr) |
+| NoSQL injection | `express-mongo-sanitize` strips `$` and `.` from all request bodies |
+| CORS | Strict single-origin allowlist (`CLIENT_URL` env var) with `credentials: true` |
+| Role guards | `authorize("vendor" | "admin")` middleware on every protected route |
+| Discount integrity | Voucher discounts recalculated server-side at order creation — client value is never trusted |
+| Proxy trust | `trust proxy: 1` so rate limiter reads the real IP from `X-Forwarded-For` behind Render |
+
+---
+
+## Tests
+
+```bash
+npm run test:backend   # Jest — backend unit tests
+npm run test:frontend  # Jest + React Testing Library — frontend unit tests
+```
+
+**Backend** (`backend/tests/`) — Jest, no database required (controllers mocked):
+
+| File | What it tests |
+|------|--------------|
+| `auth.test.js` | register (missing fields, duplicate email, role sanitization), login (wrong password, user not found), logout cookie |
+| `errorHandler.test.js` | CastError → 404, duplicate key → 400, ValidationError → 400, generic → 500 |
+| `errorResponse.test.js` | `ErrorResponse` class sets message and statusCode correctly |
+| `skuGenerator.test.js` | SKU generation format, uniqueness, edge cases |
+
+**Frontend** (`src/**/*.test.js`) — Jest + RTL:
+
+| File | What it tests |
+|------|--------------|
+| `authSlice.test.js` | login/logout reducers, localStorage sync |
+| `addToCartSlice.test.js` | add, remove, update quantity, clear cart |
+| `favoritesSlice.test.js` | toggle favorite, persist across reloads |
+| `colorUtils.test.js` | hex → RGB conversion, contrast calculation |
+| `seoHelpers.test.js` | slug generation, meta title formatting |
+
+---
+
 ## Scripts
 
 ```bash
-npm run dev           # Backend + frontend (concurrently)
-npm run server        # Backend only (nodemon)
-npm run client        # Frontend only
-npm run seed          # Seed demo data
-npm run test:backend  # Backend unit tests
+npm run dev            # Backend + frontend (concurrently)
+npm run server         # Backend only (nodemon)
+npm run client         # Frontend only
+npm run seed           # Seed demo data
+npm run test:backend   # Backend unit tests
+npm run test:frontend  # Frontend unit tests
 ```
 
 ---
