@@ -9,6 +9,21 @@ Full-stack MERN marketplace with multi-vendor support, real Stripe payments, a l
 
 ---
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Homepage](screenshots/hero.png) | ![Catalog](screenshots/catalog.png) |
+| Homepage | Product catalog with filters |
+| ![Product](screenshots/product.png) | ![Checkout](screenshots/checkout.png) |
+| Product page with seller picker | Stripe checkout |
+| ![Vendor Dashboard](screenshots/vendor-dashboard.png) | ![Profile](screenshots/profile.png) |
+| Vendor dashboard | User profile & AlcrroCard |
+
+![Dark mode](screenshots/dark-mode.png)
+
+---
+
 ## Features
 
 ### Payments & Checkout
