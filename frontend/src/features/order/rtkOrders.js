@@ -34,6 +34,15 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: [{ type: "Orders" }],
     }),
+    getOrderPayIntent: builder.query({
+      query: (id) => `orders/${id}/pay-intent`,
+      keepUnusedDataFor: 0,
+    }),
+
+    confirmPayment: builder.mutation({
+      query: (id) => ({ url: `orders/${id}/confirm-payment`, method: "POST" }),
+      invalidatesTags: (result, error, id) => [{ type: "Orders", id }],
+    }),
   }),
 });
 
@@ -42,4 +51,6 @@ export const {
   useGetOrderQuery,
   useCreateOrderMutation,
   useCancelOrderMutation,
+  useGetOrderPayIntentQuery,
+  useConfirmPaymentMutation,
 } = ordersApi;
