@@ -27,20 +27,22 @@ const SellerPickerSkeleton = () => (
 
 const SellerPicker = ({ catalogRef, onSellerChange, selectedAttrs = {} }) => {
   const { data, isLoading, isError } = useGetSellersQuery(catalogRef, { skip: !catalogRef });
-  const sellers = data?.sellers ?? [];
+  const sellers = data?.sellers ?? null;
   const [selected, setSelected] = useState(null);
   const [isOpen, setIsOpen]     = useState(true);
   const autoSelected = useRef(false);
 
   const filtered = useMemo(() => {
+    const list = sellers ?? [];
     const hasAttrs = Object.values(selectedAttrs).some(Boolean);
-    if (!hasAttrs) return sellers;
-    return sellers.filter((s) => sellerHasAttrs(s, selectedAttrs));
+    if (!hasAttrs) return list;
+    return list.filter((s) => sellerHasAttrs(s, selectedAttrs));
   }, [sellers, selectedAttrs]);
 
-  const displayed  = filtered.length > 0 ? filtered : sellers;
-  const noMatch    = filtered.length === 0 && sellers.length > 0;
-  const isFiltered = filtered.length > 0 && filtered.length < sellers.length;
+  const allSellers = sellers ?? [];
+  const displayed  = filtered.length > 0 ? filtered : allSellers;
+  const noMatch    = filtered.length === 0 && allSellers.length > 0;
+  const isFiltered = filtered.length > 0 && filtered.length < allSellers.length;
 
   useEffect(() => {
     const first = data?.sellers?.[0];

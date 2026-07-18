@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { addToCart, removeFromCart, removeSingleCart, setCartItemRate } from "../../../features/product/addToCart/addToCartSlice";
 import { TrashIcon, MinusIcon, PlusIcon } from "./cartIcons";
-import { fmt, fmtRate } from "./cartUtils";
+import { fmt } from "./cartUtils";
 import panda from "../../../Assets/images/panda.png";
 
 const MIN_RATE_PRICE = 200;

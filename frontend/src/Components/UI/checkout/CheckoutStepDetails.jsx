@@ -41,6 +41,7 @@ const CheckoutStepDetails = ({ delivery, billing, payment, cart }) => {
     if (payment.method !== "Card" || savedCards.length === 0 || payment.savedCardId !== null) return;
     const def = savedCards.find((c) => c.isDefault) ?? savedCards[0];
     payment.onSavedCardChange(def.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [payment.method, savedCards.length]);
 
   const handleAddrSave = async (e) => {
