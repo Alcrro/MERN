@@ -131,13 +131,13 @@ Stripe test card: `4242 4242 4242 4242` · any future expiry · any CVC
 
 | Feature | What's interesting |
 |---------|-------------------|
-| [Stripe Payments](docs/features/stripe-payments/) | PaymentIntent lifecycle, cancelled PI recovery, saved card CVV-only flow |
-| [Voucher System](docs/features/voucher/) | Vendor rules engine, server-side discount validation, reward emission post-delivery |
-| [AlcrroCard](docs/features/alcrro-shop-card/) | Points + tier multipliers, credits redeemable at checkout, referral codes |
-| [Multi-Vendor](docs/features/vendor-dashboard/) | Apply/approve flow, seller picker, vendor-scoped order management |
-| [Checkout](docs/features/checkout-payment/) | 3-step wizard, installment calculator, voucher + credits stacking |
-| [Product Catalog](docs/features/product-catalog/) | Discriminator pattern, 8-filter URL state, multi-vendor seller comparison |
-| [Profile](docs/features/profile-summary/) | Saved cards, avatar crop/upload, order timeline with inline payment |
+| [Stripe Payments](docs/features/stripe-payments/README.md) | PaymentIntent lifecycle, cancelled PI recovery, saved card CVV-only flow |
+| [Voucher System](docs/features/voucher/README.md) | Vendor rules engine, server-side discount validation, reward emission post-delivery |
+| [AlcrroCard](docs/features/alcrro-shop-card/README.md) | Points + tier multipliers, credits redeemable at checkout, referral codes |
+| [Multi-Vendor](docs/features/vendor-dashboard/README.md) | Apply/approve flow, seller picker, vendor-scoped order management |
+| [Checkout](docs/features/checkout-payment/README.md) | 3-step wizard, installment calculator, voucher + credits stacking |
+| [Product Catalog](docs/features/product-catalog/README.md) | Discriminator pattern, 8-filter URL state, multi-vendor seller comparison |
+| [Profile](docs/features/profile-summary/README.md) | Saved cards, avatar crop/upload, order timeline with inline payment |
 
 ---
 
