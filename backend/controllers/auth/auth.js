@@ -54,7 +54,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 // @route   GET /api/auth/logout
 // @access  Private
 exports.logoutUser = asyncHandler(async (req, res) => {
-  res.cookie("token", "none", { expires: new Date(Date.now() + 5000), httpOnly: true });
+  res.cookie("token", "none", { ...cookieOptions(), expires: new Date(Date.now() + 5000) });
   res.status(200).json({ success: true, data: {} });
 });
 
@@ -86,15 +86,17 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, user });
 });
 
+const cookieOptions = () => ({
+  expires:  new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+  httpOnly: true,
+  secure:   process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+});
+
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
 
-  const options = {
-    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    httpOnly: true,
-  };
-
-  res.status(statusCode).cookie("token", token, options).json({
+  res.status(statusCode).cookie("token", token, cookieOptions()).json({
     success: true,
     token,
     user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar ?? null },
