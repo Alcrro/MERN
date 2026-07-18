@@ -246,11 +246,40 @@ exports.getVendorOrders = asyncHandler(async (req, res) => {
   const vendorProducts = await Product.find({ vendor: req.user._id }).select("_id");
   const productIds = vendorProducts.map((p) => p._id);
 
-  const orders = await Order.find({ "items.product": { $in: productIds } })
+  const filter = productIds.length > 0
+    ? { $or: [{ "items.vendor": req.user._id }, { "items.product": { $in: productIds } }] }
+    : { "items.vendor": req.user._id };
+
+  const orders = await Order.find(filter)
     .populate("user", "name email")
     .sort("-createdAt");
 
   res.status(200).json({ success: true, orders });
+});
+
+// @desc   Mark order as Shipped (vendor)
+// @route  PUT /api/vendor/orders/:id/ship
+// @access Private/Vendor
+exports.shipOrder = asyncHandler(async (req, res, next) => {
+  const { awb } = req.body;
+
+  const vendorProducts = await Product.find({ vendor: req.user._id }).select("_id");
+  const productIds = vendorProducts.map((p) => p._id);
+
+  const order = await Order.findOne({
+    _id: req.params.id,
+    $or: [{ "items.vendor": req.user._id }, { "items.product": { $in: productIds } }],
+  });
+
+  if (!order) return next(new ErrorResponse("Comanda nu a fost găsită", 404));
+  if (order.status !== "Processing") return next(new ErrorResponse("Comanda trebuie să fie în procesare pentru a fi expediată", 400));
+
+  order.status = "Shipped";
+  order.shippedAt = new Date();
+  if (awb) order.awb = awb;
+  await order.save();
+
+  res.status(200).json({ success: true, order });
 });
 
 // @desc   Publish an approved product listing

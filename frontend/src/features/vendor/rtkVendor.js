@@ -43,6 +43,14 @@ export const vendorApi = createApi({
       query: () => "vendor/orders",
       providesTags: ["VendorOrders"],
     }),
+    shipVendorOrder: builder.mutation({
+      query: ({ id, awb }) => ({
+        url: `vendor/orders/${id}/ship`,
+        method: "PUT",
+        body: { awb },
+      }),
+      invalidatesTags: ["VendorOrders"],
+    }),
     updateVendorProfile: builder.mutation({
       query: (body) => ({ url: "vendor/profile", method: "PUT", body }),
       invalidatesTags: ["VendorMe"],
@@ -90,6 +98,7 @@ export const {
   useDeleteVendorProductMutation,
   usePublishVendorProductMutation,
   useGetVendorOrdersQuery,
+  useShipVendorOrderMutation,
   useGetVendorAnalyticsQuery,
   useGetPublicVendorQuery,
   useGetPublicVendorProductsQuery,

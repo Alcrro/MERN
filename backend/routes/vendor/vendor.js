@@ -10,6 +10,7 @@ const {
   publishVendorProduct,
   getVendorOrders,
   getVendorAnalytics,
+  shipOrder,
 } = require("../../controllers/vendor/vendor");
 const {
   getPublicVendor,
@@ -36,6 +37,7 @@ router.route("/vendor/products").get(getVendorProducts).post(createVendorProduct
 router.put("/vendor/products/:id/publish", publishVendorProduct);
 router.route("/vendor/products/:id").put(updateVendorProduct).delete(deleteVendorProduct);
 router.get("/vendor/orders", getVendorOrders);
+router.put("/vendor/orders/:id/ship", shipOrder);
 router.get("/vendor/analytics", getVendorAnalytics);
 
 module.exports = router;

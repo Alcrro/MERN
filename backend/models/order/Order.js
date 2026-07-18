@@ -40,6 +40,7 @@ const OrderItemSchema = new mongoose.Schema(
         message: "Quantity must be a whole number",
       },
     },
+    vendor: { type: mongoose.Schema.ObjectId, ref: "Register", default: null },
   },
   { _id: false }
 );
@@ -116,6 +117,13 @@ const OrderSchema = new mongoose.Schema(
     installmentPlan: {
       type: InstallmentPlanSchema,
       default: null,
+    },
+    awb: {
+      type: String,
+      default: null,
+    },
+    shippedAt: {
+      type: Date,
     },
     deliveredAt: {
       type: Date,

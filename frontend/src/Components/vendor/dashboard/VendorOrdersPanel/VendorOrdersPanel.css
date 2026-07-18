@@ -60,6 +60,82 @@
 .vop__skel-cell--client { width: 110px; }
 .vop__skel-cell--price { width: 90px; }
 .vop__skel-cell--badge { width: 70px; height: 22px; border-radius: 12px; }
+.vop__skel-cell--btn  { width: 130px; height: 28px; border-radius: 6px; }
+
+/* ── Ship button ────────────────────────────────────────── */
+.vop__ship-btn {
+  padding: 0.3rem 0.8rem;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter .15s;
+}
+
+.vop__ship-btn:hover { filter: brightness(0.93); }
+
+/* ── Modal ──────────────────────────────────────────────── */
+.vop__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.vop__modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vop__modal-title { font-size: 1rem; font-weight: 700; color: var(--text); margin: 0; }
+.vop__modal-sub   { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+
+.vop__modal-input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.vop__modal-input:focus { outline: none; border-color: var(--primary); }
+
+.vop__modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+
+.vop__modal-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+.vop__modal-btn--cancel  { background: var(--bg-secondary, #f1f5f9); color: var(--text-muted); }
+.vop__modal-btn--confirm { background: var(--primary); color: #fff; }
+.vop__modal-btn--confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+html[data-theme="dark"] .vop__ship-btn { background: rgba(59,130,246,.15); color: #93c5fd; }
+html[data-theme="dark"] .vop__modal-btn--cancel { background: rgba(255,255,255,.07); }
 
 /* ── mobile ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
