@@ -93,7 +93,7 @@ const CheckoutPayment = ({ clientSecret, orderId, total }) => {
         <span className="cp-header__lock" aria-hidden="true">🔒</span>
         <h3 className="cp-title">Plată securizată</h3>
       </div>
-      <Elements stripe={stripePromise} options={{ clientSecret, appearance: getAppearance() }}>
+      <Elements key={clientSecret} stripe={stripePromise} options={{ clientSecret, appearance: getAppearance() }}>
         <PaymentForm orderId={orderId} total={total} />
       </Elements>
     </div>

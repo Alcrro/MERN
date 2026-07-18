@@ -6,6 +6,7 @@ const { Address } = require("../../models/address/Address");
 const ErrorResponse = require("../../utilitis/errorResponse");
 const stripe = require("../../utils/stripe");
 const { awardPoints, revokePoints } = require("../shopCard/shopCardService");
+const { generateRewardVouchers, invalidateOrderVouchers } = require("../voucher/voucherRewardService");
 const { ShopCard } = require("../../models/shopCard/ShopCard");
 const { CardTransaction } = require("../../models/shopCard/CardTransaction");
 
@@ -101,6 +102,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
         model: product.model || "",
         price: product.minPrice ?? product.variants?.[0]?.price ?? 0,
         quantity,
+        vendor: product.vendor ?? null,
       });
     }
 
@@ -171,6 +173,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
           amount: Math.round(amountAfterCredits * 100),
           currency: "ron",
           payment_method_types: ["card"],
+          ...(req.user.stripeCustomerId ? { customer: req.user.stripeCustomerId } : {}),
           metadata: { orderId: order._id.toString() },
         });
       }
@@ -193,6 +196,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
       order.paidAt = new Date();
       order.status = ORDER_STATUS.PROCESSING;
       await order.save();
+      generateRewardVouchers(order).catch(() => {});
       return res.status(201).json({ success: true, order });
     }
 
@@ -204,9 +208,41 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
     order.paidAt = new Date();
     order.status = ORDER_STATUS.PROCESSING;
     await order.save();
+    generateRewardVouchers(order).catch(() => {});
   }
 
   res.status(201).json({ success: true, order });
+});
+
+// @desc    Confirm payment after client-side stripe.confirmCardPayment succeeds
+// @route   POST /api/orders/:id/confirm-payment
+// @access  Private
+exports.confirmPayment = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+  if (!order) return next(new ErrorResponse("Order not found", 404));
+  if (order.user.toString() !== req.user.id) return next(new ErrorResponse("Not authorized", 401));
+  if (order.isPaid) return res.json({ success: true, order });
+  if (!order.stripePaymentIntentId) return next(new ErrorResponse("No payment intent", 400));
+
+  const pi = await stripe.paymentIntents.retrieve(order.stripePaymentIntentId, {
+    expand: ["latest_charge"],
+  });
+
+  if (pi.status !== "succeeded") return next(new ErrorResponse("Payment not completed", 402));
+
+  const charge = pi.latest_charge;
+  const last4 = charge?.payment_method_details?.card?.last4 ?? null;
+  const brand = charge?.payment_method_details?.card?.brand ?? null;
+  const receiptUrl = charge?.receipt_url ?? null;
+
+  order.isPaid = true;
+  order.paidAt = new Date();
+  order.status = ORDER_STATUS.PROCESSING;
+  order.paymentDetails = { last4, brand, receiptUrl };
+  await order.save();
+  generateRewardVouchers(order).catch(() => {});
+
+  res.json({ success: true, order });
 });
 
 // @desc    Cancel order
@@ -243,6 +279,7 @@ exports.cancelOrder = asyncHandler(async (req, res, next) => {
     await order.save({ session });
 
     await session.commitTransaction();
+    invalidateOrderVouchers(order._id).catch(() => {});
     res.status(200).json({ success: true, order });
   } catch (err) {
     await session.abortTransaction();
@@ -250,6 +287,83 @@ exports.cancelOrder = asyncHandler(async (req, res, next) => {
   } finally {
     session.endSession();
   }
+});
+
+// @desc    Get clientSecret for unpaid order (for inline payment)
+// @route   GET /api/orders/:id/pay-intent
+// @access  Private
+exports.getOrderPayIntent = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+  if (!order) return next(new ErrorResponse("Order not found", 404));
+  if (order.user.toString() !== req.user.id) return next(new ErrorResponse("Not authorized", 401));
+  if (order.isPaid) return next(new ErrorResponse("Order already paid", 400));
+  if (!order.stripePaymentIntentId) return next(new ErrorResponse("No payment intent for this order", 400));
+
+  const pi = await stripe.paymentIntents.retrieve(order.stripePaymentIntentId);
+
+  if (pi.status === "succeeded" && !order.isPaid) {
+    const charge = pi.latest_charge && typeof pi.latest_charge === "string"
+      ? await stripe.charges.retrieve(pi.latest_charge)
+      : pi.latest_charge;
+    order.isPaid = true;
+    order.paidAt = new Date();
+    order.status = ORDER_STATUS.PROCESSING;
+    order.paymentDetails = {
+      last4: charge?.payment_method_details?.card?.last4 ?? null,
+      brand: charge?.payment_method_details?.card?.brand ?? null,
+      receiptUrl: charge?.receipt_url ?? null,
+    };
+    await order.save();
+    generateRewardVouchers(order).catch(() => {});
+    return res.json({ success: true, alreadyPaid: true });
+  }
+
+  if (pi.status === "canceled") {
+    const amount = Math.round(Math.max(0, order.totalPrice - (order.creditsUsed || 0)) * 100);
+    const newPi = await stripe.paymentIntents.create({
+      amount,
+      currency: "ron",
+      payment_method_types: ["card"],
+      ...(req.user.stripeCustomerId ? { customer: req.user.stripeCustomerId } : {}),
+      metadata: { orderId: order._id.toString() },
+    });
+
+    const updated = await Order.findOneAndUpdate(
+      { _id: order._id, stripePaymentIntentId: order.stripePaymentIntentId },
+      { $set: { stripePaymentIntentId: newPi.id } }
+    );
+
+    if (!updated) {
+      const fresh = await Order.findById(order._id);
+      const freshPi = await stripe.paymentIntents.retrieve(fresh.stripePaymentIntentId);
+      return res.json({ success: true, clientSecret: freshPi.client_secret });
+    }
+
+    return res.json({ success: true, clientSecret: newPi.client_secret });
+  }
+
+  // dacă PI-ul nu are customer și userul are unul, atașăm — necesar pt saved PMs
+  if (!pi.customer && req.user.stripeCustomerId) {
+    await stripe.paymentIntents.update(pi.id, { customer: req.user.stripeCustomerId });
+  }
+
+  res.json({ success: true, clientSecret: pi.client_secret });
+});
+
+// @desc    Assign vendor to all items in an order (admin)
+// @route   PUT /api/orders/admin/:id/vendor
+// @access  Private/Admin
+exports.assignOrderVendor = asyncHandler(async (req, res, next) => {
+  const { vendorId } = req.body;
+  const order = await Order.findById(req.params.id);
+  if (!order) return next(new ErrorResponse("Order not found", 404));
+
+  order.items.forEach((item) => {
+    item.vendor = vendorId || null;
+  });
+  await order.save();
+
+  res.status(200).json({ success: true, order });
 });
 
 // @desc    Get all orders (admin)
