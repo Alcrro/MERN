@@ -6,8 +6,10 @@ const { getOrCreateStripeCustomer } = require("./paymentMethodsService");
 // @desc    Create SetupIntent for saving a card
 // @route   POST /api/payment-methods/setup
 // @access  Private
-exports.setupIntent = asyncHandler(async (req, res) => {
+exports.setupIntent = asyncHandler(async (req, res, next) => {
   const customerId = await getOrCreateStripeCustomer(req.user);
+  const existing = await stripe.paymentMethods.list({ customer: customerId, type: "card" });
+  if (existing.data.length >= 5) return next(new ErrorResponse("Maximum 5 carduri salvate", 400));
   const setupIntent = await stripe.setupIntents.create({
     customer: customerId,
     payment_method_types: ["card"],

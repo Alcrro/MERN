@@ -19,10 +19,13 @@ exports.getReviews = asyncHandler(async (req, res) => {
 // @access  Private
 exports.addReview = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.productId);
+  if (!product) return next(new ErrorResponse("Product not found", 404));
 
-  if (!product) {
-    return next(new ErrorResponse("Product not found", 404));
-  }
+  const alreadyReviewed = await Review.findOne({ product: req.params.productId, user: req.user.id });
+  if (alreadyReviewed) return next(new ErrorResponse("Ai lăsat deja o recenzie pentru acest produs", 400));
+
+  const reviewCount = await Review.countDocuments({ user: req.user.id });
+  if (reviewCount >= 20) return next(new ErrorResponse("Maximum 20 recenzii per cont", 400));
 
   const review = await Review.create({
     product: req.params.productId,

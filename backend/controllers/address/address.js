@@ -13,7 +13,9 @@ exports.getAddresses = asyncHandler(async (req, res) => {
 // @desc    Add address
 // @route   POST /api/addresses
 // @access  Private
-exports.addAddress = asyncHandler(async (req, res) => {
+exports.addAddress = asyncHandler(async (req, res, next) => {
+  const count = await Address.countDocuments({ user: req.user.id });
+  if (count >= 5) return next(new ErrorResponse("Maximum 5 adrese salvate", 400));
   const address = await Address.create({ ...req.body, user: req.user.id });
   res.status(201).json({ success: true, address });
 });

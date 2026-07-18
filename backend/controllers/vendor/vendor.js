@@ -161,6 +161,9 @@ exports.createVendorProduct = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Invalid product kind. Must be one of: ${VALID_KINDS.join(", ")}`, 400));
   }
 
+  const productCount = await Product.countDocuments({ vendor: req.user._id });
+  if (productCount >= 15) return next(new ErrorResponse("Maximum 15 produse per cont vendor", 400));
+
   // Bridge: old form sends price + stock; new form sends variants array
   if (!fields.variants?.length && fields.price != null) {
     fields.variants = [{

@@ -104,6 +104,11 @@ exports.createVoucher = asyncHandler(async (req, res, next) => {
   const existing = await Voucher.findOne({ code: code.toUpperCase().trim() });
   if (existing) return next(new ErrorResponse("Codul există deja", 409));
 
+  if (!isAdmin) {
+    const vendorVoucherCount = await Voucher.countDocuments({ vendorId: req.user._id, scope: { $ne: "reward" } });
+    if (vendorVoucherCount >= 10) return next(new ErrorResponse("Maximum 10 vouchere per cont vendor", 400));
+  }
+
   const voucher = await Voucher.create({
     code,
     type,
