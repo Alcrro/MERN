@@ -14,7 +14,7 @@ export const useAddProductToCart = (product) => {
       price,
       _variantAttrs:  variant?.attributes ?? {},
       _variantImages: variant?.images     ?? [],
-      _selectedRate:  rate ?? null,
+      _selectedRate:  rate ? true : null,
     };
     dispatch(addToCart({ data }));
     setAdded(true);

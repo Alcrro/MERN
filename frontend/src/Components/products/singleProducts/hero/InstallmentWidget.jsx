@@ -7,12 +7,14 @@ const WalletIcon = () => (
   </svg>
 );
 
-const PLANS = [3, 6, 12];
 const MIN_PRICE = 200;
+const MAX_MONTHS = 24;
 const fmt = (n) => n.toLocaleString("ro-RO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const InstallmentWidget = ({ price, selected, onSelect }) => {
   if (!price || price < MIN_PRICE) return null;
+
+  const minMonthly = price / MAX_MONTHS;
 
   return (
     <div className="inst">
@@ -22,34 +24,25 @@ const InstallmentWidget = ({ price, selected, onSelect }) => {
         <span className="inst__zero">0% dobândă</span>
       </div>
 
-      {PLANS.map((n) => {
-        const monthly = price / n;
-        const on = selected === n;
-        return (
-          <button
-            key={n}
-            type="button"
-            className={`inst__row${on ? " inst__row--on" : ""}`}
-            onClick={() => onSelect(on ? null : n)}
-            aria-pressed={on}
-          >
-            <span className="inst__radio">
-              <span className="inst__radio-dot" />
-            </span>
-            <span className="inst__label">
-              <strong>{n}</strong> rate a câte
-            </span>
-            <span className="inst__amount">
-              {fmt(monthly)} RON<span className="inst__mo">/lună</span>
-            </span>
-            {on && <span className="inst__check">✓</span>}
-          </button>
-        );
-      })}
+      <button
+        type="button"
+        className={`inst__toggle${selected ? " inst__toggle--on" : ""}`}
+        onClick={() => onSelect(selected ? null : true)}
+      >
+        <span className="inst__radio">
+          <span className="inst__radio-dot" />
+        </span>
+        <span className="inst__toggle-text">
+          {selected ? "Plătesc în rate" : "Vreau să plătesc în rate"}
+        </span>
+        <span className="inst__toggle-hint">
+          de la {fmt(minMonthly)} RON/lună
+        </span>
+      </button>
 
       {selected && (
-        <p className="inst__summary">
-          Total: <strong>{fmt(price)} RON</strong> în <strong>{selected} rate</strong> de <strong>{fmt(price / selected)} RON/lună</strong>
+        <p className="inst__note">
+          Banca și numărul de rate le alegi la pasul următor.
         </p>
       )}
     </div>

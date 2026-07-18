@@ -1,18 +1,22 @@
-import { INSTALLMENT_BANKS, INSTALLMENT_MONTHS } from "../../../utils/constants";
+import { INSTALLMENT_PLANS, INSTALLMENT_BANKS } from "../../../utils/constants";
 import "./InstallmentPlanForm.css";
 
 const fmt = (n) =>
   Number(n).toLocaleString("ro-RO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const InstallmentPlanForm = ({ plan, onPlanChange, totalCart }) => {
-  const monthly = plan?.months ? totalCart / plan.months : null;
+  const availableMonths = plan?.bank ? INSTALLMENT_PLANS[plan.bank]?.months ?? [] : [];
 
-  const setBank = (bank) =>
+  const setBank = (bank) => {
+    const months = INSTALLMENT_PLANS[bank]?.months ?? [];
+    const currentMonths = plan?.months;
+    const validMonths = months.includes(currentMonths) ? currentMonths : null;
     onPlanChange({
-      ...plan,
       bank,
-      monthlyAmount: plan?.months ? parseFloat((totalCart / plan.months).toFixed(2)) : null,
+      months: validMonths,
+      monthlyAmount: validMonths ? parseFloat((totalCart / validMonths).toFixed(2)) : null,
     });
+  };
 
   const setMonths = (months) =>
     onPlanChange({
@@ -38,25 +42,34 @@ const InstallmentPlanForm = ({ plan, onPlanChange, totalCart }) => {
         ))}
       </div>
 
-      <p className="ipf__label">Număr de rate</p>
-      <div className="ipf__chips" role="radiogroup" aria-label="Număr rate">
-        {INSTALLMENT_MONTHS.map((m) => (
-          <button
-            key={m}
-            type="button"
-            className={`ipf__chip${plan?.months === m ? " ipf__chip--active" : ""}`}
-            aria-pressed={plan?.months === m}
-            onClick={() => setMonths(m)}
-          >
-            {m}×
-          </button>
-        ))}
-      </div>
+      {plan?.bank && (
+        <>
+          <p className="ipf__label">Număr de rate</p>
+          <div className="ipf__months" role="radiogroup" aria-label="Număr rate">
+            {availableMonths.map((m) => {
+              const monthly = totalCart / m;
+              const active  = plan?.months === m;
+              return (
+                <button
+                  key={m}
+                  type="button"
+                  className={`ipf__month${active ? " ipf__month--active" : ""}`}
+                  aria-pressed={active}
+                  onClick={() => setMonths(m)}
+                >
+                  <span className="ipf__month-n">{m} rate</span>
+                  <span className="ipf__month-val">{fmt(monthly)} RON/lună</span>
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
 
-      {monthly !== null && (
+      {plan?.months && (
         <div className="ipf__preview">
-          <span className="ipf__preview-label">Sumă lunară estimată</span>
-          <strong className="ipf__preview-amount">{fmt(monthly)} RON/lună</strong>
+          <span className="ipf__preview-label">Total în {plan.months} rate</span>
+          <strong className="ipf__preview-amount">{fmt(totalCart / plan.months)} RON/lună</strong>
         </div>
       )}
 

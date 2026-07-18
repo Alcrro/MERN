@@ -238,6 +238,14 @@ html[data-theme="dark"] .ct-item__img {
   margin-top: 2px;
 }
 
+.ct-item__rate-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+
 .ct-item__rate {
   display: inline-flex;
   align-items: center;
@@ -248,9 +256,31 @@ html[data-theme="dark"] .ct-item__img {
   border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent);
   border-radius: 4px;
   padding: 1px 6px;
-  margin-top: 2px;
   width: fit-content;
 }
+
+.ct-item__rate--none {
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border-color: var(--border);
+}
+
+.ct-item__rate-edit {
+  font-size: 0.67rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: .8;
+}
+
+.ct-item__rate-edit:hover { opacity: 1; }
+
 
 /* right: price + stepper */
 .ct-item__right {
@@ -465,6 +495,18 @@ html[data-theme="dark"] .ct-receipt__free { color: #4ade80; }
   font-size: 0.82rem;
   color: var(--text-light);
 }
+
+.ct-receipt__discounts {
+  border-top: 1px dashed var(--border);
+  border-bottom: none;
+}
+
+.ct-receipt__row--discount {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+html[data-theme="dark"] .ct-receipt__row--discount { color: #4ade80; }
 
 .ct-receipt__total {
   display: flex;

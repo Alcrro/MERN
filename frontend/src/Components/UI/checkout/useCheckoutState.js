@@ -6,14 +6,19 @@ import { clearCart } from "../../../features/product/addToCart/addToCartSlice";
 const useCheckoutState = (cartItems) => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(0);
+  const [deliveryMethod, setDeliveryMethod] = useState("courier");
   const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [billing, setBilling] = useState({ firstName: "", lastName: "", phone: "" });
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [paymentPath, setPaymentPathRaw] = useState("full");
+  const hasRatesInCart = cartItems.some((i) => i.data?._selectedRate);
+  const [paymentPath, setPaymentPathRaw] = useState(hasRatesInCart ? "installments" : "full");
   const [installmentPlan, setInstallmentPlan] = useState(null);
   const [savedPaymentMethodId, setSavedPaymentMethodId] = useState(null);
   const [orderSuccess, setOrderSuccess] = useState(null);
   const [pendingPayment, setPendingPayment] = useState(null);
   const [createOrder, { isLoading: isSubmitting, error: orderError }] = useCreateOrderMutation();
+
+  const updateBilling = (patch) => setBilling((prev) => ({ ...prev, ...patch }));
 
   const setPaymentPath = (path) => {
     setPaymentPathRaw(path);
@@ -31,7 +36,12 @@ const useCheckoutState = (cartItems) => {
     }));
 
     const effectivePaymentMethod = paymentPath === "installments" ? "Card" : paymentMethod;
-    const body = { items, addressId: selectedAddressId, paymentMethod: effectivePaymentMethod };
+    const body = {
+      items,
+      paymentMethod: effectivePaymentMethod,
+      billingDetails: billing,
+      ...(deliveryMethod === "courier" && selectedAddressId ? { addressId: selectedAddressId } : {}),
+    };
     if (savedPaymentMethodId && effectivePaymentMethod === "Card") {
       body.savedPaymentMethodId = savedPaymentMethodId;
     }
@@ -57,7 +67,9 @@ const useCheckoutState = (cartItems) => {
 
   return {
     step, setStep,
+    deliveryMethod, setDeliveryMethod,
     selectedAddressId, setSelectedAddressId,
+    billing, updateBilling,
     paymentMethod, setPaymentMethod,
     paymentPath, setPaymentPath,
     installmentPlan, setInstallmentPlan,

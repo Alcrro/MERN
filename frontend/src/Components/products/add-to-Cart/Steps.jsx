@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import { CheckIcon } from "./cartIcons";
 
-const STEPS = ["Coș", "Livrare", "Plată"];
+const STEPS = ["Coș", "Detalii comandă", "Confirmare"];
 
 const getActiveStep = (pathname) => {
   if (pathname.includes("checkout")) return 1;

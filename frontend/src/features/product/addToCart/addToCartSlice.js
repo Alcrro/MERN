@@ -3,8 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 const KEY = "alcrro-cart";
 
 const load = () => {
-  try { return JSON.parse(localStorage.getItem(KEY)) ?? { card: [], cartTotalQuantity: 0, cartTotalAmount: 0 }; }
-  catch { return { card: [], cartTotalQuantity: 0, cartTotalAmount: 0 }; }
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY)) ?? { card: [], cartTotalQuantity: 0, cartTotalAmount: 0 };
+    // normalize: _selectedRate should be true|null, not a number
+    saved.card = saved.card.map((item) => ({
+      ...item,
+      data: {
+        ...item.data,
+        _selectedRate: item.data?._selectedRate ? true : null,
+      },
+    }));
+    return saved;
+  } catch { return { card: [], cartTotalQuantity: 0, cartTotalAmount: 0 }; }
 };
 
 const save = (state) => {
@@ -68,10 +78,19 @@ const cartSlice = createSlice({
       state.card = [];
       recalc(state);
     },
+
+    setCartItemRate: (state, action) => {
+      const { productId, rate } = action.payload;
+      const idx = state.card.findIndex((i) => i.data._id === productId);
+      if (idx >= 0) {
+        state.card[idx].data._selectedRate = rate;
+        save(state);
+      }
+    },
   },
 });
 
-export const { addToCart, removeFromCart, removeSingleCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, removeSingleCart, clearCart, setCartItemRate } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const selectCartIsInstallmentEligible = (state) =>

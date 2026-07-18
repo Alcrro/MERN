@@ -45,6 +45,50 @@
   color: #fff;
 }
 
+/* ── Month buttons (rate per bancă) ────────────────────────── */
+.ipf__months {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ipf__month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color .13s, background .13s;
+}
+
+.ipf__month:hover { border-color: var(--primary); }
+
+.ipf__month--active {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+}
+
+.ipf__month-n {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.ipf__month-val {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-medium);
+}
+
+.ipf__month--active .ipf__month-n,
+.ipf__month--active .ipf__month-val {
+  color: var(--primary);
+}
+
 .ipf__preview {
   display: flex;
   align-items: center;
@@ -81,6 +125,10 @@ html[data-theme="dark"] .ipf {
 html[data-theme="dark"] .ipf__chip--active {
   border-color: var(--primary);
   background: var(--primary);
+}
+
+html[data-theme="dark"] .ipf__month--active {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
 html[data-theme="dark"] .ipf__preview {

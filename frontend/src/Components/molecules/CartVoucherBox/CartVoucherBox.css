@@ -1,0 +1,142 @@
+.cvb {
+  border-top: 1px dashed var(--border);
+  padding: 0.75rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.cvb__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cvb__head svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.cvb__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-medium);
+  flex: 1;
+}
+
+.cvb__ok-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.cvb__row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cvb__input {
+  flex: 1;
+  padding: 0.48rem 0.7rem;
+  font-size: 0.82rem;
+  letter-spacing: .06em;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  color: var(--text-dark);
+  font-family: inherit;
+  transition: border-color .15s;
+}
+
+.cvb__input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.cvb__btn {
+  padding: 0.48rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+}
+
+.cvb__btn:hover:not(:disabled) {
+  background: var(--primary);
+  color: #fff;
+}
+
+.cvb__btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.cvb__applied {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.48rem 0.75rem;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+}
+
+.cvb__applied-code {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #15803d;
+  letter-spacing: .06em;
+  flex: 1;
+}
+
+.cvb__applied-scope {
+  font-size: 0.72rem;
+  color: #15803d;
+  opacity: .75;
+}
+
+.cvb__remove {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  transition: color .15s;
+}
+
+.cvb__remove:hover { color: #ef4444; }
+
+.cvb__error {
+  font-size: 0.78rem;
+  color: #ef4444;
+  margin: 0;
+}
+
+html[data-theme="dark"] .cvb__applied {
+  background: rgba(22, 163, 74, .1);
+  border-color: rgba(134, 239, 172, .25);
+}
+
+html[data-theme="dark"] .cvb__applied-code { color: #4ade80; }
+
+html[data-theme="dark"] .cvb__ok-badge {
+  background: rgba(22, 163, 74, .15);
+  color: #4ade80;
+}
+
+html[data-theme="dark"] .cvb__input {
+  background: var(--bg-card);
+  color: var(--text-dark);
+}

@@ -25,7 +25,7 @@ const CheckoutStepConfirm = ({ cart, onSubmit, isSubmitting, error }) => (
     )}
     <button type="button" className="ck-btn ck-btn--primary ck-btn--full"
       onClick={onSubmit} disabled={isSubmitting}>
-      {isSubmitting ? "Se procesează..." : "Plasează comanda"}
+      {isSubmitting ? "Se procesează..." : "Finalizează comanda"}
     </button>
   </div>
 );

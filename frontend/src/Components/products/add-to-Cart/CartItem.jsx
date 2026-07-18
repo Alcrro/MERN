@@ -1,8 +1,10 @@
 import { useDispatch } from "react-redux";
-import { addToCart, removeFromCart, removeSingleCart } from "../../../features/product/addToCart/addToCartSlice";
+import { addToCart, removeFromCart, removeSingleCart, setCartItemRate } from "../../../features/product/addToCart/addToCartSlice";
 import { TrashIcon, MinusIcon, PlusIcon } from "./cartIcons";
 import { fmt, fmtRate } from "./cartUtils";
 import panda from "../../../Assets/images/panda.png";
+
+const MIN_RATE_PRICE = 200;
 
 const CartItem = ({ item, idx }) => {
   const dispatch = useDispatch();
@@ -14,10 +16,13 @@ const CartItem = ({ item, idx }) => {
   const num   = String(idx + 1).padStart(2, "0");
   const img   = p._variantImages?.[0] ?? p.images?.[0] ?? panda;
   const attrEntries = Object.entries(p._variantAttrs ?? {}).filter(([, v]) => v);
+  const canRate  = price >= MIN_RATE_PRICE;
+  const inRate   = !!p._selectedRate;
 
-  const inc = () => { if (!atMax) dispatch(addToCart(item)); };
-  const dec = () => dispatch(removeSingleCart(item));
-  const del = () => dispatch(removeFromCart(item));
+  const inc        = () => { if (!atMax) dispatch(addToCart(item)); };
+  const dec        = () => dispatch(removeSingleCart(item));
+  const del        = () => dispatch(removeFromCart(item));
+  const toggleRate = () => dispatch(setCartItemRate({ productId: p._id, rate: inRate ? null : true }));
 
   return (
     <div className="ct-item">
@@ -34,10 +39,16 @@ const CartItem = ({ item, idx }) => {
           </div>
         )}
         <span className="ct-item__unit">{fmt(price)} RON / buc.</span>
-        {p._selectedRate && (
-          <span className="ct-item__rate">
-            {p._selectedRate} rate · {fmtRate(price / p._selectedRate)} RON/lună
-          </span>
+
+        {canRate && (
+          <div className="ct-item__rate-row">
+            <span className={`ct-item__rate${inRate ? "" : " ct-item__rate--none"}`}>
+              {inRate ? "Plătesc în rate" : "Plătesc integral"}
+            </span>
+            <button type="button" className="ct-item__rate-edit" onClick={toggleRate}>
+              {inRate ? "Schimbă în integral" : "Plătesc în rate"}
+            </button>
+          </div>
         )}
       </div>
       <div className="ct-item__right">
