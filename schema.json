@@ -1,0 +1,368 @@
+{
+  "nodes": [
+    {
+      "id": "users",
+      "collection": "users",
+      "color": "#f0883e",
+      "x": 500,
+      "y": 0,
+      "fields": [
+        { "name": "_id",              "type": "ObjectId",                          "pk": true },
+        { "name": "name",             "type": "String",       "required": true },
+        { "name": "email",            "type": "String",       "required": true,  "unique": true },
+        { "name": "password",         "type": "String",       "required": true,  "note": "bcrypt, select: false" },
+        { "name": "role",             "type": "enum (client | vendor | admin)",   "required": true },
+        { "name": "phone",            "type": "String" },
+        { "name": "avatar",           "type": "String",       "note": "Cloudinary URL" },
+        { "name": "vendorStatus",     "type": "enum (none | pending | approved | rejected)" },
+        { "name": "shopName",         "type": "String" },
+        { "name": "stripeCustomerId", "type": "String",       "unique": true },
+        { "name": "createdAt",        "type": "Date" },
+        { "name": "updatedAt",        "type": "Date" }
+      ],
+      "detail": "Colecție unificată pentru toți utilizatorii. Rolul determină accesul la rute și dashboard-uri. stripeCustomerId creat lazy la prima operație Stripe."
+    },
+    {
+      "id": "vendors",
+      "collection": "vendors",
+      "color": "#22d3ee",
+      "x": 1000,
+      "y": 0,
+      "fields": [
+        { "name": "_id",             "type": "ObjectId",                       "pk": true },
+        { "name": "user",            "type": "ObjectId → users",  "isRef": true, "required": true, "unique": true },
+        { "name": "shopDescription", "type": "String" },
+        { "name": "profile.cui",           "type": "String" },
+        { "name": "profile.denumireFirma", "type": "String" },
+        { "name": "profile.tipEntitate",   "type": "enum (SRL | PFA | SA | RA | II | ONG)" },
+        { "name": "profile.returZile",     "type": "Number",  "note": "default 30" },
+        { "name": "profile.telefon",       "type": "String" },
+        { "name": "profile.emailContact",  "type": "String" },
+        { "name": "locations",       "type": "Array (oras, adresa, telefon, zileLivrare, orar)" },
+        { "name": "rating.average",  "type": "Number" },
+        { "name": "rating.count",    "type": "Number" },
+        { "name": "createdAt",       "type": "Date" },
+        { "name": "updatedAt",       "type": "Date" }
+      ],
+      "detail": "Profilul business al unui vendor. Creat la aprobare de admin. Conține date firmă (CUI, tip entitate), locații cu program și politica de retur."
+    },
+    {
+      "id": "products",
+      "collection": "products",
+      "color": "#38bdf8",
+      "x": 500,
+      "y": 350,
+      "fields": [
+        { "name": "_id",            "type": "ObjectId",                    "pk": true },
+        { "name": "kind",           "type": "enum (Electronics | Clothing | Furniture | HomeGarden | Books)", "note": "discriminatorKey" },
+        { "name": "brand",          "type": "String",    "required": true },
+        { "name": "model / name",   "type": "String",    "note": "câmp specific per discriminator" },
+        { "name": "minPrice",       "type": "Number",    "note": "calculat din variants" },
+        { "name": "variants",       "type": "Array (attributes{}, price, stock{quantity, availability}, images[])" },
+        { "name": "description",    "type": "String" },
+        { "name": "slug",           "type": "String",    "unique": true },
+        { "name": "user",           "type": "ObjectId → users", "isRef": true },
+        { "name": "vendor",         "type": "ObjectId → users", "isRef": true },
+        { "name": "images",         "type": "String[]" },
+        { "name": "listingStatus",  "type": "enum (pending | approved | rejected)" },
+        { "name": "publishStatus",  "type": "enum (draft | published)" },
+        { "name": "sku",            "type": "String",    "unique": true },
+        { "name": "catalogRef",     "type": "ObjectId → catalogproducts", "isRef": true },
+        { "name": "rating.average", "type": "Number" },
+        { "name": "rating.count",   "type": "Number" },
+        { "name": "creditsOnly",    "type": "Boolean" },
+        { "name": "createdAt",      "type": "Date" },
+        { "name": "updatedAt",      "type": "Date" }
+      ],
+      "detail": "Mongoose discriminator pattern — o singură colecție, câmpuri specifice per categorie. Variantele conțin preț, stoc și imagini. Rating recalculat automat la save/delete review."
+    },
+    {
+      "id": "addresses",
+      "collection": "addresses",
+      "color": "#bc8cff",
+      "x": 0,
+      "y": 350,
+      "fields": [
+        { "name": "_id",       "type": "ObjectId",                       "pk": true },
+        { "name": "user",      "type": "ObjectId → users", "isRef": true, "required": true },
+        { "name": "label",     "type": "String",   "note": "default Acasă, max 5 per user" },
+        { "name": "street",    "type": "String",   "required": true },
+        { "name": "city",      "type": "String",   "required": true },
+        { "name": "county",    "type": "enum (41 județe RO)", "required": true },
+        { "name": "zip",       "type": "String",   "required": true, "note": "6 cifre" },
+        { "name": "phone",     "type": "String",   "required": true, "note": "format RO" },
+        { "name": "isDefault", "type": "Boolean",  "note": "unique per user via pre-save hook" },
+        { "name": "createdAt", "type": "Date" },
+        { "name": "updatedAt", "type": "Date" }
+      ],
+      "detail": "Adresele de livrare ale unui user. Maximum 5 per cont. Pre-save hook dezactivează celelalte adrese default la setarea uneia noi."
+    },
+    {
+      "id": "reviews",
+      "collection": "reviews",
+      "color": "#fbbf24",
+      "x": 1000,
+      "y": 350,
+      "fields": [
+        { "name": "_id",       "type": "ObjectId",                          "pk": true },
+        { "name": "product",   "type": "ObjectId → products", "isRef": true, "required": true },
+        { "name": "user",      "type": "ObjectId → users",    "isRef": true, "required": true },
+        { "name": "value",     "type": "Number",   "required": true, "note": "1-5 stele" },
+        { "name": "comment",   "type": "String",   "note": "max 500 chars" },
+        { "name": "createdAt", "type": "Date" },
+        { "name": "updatedAt", "type": "Date" }
+      ],
+      "detail": "Index unic (product, user) — un review per produs per user. Post-save hook recalculează rating.average și rating.count pe produs prin aggregation."
+    },
+    {
+      "id": "orders",
+      "collection": "orders",
+      "color": "#3fb950",
+      "x": 500,
+      "y": 700,
+      "fields": [
+        { "name": "_id",                  "type": "ObjectId",                    "pk": true },
+        { "name": "user",                 "type": "ObjectId → users", "isRef": true, "required": true },
+        { "name": "items",                "type": "Array (product, brand, model, price, quantity, vendor)" },
+        { "name": "deliveryAddress",      "type": "Object (street, city, county, zip, phone)", "note": "snapshot la plasare" },
+        { "name": "totalPrice",           "type": "Number",  "note": "recalculat via pre-save" },
+        { "name": "status",               "type": "enum (Pending | Processing | Shipped | Delivered | Cancelled)" },
+        { "name": "paymentMethod",        "type": "enum (Card | Ramburs)",  "required": true },
+        { "name": "stripePaymentIntentId","type": "String" },
+        { "name": "isPaid",               "type": "Boolean" },
+        { "name": "paidAt",               "type": "Date" },
+        { "name": "isRefunded",           "type": "Boolean" },
+        { "name": "refundedAt",           "type": "Date" },
+        { "name": "paymentDetails",       "type": "Object (last4, brand, receiptUrl)" },
+        { "name": "installmentPlan",      "type": "Object (bank, months, monthlyAmount)" },
+        { "name": "awb",                  "type": "String" },
+        { "name": "creditsUsed",          "type": "Number",  "note": "credite AlcrroCard deduse" },
+        { "name": "voucherCode",          "type": "String" },
+        { "name": "voucherDiscount",      "type": "Number" },
+        { "name": "pointsEarned",         "type": "Number" },
+        { "name": "createdAt",            "type": "Date" },
+        { "name": "updatedAt",            "type": "Date" }
+      ],
+      "detail": "items și deliveryAddress sunt snapshot-uri — prețul și adresa rămân fixe chiar dacă produsul/adresa user-ului se modifică ulterior."
+    },
+    {
+      "id": "shopcards",
+      "collection": "shopcards",
+      "color": "#f472b6",
+      "x": 0,
+      "y": 700,
+      "fields": [
+        { "name": "_id",           "type": "ObjectId",                       "pk": true },
+        { "name": "user",          "type": "ObjectId → users", "isRef": true, "required": true, "unique": true },
+        { "name": "cardNumber",    "type": "String",   "unique": true, "note": "ALCRRO-XXXX-XXXX" },
+        { "name": "credits",       "type": "Number",   "note": "RON utilizabili la checkout" },
+        { "name": "points",        "type": "Number",   "note": "câștigați per comandă" },
+        { "name": "tier",          "type": "enum (standard | silver | gold)", "note": "recalculat la save" },
+        { "name": "referralCode",  "type": "String",   "unique": true },
+        { "name": "referredBy",    "type": "ObjectId → users", "isRef": true },
+        { "name": "hasUsedReferral","type": "Boolean" },
+        { "name": "createdAt",     "type": "Date" },
+        { "name": "updatedAt",     "type": "Date" }
+      ],
+      "detail": "Un card per user, creat automat la înregistrare. Tier recalculat via pre-save: standard (<500 pts), silver (≥500), gold (≥2000). Multiplicatori: 1.0× / 1.1× / 1.25×."
+    },
+    {
+      "id": "cardtransactions",
+      "collection": "cardtransactions",
+      "color": "#4ade80",
+      "x": 0,
+      "y": 1050,
+      "fields": [
+        { "name": "_id",                   "type": "ObjectId",                    "pk": true },
+        { "name": "card",                  "type": "ObjectId → shopcards", "isRef": true, "required": true },
+        { "name": "user",                  "type": "ObjectId → users",    "isRef": true, "required": true },
+        { "name": "type",                  "type": "enum (credit-purchase | points-earned | points-redeemed | credits-spent | referral-bonus | welcome-bonus)", "required": true },
+        { "name": "amount",                "type": "Number",  "required": true },
+        { "name": "description",           "type": "String",  "required": true },
+        { "name": "orderId",               "type": "ObjectId → orders",   "isRef": true },
+        { "name": "stripePaymentIntentId", "type": "String" },
+        { "name": "createdAt",             "type": "Date" },
+        { "name": "updatedAt",             "type": "Date" }
+      ],
+      "detail": "Log imutabil al tuturor mișcărilor de puncte și credite. Folosit pentru istoricul din profil și reconcilierea Stripe."
+    },
+    {
+      "id": "vouchers",
+      "collection": "vouchers",
+      "color": "#6366f1",
+      "x": 500,
+      "y": 1050,
+      "fields": [
+        { "name": "_id",           "type": "ObjectId",                    "pk": true },
+        { "name": "code",          "type": "String",   "required": true, "unique": true, "note": "uppercase" },
+        { "name": "type",          "type": "enum (percent | fixed)",      "required": true },
+        { "name": "value",         "type": "Number",   "required": true },
+        { "name": "minOrder",      "type": "Number",   "note": "valoare minimă comandă" },
+        { "name": "active",        "type": "Boolean" },
+        { "name": "expiresAt",     "type": "Date" },
+        { "name": "vendorId",      "type": "ObjectId → users",  "isRef": true, "note": "null = global (admin)" },
+        { "name": "productIds",    "type": "ObjectId[] → products", "isRef": true, "note": "gol = toate produsele vendorului" },
+        { "name": "scope",         "type": "enum (global | vendor | reward)" },
+        { "name": "issuedTo",      "type": "ObjectId → users",  "isRef": true, "note": "reward vouchers" },
+        { "name": "sourceOrderId", "type": "ObjectId → orders", "isRef": true },
+        { "name": "isRedeemed",    "type": "Boolean" },
+        { "name": "usedOnOrderId", "type": "ObjectId → orders", "isRef": true },
+        { "name": "createdAt",     "type": "Date" },
+        { "name": "updatedAt",     "type": "Date" }
+      ],
+      "detail": "Trei tipuri: global (admin), vendor (creat de vendor, max 10), reward (emis automat după livrare). Validare și discount calculate server-side la createOrder."
+    },
+    {
+      "id": "vendorvoucherrules",
+      "collection": "vendorvoucherrules",
+      "color": "#fb923c",
+      "x": 1000,
+      "y": 700,
+      "fields": [
+        { "name": "_id",            "type": "ObjectId",                    "pk": true },
+        { "name": "vendorId",       "type": "ObjectId → users", "isRef": true, "required": true, "unique": true },
+        { "name": "enabled",        "type": "Boolean",  "note": "default false" },
+        { "name": "type",           "type": "enum (percent | fixed)" },
+        { "name": "value",          "type": "Number",   "note": "min 1" },
+        { "name": "minOrderAmount", "type": "Number" },
+        { "name": "validDays",      "type": "Number",   "note": "default 30" },
+        { "name": "productIds",     "type": "ObjectId[] → products", "isRef": true, "note": "gol = toate produsele" },
+        { "name": "createdAt",      "type": "Date" },
+        { "name": "updatedAt",      "type": "Date" }
+      ],
+      "detail": "Un singur document per vendor (upsert). Dacă enabled=true, sistemul emite automat un voucher reward cumpărătorului după livrarea comenzii."
+    }
+  ],
+  "edges": [
+    {
+      "id": "vendor_user",
+      "source": "users",
+      "sourceHandle": "r",
+      "target": "vendors",
+      "targetHandle": "l",
+      "label": "user",
+      "animated": true,
+      "color": "#22d3ee"
+    },
+    {
+      "id": "product_vendor",
+      "source": "users",
+      "sourceHandle": "b",
+      "target": "products",
+      "targetHandle": "t",
+      "label": "vendor",
+      "animated": true,
+      "color": "#f0883e"
+    },
+    {
+      "id": "address_user",
+      "source": "users",
+      "sourceHandle": "l",
+      "target": "addresses",
+      "targetHandle": "t",
+      "label": "user",
+      "animated": true,
+      "color": "#bc8cff"
+    },
+    {
+      "id": "review_product",
+      "source": "products",
+      "sourceHandle": "r",
+      "target": "reviews",
+      "targetHandle": "l",
+      "label": "product",
+      "animated": true,
+      "color": "#38bdf8"
+    },
+    {
+      "id": "review_user",
+      "source": "users",
+      "sourceHandle": "r",
+      "target": "reviews",
+      "targetHandle": "t",
+      "label": "user",
+      "animated": true,
+      "color": "#fbbf24"
+    },
+    {
+      "id": "order_user",
+      "source": "users",
+      "sourceHandle": "b",
+      "target": "orders",
+      "targetHandle": "t",
+      "label": "user",
+      "animated": true,
+      "color": "#3fb950"
+    },
+    {
+      "id": "shopcard_user",
+      "source": "users",
+      "sourceHandle": "l",
+      "target": "shopcards",
+      "targetHandle": "t",
+      "label": "user",
+      "animated": true,
+      "color": "#f472b6"
+    },
+    {
+      "id": "transaction_card",
+      "source": "shopcards",
+      "sourceHandle": "b",
+      "target": "cardtransactions",
+      "targetHandle": "t",
+      "label": "card",
+      "animated": true,
+      "color": "#f472b6"
+    },
+    {
+      "id": "transaction_order",
+      "source": "orders",
+      "sourceHandle": "l",
+      "target": "cardtransactions",
+      "targetHandle": "r",
+      "label": "orderId",
+      "animated": true,
+      "color": "#3fb950"
+    },
+    {
+      "id": "voucher_vendor",
+      "source": "users",
+      "sourceHandle": "b",
+      "target": "vouchers",
+      "targetHandle": "t",
+      "label": "vendorId",
+      "animated": true,
+      "color": "#6366f1"
+    },
+    {
+      "id": "voucher_source_order",
+      "source": "orders",
+      "sourceHandle": "b",
+      "target": "vouchers",
+      "targetHandle": "t",
+      "label": "sourceOrderId",
+      "animated": true,
+      "color": "#3fb950"
+    },
+    {
+      "id": "voucher_rule",
+      "source": "users",
+      "sourceHandle": "r",
+      "target": "vendorvoucherrules",
+      "targetHandle": "l",
+      "label": "vendorId",
+      "animated": true,
+      "color": "#fb923c"
+    },
+    {
+      "id": "rule_order_trigger",
+      "source": "vendorvoucherrules",
+      "sourceHandle": "b",
+      "target": "vouchers",
+      "targetHandle": "r",
+      "label": "emite reward →",
+      "animated": true,
+      "color": "#fb923c"
+    }
+  ]
+}
