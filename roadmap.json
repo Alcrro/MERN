@@ -73,26 +73,26 @@
   },
   {
     "name": "Email notificări comenzi (confirmare, expediere)",
-    "status": "todo"
+    "status": "not-started"
   },
   {
     "name": "Integrare curier AWB real (Fan Courier / DPD)",
-    "status": "todo"
+    "status": "not-started"
   },
   {
     "name": "Full-text search cu MongoDB Atlas Search",
-    "status": "todo"
+    "status": "not-started"
   },
   {
     "name": "Vendor analytics — grafice vânzări, top produse",
-    "status": "todo"
+    "status": "not-started"
   },
   {
     "name": "Recomandări produse AI",
-    "status": "todo"
+    "status": "not-started"
   },
   {
     "name": "PWA + notificări push",
-    "status": "todo"
+    "status": "not-started"
   }
 ]
