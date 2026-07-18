@@ -111,6 +111,7 @@ export const ADMIN_LINKS = [
   { to: "/admin/dashboard/catalog",   label: "Catalog produse", icon: "📦" },
   { to: "/admin/dashboard/vendors",   label: "Vânzători", icon: "🏪" },
   { to: "/admin/dashboard/categories", label: "Categorii", icon: "🗂️" },
+  { to: "/admin/dashboard/orders",   label: "Comenzi", icon: "📋" },
 ];
 
 /* ─── Vendor sidebar links ───────────────────────────────── */
@@ -120,6 +121,7 @@ export const VENDOR_LINKS = [
   { to: "/vendor/dashboard/orders",    label: "Comenzi" },
   { to: "/vendor/dashboard/analytics", label: "Analytics" },
   { to: "/vendor/dashboard/catalog",   label: "Catalog produse" },
+  { to: "/vendor/dashboard/vouchers",  label: "Vouchere" },
   { to: "/vendor/dashboard/profile",   label: "Profil firmă", end: false },
 ];
 
@@ -152,9 +154,17 @@ export const CATALOG_SPEC_FIELDS = {
 };
 
 /* ─── Checkout — installments ────────────────────────────── */
-export const INSTALLMENT_BANKS  = ["BT", "ING", "Raiffeisen", "BCR"];
-export const INSTALLMENT_MONTHS = [3, 6, 10, 12];
 export const INSTALLMENT_MIN_PRICE = 200;
+
+export const INSTALLMENT_PLANS = {
+  BT:         { label: "Banca Transilvania", months: [3, 6, 12, 24] },
+  ING:        { label: "ING Bank",           months: [3, 6, 12] },
+  Raiffeisen: { label: "Raiffeisen Bank",    months: [3, 6, 12, 24] },
+  BCR:        { label: "BCR",                months: [3, 6, 12] },
+  CEC:        { label: "CEC Bank",           months: [3, 6, 12] },
+};
+
+export const INSTALLMENT_BANKS = Object.keys(INSTALLMENT_PLANS);
 
 /* ─── Home stats ─────────────────────────────────────────── */
 export const STATS = [

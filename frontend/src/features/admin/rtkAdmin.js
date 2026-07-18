@@ -6,7 +6,7 @@ export const adminApi = createApi({
     baseUrl: `${process.env.REACT_APP_API_URL || ""}/api/`,
     credentials: "include",
   }),
-  tagTypes: ["PendingVendors", "PendingListings"],
+  tagTypes: ["PendingVendors", "PendingListings", "AdminOrders"],
   endpoints: (builder) => ({
     getAdminVendors: builder.query({
       query: () => "admin/vendors",
@@ -37,6 +37,22 @@ export const adminApi = createApi({
       }),
       invalidatesTags: ["PendingListings"],
     }),
+    getAllOrders: builder.query({
+      query: ({ status, page = 1, limit = 20 } = {}) => {
+        const params = new URLSearchParams({ page, limit });
+        if (status) params.set("status", status);
+        return `orders/admin/all?${params}`;
+      },
+      providesTags: ["AdminOrders"],
+    }),
+    assignOrderVendor: builder.mutation({
+      query: ({ id, vendorId }) => ({
+        url: `orders/admin/${id}/vendor`,
+        method: "PUT",
+        body: { vendorId },
+      }),
+      invalidatesTags: ["AdminOrders"],
+    }),
   }),
 });
 
@@ -46,4 +62,6 @@ export const {
   useApproveVendorMutation,
   useGetAdminPendingListingsQuery,
   useApproveListingMutation,
+  useGetAllOrdersQuery,
+  useAssignOrderVendorMutation,
 } = adminApi;

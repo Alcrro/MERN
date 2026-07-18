@@ -33,12 +33,14 @@ import VendorOrdersPanel from "./Components/vendor/dashboard/VendorOrdersPanel";
 import VendorAnalyticsPanel from "./Components/vendor/dashboard/VendorAnalyticsPanel";
 import VendorCatalog from "./Pages/Vendor/VendorCatalog/VendorCatalog";
 import VendorProfilePanel from "./Components/vendor/dashboard/VendorProfilePanel";
+import VendorVouchersPanel from "./Components/vendor/dashboard/VendorVouchersPanel";
 import AdminDashboard from "./Pages/Admin/AdminDashboard/AdminDashboard";
 import AdminOverview from "./Pages/Admin/AdminDashboard/AdminOverview";
 import AdminListings from "./Pages/Admin/AdminListings/AdminListings";
 import AdminCatalogPanel from "./Components/administrator/catalog/CatalogAdmin";
 import AdminVendors from "./Pages/Admin/AdminVendors/AdminVendors";
 import AdminCategories from "./Pages/Admin/AdminCategories/AdminCategories";
+import AdminOrders from "./Pages/Admin/AdminOrders/AdminOrders";
 import VendorPage from "./Pages/VendorPage/VendorPage";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Terms from "./Pages/Terms";
@@ -48,6 +50,7 @@ import OrderDetail from "./Pages/Orders/OrderDetail";
 import ShopCardPage from "./Pages/ShopCard/ShopCard";
 import ProfilePaymentMethods from "./Components/profile/ProfilePaymentMethods/ProfilePaymentMethods";
 import ProfileSummary from "./Components/profile/ProfileSummary";
+import ProfileVouchers from "./Components/profile/ProfileVouchers";
 
 const App = () => {
   return (
@@ -82,6 +85,7 @@ const App = () => {
               <Route path="address"  element={<ProfileAddress />} />
               <Route path="my-card"          element={<ShopCardPage />} />
               <Route path="payment-methods" element={<ProfilePaymentMethods />} />
+              <Route path="vouchers"        element={<ProfileVouchers />} />
               <Route path="settings"        element={<ProfileSettings />} />
             </Route>
             <Route path="admin/dashboard" element={<AdminDashboard />}>
@@ -90,6 +94,7 @@ const App = () => {
               <Route path="catalog"    element={<AdminCatalogPanel />} />
               <Route path="vendors"    element={<AdminVendors />} />
               <Route path="categories" element={<AdminCategories />} />
+              <Route path="orders"     element={<AdminOrders />} />
             </Route>
           </Route>
 
@@ -101,6 +106,7 @@ const App = () => {
             <Route path="orders" element={<VendorOrdersPanel />} />
             <Route path="analytics" element={<VendorAnalyticsPanel />} />
             <Route path="catalog" element={<VendorCatalog />} />
+            <Route path="vouchers" element={<VendorVouchersPanel />} />
             <Route path="profile" element={<VendorProfilePanel />} />
           </Route>
 
