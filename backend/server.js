@@ -17,6 +17,7 @@ connectDB();
 
 const server = express();
 
+server.set("trust proxy", 1);
 server.use(helmet());
 server.use(compression());
 
