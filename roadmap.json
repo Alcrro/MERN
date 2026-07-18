@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Auth — register, login, JWT cookie, roluri",
+    "status": "done"
+  },
+  {
+    "name": "Catalog produse cu 8+ filtre URL-persistente",
+    "status": "done"
+  },
+  {
+    "name": "Multi-vendor — apply/approve, seller picker",
+    "status": "done"
+  },
+  {
+    "name": "Vendor dashboard — 6 secțiuni",
+    "status": "done"
+  },
+  {
+    "name": "Coș de cumpărături",
+    "status": "done"
+  },
+  {
+    "name": "Checkout multi-pas (coș → detalii → confirmare)",
+    "status": "done"
+  },
+  {
+    "name": "Plăți Stripe — PaymentIntents, carduri salvate, CVV-only",
+    "status": "done"
+  },
+  {
+    "name": "Stripe Webhooks — sync automat comandă",
+    "status": "done"
+  },
+  {
+    "name": "Comenzi — timeline, inline payment, anulare",
+    "status": "done"
+  },
+  {
+    "name": "AlcrroCard — puncte, niveluri, credite, referral",
+    "status": "done"
+  },
+  {
+    "name": "Sistem vouchere — vendor, global, reward automat",
+    "status": "done"
+  },
+  {
+    "name": "Calculator rate bancare (BT, ING, Raiffeisen, BCR)",
+    "status": "done"
+  },
+  {
+    "name": "Profil utilizator — adrese, carduri, avatar crop",
+    "status": "done"
+  },
+  {
+    "name": "Admin panel — aprobare vendori, management comenzi",
+    "status": "done"
+  },
+  {
+    "name": "Recenzii & rating cu recalcul automat",
+    "status": "done"
+  },
+  {
+    "name": "Dark mode cu CSS custom properties",
+    "status": "done"
+  },
+  {
+    "name": "Newsletter cu Resend",
+    "status": "done"
+  },
+  {
+    "name": "Upload imagini Cloudinary (produse + avatar)",
+    "status": "done"
+  },
+  {
+    "name": "Email notificări comenzi (confirmare, expediere)",
+    "status": "todo"
+  },
+  {
+    "name": "Integrare curier AWB real (Fan Courier / DPD)",
+    "status": "todo"
+  },
+  {
+    "name": "Full-text search cu MongoDB Atlas Search",
+    "status": "todo"
+  },
+  {
+    "name": "Vendor analytics — grafice vânzări, top produse",
+    "status": "todo"
+  },
+  {
+    "name": "Recomandări produse AI",
+    "status": "todo"
+  },
+  {
+    "name": "PWA + notificări push",
+    "status": "todo"
+  }
+]
