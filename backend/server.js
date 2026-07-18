@@ -72,6 +72,7 @@ server.use("/api/ecosystem", require("./routes/ecosystem/ecosystem"));
 server.use("/api/newsletter", require("./routes/newsletter/newsletter"));
 server.use("/api/shop-card", require("./routes/shopCard/shopCard"));
 server.use("/api/payment-methods", require("./routes/paymentMethods/paymentMethods"));
+server.use("/api/vouchers", require("./routes/voucher/voucher"));
 server.use(notFoundMiddleware);
 
 server.use(errorHandler);

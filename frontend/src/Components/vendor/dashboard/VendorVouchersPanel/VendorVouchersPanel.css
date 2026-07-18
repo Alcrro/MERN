@@ -1,0 +1,304 @@
+.vvp {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.vvp__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.vvp__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.vvp__add {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .15s;
+}
+
+.vvp__add:hover { opacity: .88; }
+
+.vvp__add--cancel {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
+}
+
+.vvp__add--cancel:hover { opacity: 1; border-color: var(--text-muted); }
+
+/* ── States ────────────────────────────────────────────────── */
+.vvp__loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.vvp__empty-state {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.vvp__empty-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 0.4rem;
+}
+
+.vvp__empty-hint {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.vvp__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.vvp__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.vvp__table th {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.vvp__table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dark);
+  vertical-align: middle;
+}
+
+.vvp__table tr:last-child td { border-bottom: none; }
+.vvp__table tr:hover td { background: var(--bg-page); }
+
+.vvp__code {
+  font-family: monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--primary);
+}
+
+.vvp__val { font-weight: 700; }
+
+.vvp__dash { color: var(--text-muted); }
+
+.vvp__products-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(99, 102, 241, .1);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ── Status badge ──────────────────────────────────────────── */
+.vvp__badge {
+  display: inline-block;
+  font-size: 0.73rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.vvp__badge--on {
+  color: #15803d;
+  background: #dcfce7;
+}
+
+.vvp__badge--off {
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+}
+
+/* ── Toggle button ─────────────────────────────────────────── */
+.vvp__toggle {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: border-color .13s, color .13s;
+}
+
+.vvp__toggle:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.vvp__toggle:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ── Rule section ──────────────────────────────────────────── */
+.vvp__rule {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vvp__rule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vvp__rule-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.vvp__rule-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.vvp__rule-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.vvp__rule-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.vvp__rule-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.85rem;
+}
+
+.vvp__rule-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.vvp__rule-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+}
+
+.vvp__rule-input {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.88rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  color: var(--text-dark);
+  font-family: inherit;
+  width: 100%;
+  transition: border-color .13s;
+}
+
+.vvp__rule-input:focus { outline: none; border-color: var(--primary); }
+
+.vvp__rule-radios {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vvp__rule-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+.vvp__rule-radio input { accent-color: var(--primary); cursor: pointer; }
+
+.vvp__rule-save {
+  align-self: flex-start;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .15s;
+}
+
+.vvp__rule-save:hover:not(:disabled) { opacity: .88; }
+.vvp__rule-save:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── Dark mode ─────────────────────────────────────────────── */
+html[data-theme="dark"] .vvp__badge--on {
+  background: rgba(22, 163, 74, .15);
+  color: #4ade80;
+}
+
+html[data-theme="dark"] .vvp__products-badge {
+  background: rgba(99, 102, 241, .15);
+}
+
+/* ── Mobile ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .vvp__table { font-size: .8rem; }
+  .vvp__table th, .vvp__table td { padding: 0.5rem 0.65rem; }
+  .vvp__title { font-size: 1.1rem; }
+}

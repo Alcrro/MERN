@@ -1,0 +1,133 @@
+.pv-loading {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  padding: 1rem 0;
+}
+
+.pv-hint {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ── Grid ──────────────────────────────────────────────────── */
+.pv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Card ──────────────────────────────────────────────────── */
+.pv-card {
+  background: var(--bg-card);
+  border: 1.5px dashed var(--primary);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  position: relative;
+}
+
+.pv-card--used {
+  border-color: var(--border);
+  opacity: 0.65;
+}
+
+/* ── Top row ───────────────────────────────────────────────── */
+.pv-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.pv-card__code {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--primary);
+}
+
+.pv-card__copy {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(99, 102, 241, .1);
+  border: none;
+  border-radius: 20px;
+  padding: 3px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: opacity .15s;
+}
+
+.pv-card__copy:hover { opacity: .75; }
+
+/* ── Info row ──────────────────────────────────────────────── */
+.pv-card__info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.pv-card__discount {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+.pv-card__vendor {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ── Meta row ──────────────────────────────────────────────── */
+.pv-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pv-card__expires {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.pv-card__badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+.pv-card__badge--active {
+  color: #15803d;
+  background: #dcfce7;
+}
+
+.pv-card__badge--used {
+  color: var(--text-muted);
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+}
+
+/* ── Dark mode ─────────────────────────────────────────────── */
+html[data-theme="dark"] .pv-card__badge--active {
+  background: rgba(22, 163, 74, .15);
+  color: #4ade80;
+}
+
+html[data-theme="dark"] .pv-card__copy {
+  background: rgba(99, 102, 241, .15);
+}
+
+/* ── Mobile ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .pv-grid { grid-template-columns: 1fr; }
+}
