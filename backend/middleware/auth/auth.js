@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const { Register } = require("../../models/auth/register");
+const ErrorResponse = require("../../utilitis/errorResponse");
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -11,22 +12,15 @@ const protect = asyncHandler(async (req, res, next) => {
     token = req.cookies.token;
   }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
-  }
+  if (!token) return next(new ErrorResponse("Not authorized, no token", 401));
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await Register.findById(decoded.id);
-    if (!req.user) {
-      res.status(401);
-      throw new Error("User no longer exists");
-    }
+    if (!req.user) return next(new ErrorResponse("User no longer exists", 401));
     next();
-  } catch (error) {
-    res.status(401);
-    throw new Error("Not authorized, token failed");
+  } catch {
+    return next(new ErrorResponse("Not authorized, token failed", 401));
   }
 });
 
