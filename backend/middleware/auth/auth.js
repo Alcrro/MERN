@@ -38,4 +38,21 @@ const authorize = (...roles) => (req, res, next) => {
   next();
 };
 
-module.exports = { protect, authorize };
+// Attaches req.user if token present, does NOT error if missing
+const optionalProtect = async (req, _res, next) => {
+  try {
+    let token;
+    if (req.headers.authorization?.startsWith("Bearer")) {
+      token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies?.token) {
+      token = req.cookies.token;
+    }
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await Register.findById(decoded.id);
+    }
+  } catch { /* no-op */ }
+  next();
+};
+
+module.exports = { protect, authorize, optionalProtect };

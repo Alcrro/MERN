@@ -39,10 +39,11 @@ const Profile = () => {
         )}
 
         <nav className="prf-nav">
-          {NAV.map(({ to, label, icon }) => (
+          {NAV.map(({ to, label, icon, end }) => (
             <NavLink
-              key={to}
+              key={to || "summary"}
               to={to}
+              end={!!end}
               className={({ isActive }) => `prf-nav-link${isActive ? " prf-nav-link--active" : ""}`}
             >
               <span className="prf-nav-icon">{icon}</span>

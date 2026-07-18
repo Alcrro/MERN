@@ -4,6 +4,7 @@ const Product = require("../../models/product/Product");
 const StripeEvent = require("../../models/stripe/StripeEvent");
 const { ShopCard } = require("../../models/shopCard/ShopCard");
 const { CardTransaction } = require("../../models/shopCard/CardTransaction");
+const { generateRewardVouchers, invalidateOrderVouchers } = require("../voucher/voucherRewardService");
 
 async function handleShopCardTopUp(pi) {
   const { userId, cardId, credits } = pi.metadata || {};
@@ -58,6 +59,7 @@ async function handlePaymentSucceeded(pi) {
   order.status = ORDER_STATUS.PROCESSING;
   order.paymentDetails = { last4, brand, receiptUrl };
   await order.save();
+  generateRewardVouchers(order).catch(() => {});
 }
 
 async function restoreStockAndCancel(pi) {
@@ -84,6 +86,7 @@ async function handleChargeRefunded(charge) {
 
   const { revokePoints } = require("../shopCard/shopCardService");
   revokePoints(order._id).catch(() => {});
+  invalidateOrderVouchers(order._id).catch(() => {});
 }
 
 exports.handleStripeWebhook = async (req, res) => {

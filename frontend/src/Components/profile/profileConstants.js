@@ -1,9 +1,11 @@
 export const NAV = [
-  { to: "orders",   label: "Comenzile mele", icon: "📦" },
-  { to: "address",  label: "Adresele mele",  icon: "📍" },
+  { to: "",                label: "Sumar",          icon: "⊞", end: true },
+  { to: "orders",          label: "Comenzile mele", icon: "📦" },
+  { to: "address",         label: "Adresele mele",  icon: "📍" },
   { to: "my-card",         label: "Cardul meu",     icon: "★" },
-  { to: "payment-methods", label: "Cardurile mele", icon: "💳" },
-  { to: "settings",        label: "Setări cont",    icon: "⚙️" },
+  { to: "payment-methods", label: "Cardurile mele",   icon: "💳" },
+  { to: "vouchers",        label: "Voucherele mele", icon: "🏷" },
+  { to: "settings",        label: "Setări cont",     icon: "⚙️" },
 ];
 
 const AVATAR_BG = ["#2563eb","#059669","#d97706","#7c3aed","#db2777","#0891b2"];

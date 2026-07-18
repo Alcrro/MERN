@@ -20,6 +20,8 @@ import hoverLinkReducer from "../features/cartModal/cartModalSlice";
 import menuDepartmentReducer from "../features/menu-department/menuDepartmentSlice";
 import favoritesReducer from "../features/favorites/favoritesSlice";
 import breadcrumbReducer from "../features/ui/breadcrumbSlice";
+import discountReducer from "../features/discount/discountSlice";
+import { voucherApi } from "../features/voucher/rtkVoucher";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +33,8 @@ export const store = configureStore({
     menuDepartment: menuDepartmentReducer,
     favorites: favoritesReducer,
     breadcrumb: breadcrumbReducer,
+    discount: discountReducer,
+    [voucherApi.reducerPath]: voucherApi.reducer,
     productCategory: postAddProductCategoryReducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
@@ -57,7 +61,8 @@ export const store = configureStore({
       .concat(newsletterApi.middleware)
       .concat(shopCardApi.middleware)
       .concat(paymentMethodsApi.middleware)
-      .concat(authApi.middleware),
+      .concat(authApi.middleware)
+      .concat(voucherApi.middleware),
 });
 
 export default store;
