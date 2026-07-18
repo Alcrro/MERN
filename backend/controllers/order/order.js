@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { Order, ORDER_STATUS, INSTALLMENT_BANKS, INSTALLMENT_MONTHS } = require("../../models/order/Order");
 const Product = require("../../models/product/Product");
 const { Address } = require("../../models/address/Address");
+const Voucher = require("../../models/Voucher");
 const ErrorResponse = require("../../utilitis/errorResponse");
 const stripe = require("../../utils/stripe");
 const { awardPoints, revokePoints } = require("../shopCard/shopCardService");
@@ -37,7 +38,7 @@ exports.getOrder = asyncHandler(async (req, res, next) => {
 // @route   POST /api/orders
 // @access  Private
 exports.createOrder = asyncHandler(async (req, res, next) => {
-  const { items, addressId, paymentMethod, installmentPlan, creditsToUse = 0, savedPaymentMethodId } = req.body;
+  const { items, addressId, paymentMethod, installmentPlan, creditsToUse = 0, savedPaymentMethodId, voucherCode } = req.body;
 
   if (!items?.length) {
     return next(new ErrorResponse("No order items", 400));
@@ -73,6 +74,18 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
     }
   }
 
+  // ── Validare voucher (înainte de tranzacție) ─────────────────
+  let appliedVoucher = null;
+  if (voucherCode) {
+    const voucher = await Voucher.findOne({ code: voucherCode.toUpperCase().trim(), active: true });
+    if (!voucher)                                        return next(new ErrorResponse("Cod voucher invalid sau expirat", 400));
+    if (voucher.expiresAt && voucher.expiresAt < new Date()) return next(new ErrorResponse("Codul voucher a expirat", 400));
+    if (voucher.isRedeemed)                              return next(new ErrorResponse("Codul voucher a fost deja folosit", 400));
+    if (voucher.scope === "reward" && voucher.issuedTo && voucher.issuedTo.toString() !== req.user.id)
+      return next(new ErrorResponse("Codul voucher nu îți aparține", 403));
+    appliedVoucher = voucher;
+  }
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -106,6 +119,32 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
       });
     }
 
+    // ── Calcul discount voucher (server-side) ───────────────────
+    let voucherDiscount = 0;
+    if (appliedVoucher) {
+      const subtotal = orderItems.reduce((s, i) => s + i.price * i.quantity, 0);
+      if (appliedVoucher.vendorId) {
+        const vendorStr = appliedVoucher.vendorId.toString();
+        const pinned    = appliedVoucher.productIds.map((id) => id.toString());
+        const eligible  = orderItems.filter((i) => {
+          if ((i.vendor?.toString?.() ?? i.vendor) !== vendorStr) return false;
+          if (pinned.length > 0 && !pinned.includes(i.product?.toString?.())) return false;
+          return true;
+        });
+        if (eligible.length === 0) throw new ErrorResponse("Codul nu e valabil pentru produsele din comandă", 400);
+        const eligSub = eligible.reduce((s, i) => s + i.price * i.quantity, 0);
+        if (eligSub < appliedVoucher.minOrder) throw new ErrorResponse(`Valoare minimă eligibilă: ${appliedVoucher.minOrder} RON`, 400);
+        voucherDiscount = appliedVoucher.type === "percent"
+          ? Math.round(eligSub * appliedVoucher.value) / 100
+          : Math.min(appliedVoucher.value, eligSub);
+      } else {
+        if (subtotal < appliedVoucher.minOrder) throw new ErrorResponse(`Comandă minimă: ${appliedVoucher.minOrder} RON`, 400);
+        voucherDiscount = appliedVoucher.type === "percent"
+          ? Math.round(subtotal * appliedVoucher.value) / 100
+          : appliedVoucher.value;
+      }
+    }
+
     [order] = await Order.create(
       [{
         user: req.user.id,
@@ -119,10 +158,21 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
         },
         paymentMethod,
         creditsUsed,
+        voucherCode:     appliedVoucher?.code ?? null,
+        voucherDiscount,
         ...(installmentPlan ? { installmentPlan } : {}),
       }],
       { session }
     );
+
+    // ── Marcare voucher folosit (în tranzacție) ──────────────────
+    if (appliedVoucher) {
+      await Voucher.findByIdAndUpdate(
+        appliedVoucher._id,
+        { isRedeemed: true, usedOnOrderId: order._id },
+        { session }
+      );
+    }
 
     if (creditsUsed > 0 && shopCard) {
       await ShopCard.findOneAndUpdate(
@@ -152,7 +202,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
     }).catch(() => {});
   }
 
-  const amountAfterCredits = Math.max(0, order.totalPrice - creditsUsed);
+  const amountAfterCredits = Math.max(0, order.totalPrice - creditsUsed - (order.voucherDiscount || 0));
 
   // Stripe PaymentIntent — în afara tranzacției DB
   if (paymentMethod === "Card" && amountAfterCredits > 0) {

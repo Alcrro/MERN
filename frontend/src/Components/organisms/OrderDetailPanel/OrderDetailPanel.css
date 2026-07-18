@@ -273,6 +273,12 @@
 
 .od-totals__row--discount { color: #15803d; }
 
+.od-voucher-code {
+  font-family: monospace;
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+
 .od-totals__free { color: #15803d; font-weight: 600; }
 
 .od-totals__final {

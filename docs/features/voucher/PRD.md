@@ -1,26 +1,30 @@
 # Voucher — Product Requirements
 
-**Status:** Shipped  
-**Feature area:** Cart / Discount  
-**Locație:** `/cart` → CartSummary → CartVoucherBox
+**Status:** Shipped (parțial — discount UI-only, nu se aplică real la comandă)
+**Feature area:** Cart / Discount / Vendor Dashboard / Profile
 
 ---
 
 ## Problem Statement
 
-Utilizatorii pot aplica coduri promoționale în coșul de cumpărături pentru a obține reduceri înainte de finalizarea comenzii. Reducerea se reflectă instant în totalul sumarului, fără reîncărcarea paginii.
+Platforma suportă trei tipuri de vouchere: globale (create de admin), vendor-specifice (create de vendori din dashboard), și reward (emise automat cumpărătorilor după livrare conform regulii setate de vendor). Cumpărătorii pot aplica codul în coș și îl pot vedea în profilul lor.
 
 ---
 
 ## User Stories
 
-| # | Ca utilizator... | Vreau să... | Astfel încât... |
-|---|-----------------|-------------|-----------------|
-| 1 | neautentificat sau autentificat | introduc un cod voucher în coș | să văd dacă e valid și cât economisesc |
-| 2 | utilizator cu voucher valid | văd codul aplicat cu reducerea calculată | să confirm că reducerea e corectă |
-| 3 | utilizator care s-a răzgândit | elimin voucherul aplicat | totalul să revină la valoarea originală |
-| 4 | utilizator cu comandă sub minim | primesc mesaj de eroare explicit cu suma minimă | să știu ce condiție nu e îndeplinită |
-| 5 | utilizator cu cod expirat | primesc mesaj că a expirat | să nu fiu confuz de ce nu merge |
+| # | Ca... | Vreau să... | Astfel încât... |
+|---|-------|-------------|-----------------|
+| 1 | cumpărător | introduc un cod voucher în coș | să văd reducerea înainte de plată |
+| 2 | cumpărător | văd codul aplicat cu reducerea calculată | să confirm că e corect |
+| 3 | cumpărător | elimin voucherul aplicat | totalul să revină la valoarea originală |
+| 4 | cumpărător | primesc mesaj clar când codul e invalid/expirat/prea mică comanda | să știu exact de ce nu merge |
+| 5 | cumpărător | văd voucherele mele reward în profil | să știu ce coduri am disponibile |
+| 6 | cumpărător | copiez codul dintr-un click din profil | să-l aplic rapid în coș |
+| 7 | vendor | creez vouchere manuale (cod, tip, valoare, produse) | să ofer promoții clienților |
+| 8 | vendor | activez/dezactivez un voucher existent | să controlez când e disponibil |
+| 9 | vendor | configurez o regulă de voucher automat | cumpărătorii să primească reward după fiecare comandă plătită |
+| 10 | vendor | limitez voucherul la anumite produse ale mele | să fac promoții țintite |
 
 ---
 
@@ -28,21 +32,29 @@ Utilizatorii pot aplica coduri promoționale în coșul de cumpărături pentru 
 
 - [x] Input uppercase automat pe taste
 - [x] Enter în input declanșează validarea
-- [x] Buton dezactivat când input-ul e gol sau loading
+- [x] Buton dezactivat când input e gol sau loading
 - [x] Pe succes: input dispare, codul e afișat cu badge (`-10%` sau `-50 RON`)
-- [x] Buton „Elimină" resetează starea Redux + input
-- [x] Eroare specifică returnată de server afișată inline
-- [x] Reducerea apare ca linie separată în sumar (verde, cu codul)
-- [x] Totalul final recalculat: `max(0, produse + livrare - voucherDiscount)`
-- [x] Starea voucher-ului persistă în Redux între re-render-uri
+- [x] Buton „Elimină" resetează starea Redux
+- [x] Eroare specifică de la server afișată inline
+- [x] Reducerea apare ca linie separată în sumar (verde)
+- [x] Totalul final recalculat în UI
+- [x] Vendor poate crea voucher din dashboard
+- [x] Vendor poate activa/dezactiva voucher
+- [x] Vendor poate configura regulă automată (tip, valoare, zile valabilitate, min. comandă)
+- [x] Reward voucher generat automat la `isPaid = true` dacă regula e activă
+- [x] Reward voucher invalidat la anularea comenzii
+- [x] Cumpărătorul vede voucherele reward în `/profile/vouchers`
+- [ ] **Voucherul nu e aplicat real la plasarea comenzii** — `voucherCode` nu e trimis în body-ul `createOrder`
+- [ ] `isRedeemed` nu e setat true după utilizare
+- [ ] Un voucher global poate fi folosit de oricâți utilizatori (fără `maxUses`)
 
 ---
 
 ## Out of Scope (neimplementat)
 
-- Limită de utilizări per voucher (câmpul `maxUses` nu există în model)
-- Voucher per utilizator (un user nu poate folosi același cod de două ori)
-- Interfață admin pentru creare/dezactivare vouchere (doar MongoDB direct)
-- Aplicarea reducerii la checkout — `voucherCode` nu e trimis în body-ul comenzii
-- Voucher cu tip `percent` poate depăși 100% (fără validare backend)
-- Voucherul validat cu un `orderTotal` nu se revalidează dacă totalul se schimbă (produse adăugate/eliminate din coș)
+- Aplicarea reducerii server-side la plasarea comenzii (`createOrder` nu primește `voucherCode`)
+- Marcarea voucherului ca folosit (`isRedeemed`, `usedOnOrderId` există în model dar nu sunt setate)
+- Limită utilizări per voucher (`maxUses`/`usedCount` lipsesc din model)
+- Rate limiting pe `POST /validate` (risc brute-force)
+- Revalidare voucher când totalul coșului se schimbă după aplicare
+- `clearDiscount` nu e apelat la `clearCart` — voucher rămâne în Redux dacă coșul e golit

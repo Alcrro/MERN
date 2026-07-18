@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useCreateOrderMutation } from "../../../features/order/rtkOrders";
 import { clearCart } from "../../../features/product/addToCart/addToCartSlice";
+import { clearDiscount } from "../../../features/discount/discountSlice";
 
 const useCheckoutState = (cartItems) => {
   const dispatch = useDispatch();
+  const voucher  = useSelector((s) => s.discount?.voucher ?? null);
   const [step, setStep] = useState(0);
   const [deliveryMethod, setDeliveryMethod] = useState("courier");
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -41,6 +43,7 @@ const useCheckoutState = (cartItems) => {
       paymentMethod: effectivePaymentMethod,
       billingDetails: billing,
       ...(deliveryMethod === "courier" && selectedAddressId ? { addressId: selectedAddressId } : {}),
+      ...(voucher?.code ? { voucherCode: voucher.code } : {}),
     };
     if (savedPaymentMethodId && effectivePaymentMethod === "Card") {
       body.savedPaymentMethodId = savedPaymentMethodId;
@@ -58,9 +61,11 @@ const useCheckoutState = (cartItems) => {
 
     if (result.data.clientSecret) {
       // Card — coșul se golește în OrderDetail după confirmare plată
+      dispatch(clearDiscount());
       setPendingPayment({ clientSecret: result.data.clientSecret, order: result.data.order });
     } else {
       dispatch(clearCart());
+      dispatch(clearDiscount());
       setOrderSuccess(result.data.order);
     }
   };

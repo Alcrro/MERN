@@ -133,6 +133,15 @@ const OrderSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+    voucherCode: {
+      type: String,
+      default: null,
+    },
+    voucherDiscount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     pointsEarned: {
       type: Number,
       default: 0,

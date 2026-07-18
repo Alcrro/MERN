@@ -213,6 +213,12 @@ const OrderDetailPanel = ({ order }) => {
             <span>Subtotal</span>
             <span>{Number(order.totalPrice + (order.creditsUsed || 0)).toLocaleString("ro-RO")} RON</span>
           </div>
+          {order.voucherDiscount > 0 && (
+            <div className="od-totals__row od-totals__row--discount">
+              <span>Voucher {order.voucherCode && <span className="od-voucher-code">({order.voucherCode})</span>}</span>
+              <span>−{Number(order.voucherDiscount).toLocaleString("ro-RO")} RON</span>
+            </div>
+          )}
           {order.creditsUsed > 0 && (
             <div className="od-totals__row od-totals__row--discount">
               <span>Credite folosite</span>
