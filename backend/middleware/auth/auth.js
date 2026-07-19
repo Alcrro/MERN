@@ -15,7 +15,7 @@ const protect = asyncHandler(async (req, res, next) => {
   if (!token) return next(new ErrorResponse("Not authorized, no token", 401));
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] });
     req.user = await Register.findById(decoded.id);
     if (!req.user) return next(new ErrorResponse("User no longer exists", 401));
     next();
@@ -42,7 +42,7 @@ const optionalProtect = async (req, _res, next) => {
       token = req.cookies.token;
     }
     if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] });
       req.user = await Register.findById(decoded.id);
     }
   } catch { /* no-op */ }

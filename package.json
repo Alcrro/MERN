@@ -17,7 +17,7 @@
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
 		"bootstrap-icons": "^1.10.3",
-		"cloudinary": "^1.41.3",
+		"cloudinary": "^2.10.0",
 		"colors": "^1.4.0",
 		"compression": "^1.8.1",
 		"concurrently": "^7.6.0",
@@ -30,7 +30,7 @@
 		"express-rate-limit": "^8.5.2",
 		"font-awesome": "^4.7.0",
 		"helmet": "^8.3.0",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^6.9.0",
 		"morgan": "^1.11.0",
 		"multer": "^2.2.0",
@@ -44,7 +44,7 @@
 	},
 	"devDependencies": {
 		"jest": "^29.7.0",
-		"nodemon": "^2.0.20",
+		"nodemon": "^3.1.14",
 		"tailwindcss": "^3.2.7"
 	},
 	"engines": {
