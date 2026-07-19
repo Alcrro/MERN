@@ -232,6 +232,9 @@ npm run test:frontend  # Frontend unit tests
 
 ## Roadmap
 
+### CRA → Vite Migration
+The frontend currently uses Create React App (`react-scripts 5.0.1`), which is deprecated and unmaintained. Migration to Vite is planned — it eliminates 25 build-toolchain vulnerabilities locked inside CRA's dependency tree, cuts cold-start dev time significantly, and is a prerequisite for the TypeScript migration below.
+
 ### TypeScript Migration
 The codebase is written in JavaScript — migration to TypeScript is planned incrementally, starting with `features/` and `utils/` where strict typing provides the most value (RTK Query endpoints, Mongoose models, utility functions). Goal: zero `any`, strict mode enabled.
 
@@ -258,6 +261,14 @@ The codebase is written in JavaScript — migration to TypeScript is planned inc
 ## Project History
 
 **2023 — Initial build:** Auth, product catalog, shopping cart, checkout, orders, user profile, admin panel.
+
+**2026 — Security audit & dependency upgrades:**
+- Resolved all 42 backend vulnerabilities (4 critical, 17 high, 19 moderate, 2 low → 0)
+- `jsonwebtoken` v8 → v9: fixed signature bypass and key forgery CVEs; added explicit `algorithms: ["HS256"]` to all `jwt.verify()` calls
+- `cloudinary` v1 → v2: fixed argument injection vulnerability
+- `nodemon` v2 → v3: fixed ReDoS in semver (dev dependency)
+- `npm audit fix`: patched mongoose CRITICAL, express, shell-quote, path-to-regexp, lodash, aws-sdk chain and 30+ transitive vulnerabilities
+- Frontend: patched `websocket-driver` CRITICAL (webpack-dev-server); remaining 25 vulnerabilities are build-toolchain-only (CRA) — fixed permanently once Vite migration is complete
 
 **2026 — Full rewrite:**
 - Atomic design component architecture (atoms → molecules → organisms → pages)
