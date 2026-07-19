@@ -260,7 +260,16 @@ The codebase is written in JavaScript — migration to TypeScript is planned inc
 
 ## Project History
 
-**2023 — Initial build:** Auth, product catalog, shopping cart, checkout, orders, user profile, admin panel.
+**2023 — Initial build:**
+- **Auth** — register / login / logout with JWT, password hashing with bcrypt, role-based route protection (Admin / Client)
+- **Product catalog** — product listing with search and category filters, product detail page, SKU generation, slug-based URLs
+- **Shopping cart** — add / remove / update quantity, cart persisted in localStorage via Redux
+- **Checkout** — address selection, order summary, order creation with stock deduction
+- **Orders** — create order, view order history, order detail page, cancel order, admin order overview and status updates
+- **User profile** — update personal info, change password, saved delivery addresses (add / update / delete)
+- **Reviews** — add and delete product reviews, average rating per product
+- **Admin panel** — user list with role management and delete, product management (add / edit / delete), basic order oversight
+- **Newsletter** — email subscription endpoint with Nodemailer
 
 **2026 — Security audit & dependency upgrades:**
 - Resolved all 42 backend vulnerabilities (4 critical, 17 high, 19 moderate, 2 low → 0)
