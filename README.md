@@ -230,6 +230,31 @@ npm run test:frontend  # Frontend unit tests
 
 ---
 
+## Roadmap
+
+### TypeScript Migration
+The codebase is written in JavaScript — migration to TypeScript is planned incrementally, starting with `features/` and `utils/` where strict typing provides the most value (RTK Query endpoints, Mongoose models, utility functions). Goal: zero `any`, strict mode enabled.
+
+### AI Features
+
+| Feature | Description |
+|---------|-------------|
+| **AI-powered configurator** | An assistant that asks questions (budget, use case, preferences) and recommends the right product + necessary accessories (case, screen protector, compatible charger) |
+| **Personalized recommendations** | "Similar products" and "Frequently bought together" based on browsing history and past orders |
+| **Semantic search** | Natural language search — "good phone for gaming under €400" returns relevant results, not just keyword matches |
+| **AI chatbot** | Answers questions about products, orders, and returns directly in the platform |
+| **Fraud detection** | AI scoring for suspicious orders (new address + new card + large order = flagged for manual review) |
+
+### New Features
+
+| Feature | Description |
+|---------|-------------|
+| **Reviews & ratings** | Photo reviews, rating verified for confirmed buyers only, vendor reply support |
+| **Live vendor-client chat** | Real-time messaging between buyer and seller for pre-order questions |
+| **Push notifications** | Alerts for price drops on tracked products, order status updates, expiring vouchers |
+
+---
+
 ## Project History
 
 **2023 — Initial build:** Auth, product catalog, shopping cart, checkout, orders, user profile, admin panel.
